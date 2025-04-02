@@ -1,4 +1,4 @@
 package com.example.be12hrimimhrbe.global.utils;
 
-public class JwtUtils {
+public class JwtUtil {
 }
