@@ -1,0 +1,91 @@
+spring:
+#  application:
+#    name: chatting
+#  kafka:
+#    bootstrap-servers: 192.0.5.2:9092
+#    consumer:
+#      group-id: chatting-group
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: ${MAIL_ADDR}
+#    password: ${MAIL_PASSWORD}
+#    properties:
+#      mail:
+#        smtp:
+#          starttls:
+#            enable: true
+#            required: true
+#          auth: true
+#          timeout: 5000
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+#  jpa:
+#    database-platform: org.hibernate.dialect.MariaDBDialect
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: true
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: ${GOOGLE_CLIENT_ID}
+#            client-secret: ${GOOGLE_SECRET}
+#            scope:
+#              - email
+#              - profile
+#          kakao:
+#            client-id: ${KAKAO_KEY}
+#            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+#            authorization-grant-type: authorization_code
+#            client-authentication-method: none
+#            client-name: Kakao
+#            scope: # ?????? ? ??? ???
+#              - profile_nickname
+
+#
+#  cloud:
+#    aws:
+#      credentials:
+#        access-key: ${AWS_ACCESS_KEY}
+#        secret-key: ${AWS_SECRET_KEY}
+#      s3:
+#        bucket: viewiubucket
+#      region:
+#        static: ${AWS_REGION}
+#  kafka:
+#    bootstrap-servers: 192.0.5.1:9092
+#    consumer:
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      group-id: ciu-group
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#  sql:
+#    init:
+#      mode: always
+
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    org.hibernate.orm.jdbc.bind: trace
+
+#jwt:
+#  secret: ${JWT_SECRET}
+#  expired: ${JWT_EXPIRED}
+#
+#project:
+#  upload:
+#    path: ${UPLOAD_PATH}
