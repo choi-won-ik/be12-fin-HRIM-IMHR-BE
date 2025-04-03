@@ -20,8 +20,8 @@ public class ScoreController {
 
     @PostMapping("/dashboard")
     @Operation(summary = "대쉬보드", description = "대쉬보드 실행 기능입니다.")
-    public ResponseEntity<BaseResponse<Score>> dashboard(@RequestBody ScoreDto.DashBoardReq dto) {
-        ScoreDto.DashBoardRsp response = new ScoreDto.DashBoardRsp();
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.MY_COMPANY_SUCCESS,response));
+    public ResponseEntity<BaseResponse<ScoreDto.DashBoardRsp>> dashboard(@RequestBody ScoreDto.DashBoardReq dto) {
+
+        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.MY_COMPANY_SUCCESS,new ScoreDto.DashBoardRsp()));
     }
 }

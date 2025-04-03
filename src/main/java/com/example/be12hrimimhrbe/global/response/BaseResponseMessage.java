@@ -31,7 +31,7 @@ public enum BaseResponseMessage {
 
 
 
-
+    SWGGER_SUCCESS(true,20000,"swagger 성공")
 
 
 ;
