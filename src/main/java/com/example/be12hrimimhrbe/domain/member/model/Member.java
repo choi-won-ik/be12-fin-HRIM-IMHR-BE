@@ -1,6 +1,6 @@
-package com.example.be12hrimimhrbe.domain.Member.model;
+package com.example.be12hrimimhrbe.domain.member.model;
 
-import com.example.be12hrimimhrbe.domain.Department.model.Department;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
