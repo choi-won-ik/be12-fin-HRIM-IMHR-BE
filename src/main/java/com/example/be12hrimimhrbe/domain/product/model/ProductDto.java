@@ -27,4 +27,12 @@ public class ProductDto {
         @Schema(description = "제조사", example = "닥터퓨리")
         private String conPanyName;
     }
+
+    @Getter @AllArgsConstructor @NoArgsConstructor @Builder
+    public static class ProductListResp {
+        @Schema(description = "제품번호", example = "1")
+        private Long productIdx;
+        @Schema(description = "제품명", example = "1회용 주방 수세미")
+        private String productName;
+    }
 }

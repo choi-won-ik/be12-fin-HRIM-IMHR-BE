@@ -19,9 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     @PostMapping("/detail/{idx}")
     @Operation(summary = "친환경 제품 상세", description = "친환경 제품 상세 페이지 입니다.")
-    public ResponseEntity<BaseResponse<ProductDto.ProductDetailResp>> detail(
+    public ResponseEntity<BaseResponse<ProductDto.ProductDetailResp>> Detail(
             @Parameter(description = "제품 IDX", example = "1")
             @PathVariable int idx) {
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,new ProductDto.ProductDetailResp()));
     }
+
+    @PostMapping("/list")
+    @Operation(summary = "친환경 제품 리스트", description = "친환경 제품 리스트 입니다.")
+    public ResponseEntity<BaseResponse<ProductDto.ProductListResp>> List() {
+        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,new ProductDto.ProductListResp()));
+    }
+
+
 }
