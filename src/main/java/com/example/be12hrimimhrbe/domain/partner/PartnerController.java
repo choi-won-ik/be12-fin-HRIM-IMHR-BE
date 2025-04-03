@@ -4,6 +4,7 @@ import com.example.be12hrimimhrbe.domain.partner.model.PartnerDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,9 @@ import java.util.List;
 public class PartnerController {
     @GetMapping("/{idx}")
     @Operation(summary = "협럭사 리스트", description = "협력사 리스트를 확인합니다.")
-    public ResponseEntity<BaseResponse<List<PartnerDto.PartnerListResp>>> List(@PathVariable int idx) {
+    public ResponseEntity<BaseResponse<List<PartnerDto.PartnerListResp>>> List(
+            @Parameter(description = "협력사 IDX", example = "1")
+            @PathVariable int idx) {
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,new PartnerDto.PartnerListResp()));
     }
 }
