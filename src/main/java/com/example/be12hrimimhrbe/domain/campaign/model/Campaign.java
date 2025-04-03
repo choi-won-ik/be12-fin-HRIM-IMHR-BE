@@ -1,6 +1,6 @@
 package com.example.be12hrimimhrbe.domain.campaign.model;
 
-import com.example.be12hrimimhrbe.domain.Member.model.Member;
+import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.event.model.Event;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

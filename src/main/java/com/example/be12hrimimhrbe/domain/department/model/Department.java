@@ -1,4 +1,4 @@
-package com.example.be12hrimimhrbe.domain.Department.model;
+package com.example.be12hrimimhrbe.domain.department.model;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import jakarta.persistence.*;
