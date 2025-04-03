@@ -52,4 +52,24 @@ public class MemberDto {
         public String content;
         public LocalDate date;
     }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class PersonalSignupRequest {
+        public String name;
+        public String memberId;
+        public String email;
+        public String password;
+        public String companyCode;
+        public String employeeCode;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class PersonalSignupResponse {
+        public Long member_idx;
+        public String name;
+        public String memberId;
+        public String email;
+        public String companyCode;
+        public String employeeCode;
+    }
 }

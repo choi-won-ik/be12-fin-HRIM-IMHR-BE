@@ -36,4 +36,9 @@ public class MemberController {
     public ResponseEntity<BaseResponse<MemberDto.ActivityResponse>> myactivity(@AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
+
+    @PostMapping("/signup/personal")
+    public ResponseEntity<BaseResponse<MemberDto.PersonalSignupResponse>> personalSignup(@RequestBody MemberDto.PersonalSignupRequest dto) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
 }
