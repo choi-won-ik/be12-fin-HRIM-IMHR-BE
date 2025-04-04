@@ -68,7 +68,7 @@ pipeline {
                                             fi
 
                                             echo "[INFO] 애플리케이션 백그라운드 실행"
-                                            nohup java -jar \$JAR_PATH > ../app.log 2>&1 &
+                                            nohup java -jar \$JAR_PATH > ./app.log 2>&1 &
 
                                             echo "[SUCCESS] 배포 완료"
                                             exit 0
