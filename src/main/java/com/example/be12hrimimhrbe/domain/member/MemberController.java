@@ -54,6 +54,16 @@ public class MemberController {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
+    @PostMapping("/approve/{idx}")
+    public ResponseEntity<BaseResponse<String>> approveMember(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
+    @PostMapping("/reject/{idx}")
+    public ResponseEntity<BaseResponse<String>> rejectMember(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
     @PostMapping("/list")
     public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
