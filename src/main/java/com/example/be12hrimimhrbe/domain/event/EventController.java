@@ -25,7 +25,13 @@ public class EventController {
 
     @GetMapping("/list")
     @Operation(summary = "일정 리스트", description = "이번달 일정을 확인 합니다.")
-    public ResponseEntity<BaseResponse<List<EventDto.EventReistReq>>> List(@RequestBody EventDto.EventListReq Dto) {
+    public ResponseEntity<BaseResponse<List<EventDto.EventListResp>>> List(@RequestBody EventDto.EventListReq Dto) {
+        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,null));
+    }
+
+    @DeleteMapping("/delete/{idx}")
+    @Operation(summary = "일정 제거", description = "선택 일정을 제거 합니다.")
+    public ResponseEntity<BaseResponse<Boolean>> Delete(@PathVariable Long idx) {
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,null));
     }
 }
