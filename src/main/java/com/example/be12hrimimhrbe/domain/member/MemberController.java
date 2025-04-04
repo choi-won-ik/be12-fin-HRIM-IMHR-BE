@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,6 +45,12 @@ public class MemberController {
 
     @PostMapping("/signup/personal")
     public ResponseEntity<BaseResponse<MemberDto.PersonalSignupResponse>> personalSignup(@RequestBody MemberDto.PersonalSignupRequest dto) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
+    @PostMapping("/signup/company")
+    public ResponseEntity<BaseResponse<MemberDto.CompanySignupResponse>> companySignup(@RequestPart MemberDto.CompanySignupRequest dto,
+                                                                                       @RequestPart MultipartFile file) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 

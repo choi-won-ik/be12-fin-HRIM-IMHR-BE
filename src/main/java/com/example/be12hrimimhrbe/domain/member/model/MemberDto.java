@@ -14,72 +14,92 @@ public class MemberDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberShortResponse {
-        public Long idx;
-        public String memberId;
-        public String name;
+        private Long idx;
+        private String memberId;
+        private String name;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class FindIdRequest {
-        public String name;
-        public String email;
+        private String name;
+        private String email;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class FindPWRequest {
-        public String memberId;
-        public String email;
+        private String memberId;
+        private String email;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ResetPasswordRequest {
-        public String oldPassword;
-        public String newPassword;
+        private String oldPassword;
+        private String newPassword;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class InfoResponse {
-        public Long idx;
-        public String name;
-        public String email;
-        public String company;
-        public String department;
-        public String role;
+        private Long idx;
+        private String name;
+        private String email;
+        private String company;
+        private String department;
+        private String role;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ActivityResponse {
-        public Long member_idx;
-        public List<ActivityItem> activities;
+        private Long member_idx;
+        private List<ActivityItem> activities;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ActivityItem {
-        public Long activityIdx;
-        public Long campaignIdx;
-        public String type;
-        public String content;
-        public LocalDate date;
+        private Long activityIdx;
+        private Long campaignIdx;
+        private String type;
+        private String content;
+        private LocalDate date;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class PersonalSignupRequest {
-        public String name;
-        public String memberId;
-        public String email;
-        public String password;
-        public String companyCode;
-        public String employeeCode;
+        private String name;
+        private String memberId;
+        private String email;
+        private String password;
+        private String companyCode;
+        private String employeeCode;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class PersonalSignupResponse {
-        public Long member_idx;
-        public String name;
-        public String memberId;
-        public String email;
-        public String companyCode;
-        public String employeeCode;
+        private Long member_idx;
+        private String name;
+        private String memberId;
+        private String email;
+        private String companyCode;
+        private String employeeCode;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class CompanySignupRequest {
+        private String name;
+        private String memberId;
+        private String password;
+        private String email;
+        private String companyName;
+        private String registrationNumber;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class CompanySignupResponse {
+        private Long member_idx;
+        private String name;
+        private String memberId;
+        private String email;
+        private String companyName;
+        private String registrationNumber;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -116,7 +136,7 @@ public class MemberDto {
     }
 
     public static enum MemberReportUserFindType{
-        NAME,ID,CORD
+        NAME,ID,CODE
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

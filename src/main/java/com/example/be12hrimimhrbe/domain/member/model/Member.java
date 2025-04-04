@@ -50,6 +50,6 @@ public class Member {
 
     private int individualScore;
 
-    @Column(nullable = false, length = 20)
-    private String cord;
+    @Column(length = 20)
+    private String code;
 }
