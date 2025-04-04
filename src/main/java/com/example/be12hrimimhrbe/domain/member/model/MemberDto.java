@@ -10,6 +10,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class MemberDto {
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class MemberShortResponse {
+        public Long idx;
+        public String memberId;
+        public String name;
+    }
+
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class FindIdRequest {
         public String name;
