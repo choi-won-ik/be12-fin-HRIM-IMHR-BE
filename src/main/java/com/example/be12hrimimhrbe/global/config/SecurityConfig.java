@@ -1,5 +1,7 @@
 package com.example.be12hrimimhrbe.global.config;
 
+import com.example.be12hrimimhrbe.global.config.filter.JwtFilter;
+import com.example.be12hrimimhrbe.global.config.filter.LoginFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +30,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://www.breadbook.kro.kr"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://www.imhr.kro.kr"));
 //        configuration.setAllowedMethod(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 //        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
@@ -60,6 +62,11 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.sessionManagement(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
+        http.logout(logout -> logout.logoutUrl("/member/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                })
+                .deleteCookies("ATOKEN"));
 
         http.authorizeHttpRequests(
                 (auth) -> auth
@@ -70,7 +77,8 @@ public class SecurityConfig {
         );
 
 
-
+        http.addFilterAt(new LoginFilter(new AntPathRequestMatcher("/member/login", "POST"), configuration.getAuthenticationManager()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
