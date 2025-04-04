@@ -1,6 +1,8 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
+import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +17,10 @@ public class MemberDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberShortResponse {
         private Long idx;
+        private Integer status;
         private String memberId;
         private String name;
+        private LocalDateTime joinedAt;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -43,8 +47,22 @@ public class MemberDto {
         private String name;
         private String email;
         private String company;
-        private String department;
+        private Department department;
         private String role;
+        private Integer status;
+        private LocalDateTime joinedAt;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class InfoDetailResponse {
+        private InfoResponse info;
+        private DepartmentDto.DepartmentListResponse departments;
+        private List<String> roles;
+    }
+
+    public static class InfoDetailRequest {
+        private Long departmentIdx;
+        private List<String> roles;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -148,6 +166,5 @@ public class MemberDto {
         private String startMonth;
         private String endMonth;
     }
-
 
 }

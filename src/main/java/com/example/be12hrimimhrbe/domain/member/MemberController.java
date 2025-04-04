@@ -33,6 +33,25 @@ public class MemberController {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
+    @GetMapping("/detail/info/{idx}")
+    public ResponseEntity<BaseResponse<MemberDto.InfoDetailResponse>> detailInfo(@PathVariable Long idx,
+                                                                                 @AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
+    @PostMapping("/detail/modify/{idx}")
+    public ResponseEntity<BaseResponse<String>> detailModify(@PathVariable Long idx,
+                                                             @AuthenticationPrincipal Member member,
+                                                             @RequestBody MemberDto.InfoDetailRequest dto) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
+    @DeleteMapping("/delete/{idx}")
+    public ResponseEntity<BaseResponse<String>> deleteMember(@PathVariable Long idx,
+                                                             @AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
     @PostMapping("/myinfo")
     public ResponseEntity<BaseResponse<MemberDto.InfoResponse>> myinfo(@AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
