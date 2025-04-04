@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -19,6 +21,9 @@ public class FeedbackQuestion {
     @ManyToOne
     @JoinColumn(name = "template_id")
     private FeedbackTemplate template;
+
+    @OneToMany(mappedBy = "FeedbackQuestion")
+    private List<FeedbackChoice> choices;
 
     @Lob
     private String questionText;

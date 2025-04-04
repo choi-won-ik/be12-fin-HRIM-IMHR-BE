@@ -21,6 +21,13 @@ public class FeedbackDto {
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class FeedbackModifyRequest{
+        private Long templateIdx;
+        private List<FeedbackQuestionItem> deleteQuestions;
+        private List<FeedbackQuestionItem> insertQuestions;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class FeedbackQuestionItem {
         private Long questionIdx;
         private String question;
