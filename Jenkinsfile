@@ -48,7 +48,7 @@ pipeline {
 
                                             pwd
 
-                                            JAR_PATH="./be12-HRIM-IMHR-BE-0.0.1-SNAPSHOT.jar"
+                                            JAR_PATH="./imhr/be12-HRIM-IMHR-BE-0.0.1-SNAPSHOT.jar"
 
                                             echo "[INFO] 실행 중인 프로세스 확인"
                                             PID=\$(pgrep -f "java -jar \$JAR_PATH") || true
