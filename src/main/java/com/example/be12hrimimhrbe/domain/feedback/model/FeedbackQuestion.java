@@ -22,7 +22,7 @@ public class FeedbackQuestion {
     @JoinColumn(name = "template_id")
     private FeedbackTemplate template;
 
-    @OneToMany(mappedBy = "FeedbackQuestion")
+    @OneToMany(mappedBy = "question")
     private List<FeedbackChoice> choices;
 
     @Lob
