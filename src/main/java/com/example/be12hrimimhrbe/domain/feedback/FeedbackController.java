@@ -21,4 +21,10 @@ public class FeedbackController {
                                                                 @RequestBody FeedbackDto.FeedbackAnswerRequest dto) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
+
+    @PostMapping("/modify")
+    public ResponseEntity<BaseResponse<String>> modifyFeedback(@AuthenticationPrincipal Member member,
+                                                               @RequestBody FeedbackDto.FeedbackModifyRequest dto) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
 }
