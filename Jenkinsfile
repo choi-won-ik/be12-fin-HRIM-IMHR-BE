@@ -42,6 +42,9 @@ pipeline {
                                             export DB_PASSWORD=qwer1234;
                                             export DB_URL=jdbc:mariadb://imhr-mariadb.cr2826acokra.ap-northeast-2.rds.amazonaws.com:3306/imhr;
                                             export DB_USER=hrim;
+                                            export JWT_EXPIRED=1800000;
+                                            export JWT_SECRET=abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789;
+
 
                                             pwd
 
