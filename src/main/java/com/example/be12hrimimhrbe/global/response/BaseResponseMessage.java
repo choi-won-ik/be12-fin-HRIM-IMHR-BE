@@ -25,12 +25,13 @@ public enum BaseResponseMessage {
 
 
 
+    // 회사 점수 8000
+    MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),
 
 
 
 
-
-
+    SWGGER_SUCCESS(true,20000,"swagger 성공")
 
 
 ;
