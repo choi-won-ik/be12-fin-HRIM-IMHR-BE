@@ -12,11 +12,11 @@ public class CampaignDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class CampaignListResponse {
-        private List<CampaignItem> campaigns;
+        private List<CampaignItemResponse> campaigns;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
-    public static class CampaignItem {
+    public static class CampaignItemResponse {
         private Long campaignIdx;
         private String content;
         private LocalDate date;

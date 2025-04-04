@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CampaignController {
     @GetMapping("/mycampaign")
     public ResponseEntity<BaseResponse<CampaignDto.CampaignListResponse>> getCampaigns(@AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+    @GetMapping("/detail/{idx}")
+    public ResponseEntity<BaseResponse<CampaignDto.CampaignItemResponse>> getCampaignItem(@PathVariable Integer idx,
+                                                                                          @AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 }
