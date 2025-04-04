@@ -17,7 +17,14 @@ public class EventDto {
     @Getter @AllArgsConstructor @NoArgsConstructor @Builder
     public static class EventListReq {
         private String month;
+    }
 
+    @Getter @AllArgsConstructor @NoArgsConstructor @Builder
+    public static class EventListResp {
+        private Long eventIdx;
+        private String eventTitle;
+        private String eventDescription;
+        private String eventTime;
     }
 
 }
