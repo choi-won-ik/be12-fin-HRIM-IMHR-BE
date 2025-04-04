@@ -1,6 +1,21 @@
 pipeline {
     agent any
      stages {
+        stage('Git Clone') {
+            steps{
+                echo "Cloneing Repository"
+                git branch: 'main', url: 'https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE'
+            }
+        }
+        stage('Gradle Build') {
+            steps{
+                echo "Change Mod"
+                sh 'chmod +x ./gradlew'
+
+                echo "Gradle 빌드"
+                sh "./gradlew bootJar || { echo '[ERROR] Gradle 빌드 실패'; exit 1; }"
+            }
+        }
         stage('SSH') {
             steps{
                 script{
@@ -10,11 +25,14 @@ pipeline {
                                 configName: 'imhr-back-to-ec2',
                                 verbose: true,
                                 transfers: [
-                                    // sshTransfer(
-                                    //     execCommand: """
-
-                                    //     """
-                                    // ),
+                                    sshTransfer(
+                                        sourceFiles: 'build/libs/be12-HRIM-IMHR-BE-0.0.1-SNAPSHOT.jar',
+                                        removePrefix: 'build/libs'
+                                        remoteDirectory: '/imhr',
+//                                         execCommand: """
+//                                             d
+//                                         """
+                                    ),
                                     sshTransfer(
                                         remoteDirectory: '/imhr',
                                         execCommand: """
@@ -25,19 +43,9 @@ pipeline {
                                             export DB_URL=jdbc:mariadb://imhr-mariadb.cr2826acokra.ap-northeast-2.rds.amazonaws.com:3306/imhr;
                                             export DB_USER=hrim;
 
-                                            echo "[INFO] 클린 디렉토리"
-                                            rm -rf be12-fin-HRIM-IMHR-BE || true
+                                            pwd
 
-                                            echo "[INFO] Git 클론 시작"
-                                            git clone https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE.git
-
-                                            cd ./be12-fin-HRIM-IMHR-BE
-                                            chmod +x ./gradlew
-
-                                            echo "[INFO] Gradle 빌드"
-                                            ./gradlew bootJar || { echo '[ERROR] Gradle 빌드 실패'; exit 1; }
-
-                                            JAR_PATH="./build/libs/be12-HRIM-IMHR-BE-0.0.1-SNAPSHOT.jar"
+                                            JAR_PATH="./be12-HRIM-IMHR-BE-0.0.1-SNAPSHOT.jar"
 
                                             echo "[INFO] 실행 중인 프로세스 확인"
                                             PID=\$(pgrep -f "java -jar \$JAR_PATH") || true
