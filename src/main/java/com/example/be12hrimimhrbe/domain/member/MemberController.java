@@ -49,8 +49,8 @@ public class MemberController {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
-    @PostMapping("/reportDetail/{idx}")
-    public ResponseEntity<BaseResponse<List<MemberDto.MemberReportDetailResp>>> ReportDetail(
+    @GetMapping("/reportDetail/{idx}")
+    public ResponseEntity<BaseResponse<MemberDto.MemberReportDetailResp>> ReportDetail(
             @PathVariable int memberIdx, @RequestBody MemberDto.MemberReportReq dto
     ) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
@@ -59,6 +59,13 @@ public class MemberController {
     @PostMapping("/reportList")
     public ResponseEntity<BaseResponse<List<MemberDto.MemberReportListResp>>> ReportList(
             @AuthenticationPrincipal Member member, @RequestBody MemberDto.MemberReportReq dto
+    ) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
+    @PostMapping("/reportList")
+    public ResponseEntity<BaseResponse<List<MemberDto.MemberReportUserFindResp>>> ReportUserFind(
+            @RequestBody MemberDto.MemberReportUserFindReq dto
     ) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
