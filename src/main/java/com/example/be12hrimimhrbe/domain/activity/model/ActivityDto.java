@@ -42,4 +42,15 @@ public class ActivityDto {
         private String description;
         private String fileUrl;
     }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class ativityApprovalResp {
+        private Activity.Type type;
+        private String title;
+        private String userName;
+        private String userId;
+        private String fileUrl;
+        private String description;
+
+    }
 }
