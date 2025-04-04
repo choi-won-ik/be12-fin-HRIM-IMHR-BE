@@ -27,7 +27,7 @@ pipeline {
                                 transfers: [
                                     sshTransfer(
                                         sourceFiles: 'build/libs/be12-HRIM-IMHR-BE-0.0.1-SNAPSHOT.jar',
-                                        removePrefix: 'build/libs'
+                                        removePrefix: 'build/libs',
                                         remoteDirectory: '/imhr',
 //                                         execCommand: """
 //                                             d
