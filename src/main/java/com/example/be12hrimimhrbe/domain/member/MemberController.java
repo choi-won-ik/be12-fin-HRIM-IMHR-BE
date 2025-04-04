@@ -4,6 +4,8 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/member")
+@Tag(name = "유저 관리 기능")
 public class MemberController {
 
     @PostMapping("/find-id")
@@ -50,6 +53,7 @@ public class MemberController {
     }
 
     @GetMapping("/reportDetail/{idx}")
+    @Operation(summary = "리포트 상세보기", description = "리포트 상세보기 기능입니다.")
     public ResponseEntity<BaseResponse<MemberDto.MemberReportDetailResp>> ReportDetail(
             @PathVariable int memberIdx, @RequestBody MemberDto.MemberReportReq dto
     ) {
@@ -57,13 +61,15 @@ public class MemberController {
     }
 
     @PostMapping("/reportList")
+    @Operation(summary = "리포트 내역", description = "리포트 내역 보기 기능입니다.")
     public ResponseEntity<BaseResponse<List<MemberDto.MemberReportListResp>>> ReportList(
             @AuthenticationPrincipal Member member, @RequestBody MemberDto.MemberReportReq dto
     ) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
-    @PostMapping("/reportList")
+    @PostMapping("/reportUserFind")
+    @Operation(summary = "리포트 검색", description = "해당 유저의 리포트를 찾는 기능입니다.")
     public ResponseEntity<BaseResponse<List<MemberDto.MemberReportUserFindResp>>> ReportUserFind(
             @RequestBody MemberDto.MemberReportUserFindReq dto
     ) {
