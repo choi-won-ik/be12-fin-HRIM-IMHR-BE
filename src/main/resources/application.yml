@@ -82,10 +82,10 @@ spring:
 #    org.hibernate.SQL: debug
 #    org.hibernate.orm.jdbc.bind: trace
 
-#jwt:
-#  secret: ${JWT_SECRET}
-#  expired: ${JWT_EXPIRED}
-#
+jwt:
+  secret: ${JWT_SECRET}
+  expired: ${JWT_EXPIRED}
+
 #project:
 #  upload:
 #    path: ${UPLOAD_PATH}
