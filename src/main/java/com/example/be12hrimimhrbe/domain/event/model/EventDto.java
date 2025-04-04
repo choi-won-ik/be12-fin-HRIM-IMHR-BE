@@ -8,9 +8,16 @@ import lombok.NoArgsConstructor;
 public class EventDto {
 
     @Getter @AllArgsConstructor @NoArgsConstructor @Builder
-    public class EventReistReq {
+    public static class EventReistReq {
         private String eventTitle;
         private String eventDescription;
         private String eventTime;
     }
+
+    @Getter @AllArgsConstructor @NoArgsConstructor @Builder
+    public static class EventListReq {
+        private String month;
+
+    }
+
 }
