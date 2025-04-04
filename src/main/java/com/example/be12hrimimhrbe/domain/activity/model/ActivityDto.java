@@ -26,4 +26,10 @@ public class ActivityDto {
         private String type;
         private String content;
     }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class ActivityReportDetailResp{
+        private String title;
+        private String performedAt;
+    }
 }

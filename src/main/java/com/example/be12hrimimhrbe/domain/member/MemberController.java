@@ -48,4 +48,9 @@ public class MemberController {
     public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
+
+    @PostMapping("/reportDetail")
+    public ResponseEntity<BaseResponse<List<MemberDto.ReportDetailResp>>> ReportDetail(@AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
 }

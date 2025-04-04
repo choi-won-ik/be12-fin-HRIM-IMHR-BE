@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
+import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -79,5 +80,14 @@ public class MemberDto {
         public String email;
         public String companyCode;
         public String employeeCode;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class ReportDetailResp{
+        private String userName;
+        private String departmentName;
+        private int individualScore;
+        private List<String> feedbackResponseAnswerText;
+        private List<ActivityDto.ActivityReportDetailResp> activityList;
     }
 }

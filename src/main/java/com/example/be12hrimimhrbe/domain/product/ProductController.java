@@ -27,9 +27,7 @@ public class ProductController {
 
     @PostMapping("/list")
     @Operation(summary = "친환경 제품 리스트", description = "친환경 제품 리스트 입니다.")
-    public ResponseEntity<BaseResponse<ProductDto.ProductListResp>> List() {
+    public ResponseEntity<BaseResponse<ProductDto.ProductListResp>> List(String startMonth, String endMonth) {
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,new ProductDto.ProductListResp()));
     }
-
-
 }

@@ -47,4 +47,6 @@ public class Member {
 
     public enum Role { EMPLOYEE, MANAGER, EXECUTIVE, MASTER }
     public enum Status { PENDING, APPROVED }
+
+    private int individualScore;
 }
