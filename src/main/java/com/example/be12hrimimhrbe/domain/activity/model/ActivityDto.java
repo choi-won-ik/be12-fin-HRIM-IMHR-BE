@@ -16,15 +16,16 @@ public class ActivityDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ActivityListResponse {
-        private List<ActivityItem> activityList;
+        private List<ActivityItemResponse> activityList;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
-    public static class ActivityItem {
+    public static class ActivityItemResponse {
         private Long activityIdx;
         private Integer status;
         private String type;
         private String content;
+        private String fileUrl;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
