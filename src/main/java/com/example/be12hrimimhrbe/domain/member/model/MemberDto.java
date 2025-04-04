@@ -83,11 +83,25 @@ public class MemberDto {
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
-    public static class ReportDetailResp{
+    public static class MemberReportReq{
+        private String startMonth;
+        private String endMonth;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class MemberReportDetailResp{
         private String userName;
         private String departmentName;
         private int individualScore;
         private List<String> feedbackResponseAnswerText;
         private List<ActivityDto.ActivityReportDetailResp> activityList;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class MemberReportListResp{
+        private Long userIdx;
+        private String userName;
+        private String userId;
+        private String departmentName;
     }
 }

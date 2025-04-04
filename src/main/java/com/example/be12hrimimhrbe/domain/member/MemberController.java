@@ -49,8 +49,17 @@ public class MemberController {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
-    @PostMapping("/reportDetail")
-    public ResponseEntity<BaseResponse<List<MemberDto.ReportDetailResp>>> ReportDetail(@AuthenticationPrincipal Member member) {
+    @PostMapping("/reportDetail/{idx}")
+    public ResponseEntity<BaseResponse<List<MemberDto.MemberReportDetailResp>>> ReportDetail(
+            @PathVariable int memberIdx, @RequestBody MemberDto.MemberReportReq dto
+    ) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
+
+    @PostMapping("/reportList")
+    public ResponseEntity<BaseResponse<List<MemberDto.MemberReportListResp>>> ReportList(
+            @AuthenticationPrincipal Member member, @RequestBody MemberDto.MemberReportReq dto
+    ) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 }
