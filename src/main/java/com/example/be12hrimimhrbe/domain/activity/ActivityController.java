@@ -24,6 +24,6 @@ public class ActivityController {
     @GetMapping("/regist")
     public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> activityRegist(@RequestBody ActivityDto.ActivityListRequest dto) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
-        
+
     }
 }
