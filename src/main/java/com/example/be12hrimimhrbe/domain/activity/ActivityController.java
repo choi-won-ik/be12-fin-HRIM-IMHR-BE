@@ -14,23 +14,26 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "직원 활동내역 관리 기능")
 public class ActivityController {
     @GetMapping("/myactivity")
+    @Operation(summary = "ESG활동 내역 조회", description = "ESG활동 내역을 조회하는 기능 입니다.")
     public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> getMyActivity(@RequestBody ActivityDto.ActivityListRequest dto) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
     @GetMapping("/detail/{idx}")
+    @Operation(summary = "ESG활동 상세 페이지 조회", description = "ESG활동 상세 조회 기능 입니다.")
     public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx,
                                                                                     @AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
-    @GetMapping("/regist")
+    @PostMapping("/regist")
+    @Operation(summary = "ESG활동 등록", description = "ESG활동 등록 기능입니다.")
     public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> activityRegist(@RequestBody ActivityDto.ActivityListRequest dto) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
     @GetMapping("/ativityApproval/{idx}")
-    @Operation(summary = "ESG활동 승인 페이지", description = "ESG활동 승인 페이지 입니다.")
+    @Operation(summary = "ESG활동 승인 페이지", description = "ESG활동 승인 페이지에 필요한 정보를 불러오는 기능 입니다.")
     public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> ativityApproval(@PathVariable Long idx) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
