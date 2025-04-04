@@ -15,8 +15,10 @@ public class MemberDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberShortResponse {
         private Long idx;
+        private Integer type;
         private String memberId;
         private String name;
+        private LocalDate joinedAt;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
