@@ -20,4 +20,9 @@ public class ActivityController {
                                                                                     @AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
+
+    @GetMapping("/regist")
+    public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> activityRegist(@RequestBody ActivityDto.ActivityListRequest dto) {
+        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    }
 }
