@@ -21,4 +21,19 @@ public class CampaignDto {
         private String content;
         private LocalDate date;
     }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class CampaignDetailResp {
+        private List<String> CampaignDetailMemberResp;
+        private String eventTitle;
+        private String eventStartDate;
+        private String eventEndDate;
+    }
+
+    public static class CampaignDetailMemberResp{
+        private Long idx;
+        private String userName;
+        private String userId;
+
+    }
 }

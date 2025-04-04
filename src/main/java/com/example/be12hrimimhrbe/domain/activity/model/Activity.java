@@ -20,7 +20,7 @@ public class Activity {
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_idx")
     private Member member;
 
     @Enumerated(EnumType.STRING)

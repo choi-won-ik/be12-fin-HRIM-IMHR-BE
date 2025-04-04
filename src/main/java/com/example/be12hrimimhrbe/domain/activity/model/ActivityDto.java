@@ -33,4 +33,24 @@ public class ActivityDto {
         private String title;
         private String performedAt;
     }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class ActivityRegistReq{
+        private String userId;
+        private Activity.Type type;
+        private String title;
+        private String description;
+        private String fileUrl;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class ativityApprovalResp {
+        private Activity.Type type;
+        private String title;
+        private String userName;
+        private String userId;
+        private String fileUrl;
+        private String description;
+
+    }
 }
