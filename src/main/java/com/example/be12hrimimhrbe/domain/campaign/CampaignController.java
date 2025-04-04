@@ -18,18 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "캠페인 관리 기능")
 public class CampaignController {
     @GetMapping("/mycampaign")
+    @Operation(summary = "내 캠페인 내역 조회", description = "내가 참여한 캠페인 내역을 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<CampaignDto.CampaignListResponse>> getCampaigns(@AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
-    @GetMapping("/detail/{idx}")
-    public ResponseEntity<BaseResponse<CampaignDto.CampaignItemResponse>> getCampaignItem(@PathVariable Integer idx,
-                                                                                          @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
-    }
+//    @GetMapping("/detail/{idx}")
+//    public ResponseEntity<BaseResponse<CampaignDto.CampaignItemResponse>> getCampaignItem(@PathVariable Long idx,
+//                                                                                          @AuthenticationPrincipal Member member) {
+//        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+//    }
 
-    @GetMapping("/campaign/{idx}")
+    @GetMapping("/detail/{idx}")
     @Operation(summary = "캠페인 상세", description = "캠페인 상세 페이지 입니다.")
-    public ResponseEntity<BaseResponse<CampaignDto.CampaignDetailResp>> campaignDetail(@PathVariable Long idx) {
+    public ResponseEntity<BaseResponse<CampaignDto.CampaignDetailResp>> campaignDetail(@PathVariable Long idx,
+                                                                                       @AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 }
