@@ -98,10 +98,36 @@ public class MemberDto {
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class MemberReportUserFindReq {
+        private MemberReportUserFindType type;
+        private String findContent;
+        private String startMonth;
+        private String endMonth;
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberReportListResp{
         private Long userIdx;
         private String userName;
         private String userId;
         private String departmentName;
+        private String startMonth;
+        private String endMonth;
     }
+
+    public static enum MemberReportUserFindType{
+        NAME,ID,CORD
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class MemberReportUserFindResp {
+        private Long userIdx;
+        private String userName;
+        private String userId;
+        private String departmentName;
+        private String startMonth;
+        private String endMonth;
+    }
+
+
 }
