@@ -128,7 +128,7 @@ public class MemberDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberReportDetailResp{
-        private String userName;
+        private String memberName;
         private String departmentName;
         private int individualScore;
         private List<String> feedbackResponseAnswerText;
@@ -145,9 +145,9 @@ public class MemberDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberReportListResp{
-        private Long userIdx;
-        private String userName;
-        private String userId;
+        private Long memberIdx;
+        private String memberName;
+        private String memberId;
         private String departmentName;
         private String startMonth;
         private String endMonth;
@@ -159,9 +159,9 @@ public class MemberDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberReportUserFindResp {
-        private Long userIdx;
-        private String userName;
-        private String userId;
+        private Long memberIdx;
+        private String memberName;
+        private String memberId;
         private String departmentName;
         private String startMonth;
         private String endMonth;

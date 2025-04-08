@@ -22,8 +22,8 @@ public class Member {
 
     private String name;
 
-    @Column(name = "member_idx", nullable = false)
-    private String memberIdx;
+    @Column(name = "member_id", nullable = false)
+    private String memberId;
 
     private String email;
 
