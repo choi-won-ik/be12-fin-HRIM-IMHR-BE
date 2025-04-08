@@ -19,7 +19,7 @@ public class FeedbackQuestion {
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "template_id")
+    @JoinColumn(name = "template_idx")
     private FeedbackTemplate template;
 
     @OneToMany(mappedBy = "question")

@@ -19,10 +19,10 @@ public class Campaign {
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_idx")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_idx")
     private Event event;
 }

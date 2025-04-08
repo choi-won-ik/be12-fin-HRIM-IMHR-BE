@@ -29,6 +29,6 @@ public class Product {
     private Integer salesQty;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_idx")
     private Company company;
 }

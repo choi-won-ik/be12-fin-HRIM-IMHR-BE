@@ -21,6 +21,6 @@ public class Department {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "company_idx", nullable = false)
     private Company company;
 }

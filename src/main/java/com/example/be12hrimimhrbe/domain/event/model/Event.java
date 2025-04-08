@@ -28,6 +28,6 @@ public class Event {
     private LocalDate endDate;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_idx")
     private Company company;
 }

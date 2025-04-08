@@ -22,8 +22,8 @@ public class Member {
 
     private String name;
 
-    @Column(name = "member_id", nullable = false)
-    private String memberId;
+    @Column(name = "member_idx", nullable = false)
+    private String memberIdx;
 
     private String email;
 
@@ -36,11 +36,11 @@ public class Member {
     private Status status = Status.PENDING;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_idx")
     private Company company;
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_idx")
     private Department department;
 
     private LocalDateTime joinedAt = LocalDateTime.now();

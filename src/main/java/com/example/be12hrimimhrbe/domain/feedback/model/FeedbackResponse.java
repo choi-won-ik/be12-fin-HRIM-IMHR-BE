@@ -20,26 +20,26 @@ public class FeedbackResponse {
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "feedback_id")
+    @JoinColumn(name = "feedback_idx")
     private FeedbackTemplate feedback;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question_idx")
     private FeedbackQuestion question;
 
     @ManyToOne
-    @JoinColumn(name = "choice_id")
+    @JoinColumn(name = "choice_idx")
     private FeedbackChoice choice;
 
     @Lob
     private String answerText;
 
     @ManyToOne
-    @JoinColumn(name = "from_member_id")
+    @JoinColumn(name = "from_member_idx")
     private Member from;
 
     @ManyToOne
-    @JoinColumn(name = "to_member_id")
+    @JoinColumn(name = "to_member_idx")
     private Member to;
 
     private LocalDateTime createdAt = LocalDateTime.now();
