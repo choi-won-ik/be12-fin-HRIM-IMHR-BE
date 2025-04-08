@@ -64,7 +64,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         Member member = (Member) authResult.getPrincipal();
         String jwtToken = JwtUtil.generateToken(member.getIdx(), member.getEmail(),
-                member.getMemberId(),
+                member.getMemberIdx(),
                 member.getName());
 
 

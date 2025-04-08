@@ -33,7 +33,7 @@ public class CampaignDto {
     public static class CampaignDetailMemberResp{
         private Long idx;
         private String userName;
-        private String userId;
+        private String userIdx;
 
     }
 }
