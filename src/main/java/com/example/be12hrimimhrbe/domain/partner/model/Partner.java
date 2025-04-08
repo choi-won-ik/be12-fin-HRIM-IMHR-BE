@@ -19,12 +19,12 @@ public class Partner {
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_idx")
     private Score score;
 
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "main_company_id")
+    @JoinColumn(name = "main_company_idx")
     private Company mainCompany;
 }

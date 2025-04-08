@@ -24,7 +24,7 @@ public class Notification {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_idx")
     private Member member;
 
     private LocalDateTime createdAt = LocalDateTime.now();

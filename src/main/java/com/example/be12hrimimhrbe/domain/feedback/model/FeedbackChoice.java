@@ -17,7 +17,7 @@ public class FeedbackChoice {
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question_idx")
     private FeedbackQuestion question;
 
     private String choiceText;
