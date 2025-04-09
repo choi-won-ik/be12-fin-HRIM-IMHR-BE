@@ -21,6 +21,7 @@ public enum BaseResponseMessage {
     COMPANY_SIGNUP_SUCCESS(true, 2200, "기업 회원 가입 성공"),
     COMPANY_SIGNUP_NOT_FOUND_FILE(false, 2404, "파일을 찾지 못했습니다."),
     PERSONAL_SIGNUP_SUCCESS(true, 2200, "개인 회원 가입 성공"),
+    PERSONAL_SIGNUP_NOT_FOUND_COMPANY(false, 2404, "회사 정보를 찾지 못했습니다."),
     FIND_ID_SUCCESS(true, 2200, "ID 찾기 성공"),
 
 

@@ -89,6 +89,19 @@ public class MemberDto {
         private String password;
         private String companyCode;
         private String employeeCode;
+        public Member toMember(String encryptedPassword, Company company) {
+            return Member.builder().memberId(this.memberId)
+                    .name(this.name)
+                    .email(this.email)
+                    .isAdmin(false)
+                    .hasPartnerAuth(false)
+                    .hasProdAuth(false)
+                    .status(Member.Status.APPROVED)
+                    .company(company)
+                    .password(encryptedPassword)
+                    .joinedAt(LocalDateTime.now())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -99,6 +112,16 @@ public class MemberDto {
         private String email;
         private String companyCode;
         private String employeeCode;
+        public static PersonalSignupResponse fromMember(Member member) {
+            return PersonalSignupResponse.builder()
+                    .member_idx(member.getIdx())
+                    .name(member.getName())
+                    .memberId(member.getMemberId())
+                    .email(member.getEmail())
+                    .companyCode(member.getCompany().getCode())
+                    .employeeCode(member.getCode())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -114,8 +137,12 @@ public class MemberDto {
                             .name(this.name)
                             .email(this.email)
                             .isAdmin(true)
+                            .hasPartnerAuth(false)
+                            .hasProdAuth(false)
                             .status(Member.Status.APPROVED)
+                            .company(company)
                             .password(encryptedPassword)
+                            .joinedAt(LocalDateTime.now())
                             .build();
         }
         public Company toCompany(String imgUrl) {
@@ -124,6 +151,7 @@ public class MemberDto {
                     .registrationNumber(registrationNumber)
                     .code(registrationNumber)
                     .imgUrl(imgUrl)
+                    .createdAt(LocalDateTime.now())
                     .build();
         }
     }

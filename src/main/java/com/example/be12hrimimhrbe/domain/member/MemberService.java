@@ -47,4 +47,15 @@ public class MemberService {
             return new BaseResponse<>(BaseResponseMessage.COMPANY_SIGNUP_NOT_FOUND_FILE, null);
         }
     }
+
+    public BaseResponse<MemberDto.PersonalSignupResponse> personalSignup(MemberDto.PersonalSignupRequest dto) {
+        Company company = companyRepository.findByCode(dto.getCompanyCode()).orElse(null);
+        if(company==null) {
+            return new BaseResponse<>(BaseResponseMessage.PERSONAL_SIGNUP_NOT_FOUND_COMPANY, null);
+        }
+        Member member = memberRepository
+                .save(dto.toMember(passwordEncoder.encode(dto.getPassword()), company));
+        return new BaseResponse<>(BaseResponseMessage.PERSONAL_SIGNUP_SUCCESS,
+                MemberDto.PersonalSignupResponse.fromMember(member));
+    }
 }

@@ -79,7 +79,7 @@ public class MemberController {
     @PostMapping("/signup/personal")
     @Operation(summary = "개인 회원 가입", description = "임직원 가입용 회원 가입 기능입니다.")
     public ResponseEntity<BaseResponse<MemberDto.PersonalSignupResponse>> personalSignup(@RequestBody MemberDto.PersonalSignupRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+        return ResponseEntity.ok().body(memberService.personalSignup(dto));
     }
 
     @PostMapping("/signup/company")
