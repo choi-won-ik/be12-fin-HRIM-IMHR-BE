@@ -46,9 +46,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 //                new UserDto.SignupRequest(request.getParameter("username"), request.getParameter("password"));
         try {
             MemberDto.PersonalSignupRequest memberDto  = new ObjectMapper().readValue(request.getInputStream(), MemberDto.PersonalSignupRequest.class);
-
+            String way = request.getParameter("way");
             authToken =
-                    new UsernamePasswordAuthenticationToken(memberDto.getMemberId(), memberDto.getPassword(), null);
+                    new UsernamePasswordAuthenticationToken(memberDto.getMemberId()+"_"+way, memberDto.getPassword(), null);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
