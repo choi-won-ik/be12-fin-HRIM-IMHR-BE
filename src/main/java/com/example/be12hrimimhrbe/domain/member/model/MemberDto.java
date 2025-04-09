@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import lombok.AllArgsConstructor;
@@ -108,6 +109,23 @@ public class MemberDto {
         private String email;
         private String companyName;
         private String registrationNumber;
+        public Member toMember(String encryptedPassword, Company company) {
+            return Member.builder().memberId(this.memberId)
+                            .name(this.name)
+                            .email(this.email)
+                            .isAdmin(true)
+                            .status(Member.Status.APPROVED)
+                            .password(encryptedPassword)
+                            .build();
+        }
+        public Company toCompany(String imgUrl) {
+            return Company.builder()
+                    .name(this.companyName)
+                    .registrationNumber(registrationNumber)
+                    .code(registrationNumber)
+                    .imgUrl(imgUrl)
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -118,6 +136,16 @@ public class MemberDto {
         private String email;
         private String companyName;
         private String registrationNumber;
+        public static CompanySignupResponse fromMember(Member member) {
+            return CompanySignupResponse.builder()
+                    .member_idx(member.getIdx())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .memberId(member.getMemberId())
+                    .companyName(member.getCompany().getName())
+                    .registrationNumber(member.getCompany().getRegistrationNumber())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
