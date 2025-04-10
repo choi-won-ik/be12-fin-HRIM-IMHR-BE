@@ -5,18 +5,23 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/activity")
+@RequiredArgsConstructor
 @Tag(name = "직원 활동내역 관리 기능")
 public class ActivityController {
+    private final ActivityService activityService;
+
     @GetMapping("/myactivity")
     @Operation(summary = "ESG활동 내역 조회", description = "ESG활동 내역을 조회하는 기능 입니다.")
     public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> getMyActivity(@RequestBody ActivityDto.ActivityListRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+
+        return ResponseEntity.ok().body(activityService.getMyActivity(dto));
     }
 
     @GetMapping("/detail/{idx}")
