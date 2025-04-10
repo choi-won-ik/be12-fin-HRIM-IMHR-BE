@@ -29,8 +29,12 @@ public class Member {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.EMPLOYEE;
+//    @Enumerated(EnumType.STRING)
+//    private Role role = Role.EMPLOYEE;
+
+    private Boolean isAdmin;
+    private Boolean hasProdAuth;
+    private Boolean hasPartnerAuth;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
@@ -45,7 +49,7 @@ public class Member {
 
     private LocalDateTime joinedAt = LocalDateTime.now();
 
-    public enum Role { EMPLOYEE, MANAGER, EXECUTIVE, MASTER }
+//    public enum Role { EMPLOYEE, MANAGER, EXECUTIVE, MASTER }
     public enum Status { PENDING, APPROVED }
 
     private int eScore=0;
