@@ -18,6 +18,12 @@ import java.util.List;
 @Tag(name = "유저 관리 기능")
 public class MemberController {
 
+    private final MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
     @PostMapping("/find-id")
     @Operation(summary = "ID 찾기", description = "이름, 이메일을 입력하여 이메일로 아이디를 전송하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> findMemberId(@RequestBody MemberDto.FindIdRequest dto) {
@@ -73,14 +79,14 @@ public class MemberController {
     @PostMapping("/signup/personal")
     @Operation(summary = "개인 회원 가입", description = "임직원 가입용 회원 가입 기능입니다.")
     public ResponseEntity<BaseResponse<MemberDto.PersonalSignupResponse>> personalSignup(@RequestBody MemberDto.PersonalSignupRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+        return ResponseEntity.ok().body(memberService.personalSignup(dto));
     }
 
     @PostMapping("/signup/company")
     @Operation(summary = "기업 회원 가입", description = "기업 가입용 회원 가입 기능입니다.")
     public ResponseEntity<BaseResponse<MemberDto.CompanySignupResponse>> companySignup(@RequestPart MemberDto.CompanySignupRequest dto,
                                                                                        @RequestPart MultipartFile file) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+        return ResponseEntity.ok().body(memberService.companySignup(dto, file));
     }
 
     @PostMapping("/approve/{idx}")

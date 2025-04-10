@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.global.config.filter;
 
+import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.global.utils.JwtUtil;
@@ -45,12 +46,14 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 //        UserDto.SignupRequest userDto =
 //                new UserDto.SignupRequest(request.getParameter("username"), request.getParameter("password"));
         try {
-            MemberDto.PersonalSignupRequest memberDto  = new ObjectMapper().readValue(request.getInputStream(), MemberDto.PersonalSignupRequest.class);
+//            MemberDto.PersonalSignupRequest memberDto  = new ObjectMapper().readValue(request.getInputStream(), MemberDto.PersonalSignupRequest.class);
+            MemberDto.LoginRequest memberDto = new ObjectMapper().readValue(request.getInputStream(), MemberDto.LoginRequest.class);
 
             authToken =
-                    new UsernamePasswordAuthenticationToken(memberDto.getMemberId(), memberDto.getPassword(), null);
+                    new UsernamePasswordAuthenticationToken(memberDto.getMemberId()+"_"+memberDto.getWay(), memberDto.getPassword(), null);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
@@ -62,10 +65,11 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     // 그림에서 9번 로직
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        Member member = (Member) authResult.getPrincipal();
+        CustomUserDetails cud = (CustomUserDetails) authResult.getPrincipal();
+        Member member = cud.getMember();
         String jwtToken = JwtUtil.generateToken(member.getIdx(), member.getEmail(),
                 member.getMemberId(),
-                member.getName());
+                member.getName(), cud.getAuthoritySet());
 
 
 //        일반적인 객체 생성 및 객체의 변수에 값을 설정하는 방법

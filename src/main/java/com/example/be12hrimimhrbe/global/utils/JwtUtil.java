@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.global.utils;
 
 
+import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Set;
 
 @Component
 public class JwtUtil {
@@ -27,18 +29,21 @@ public class JwtUtil {
         EXP = exp;
     }
 
-    public static Member getMember(String token) {
+    public static CustomUserDetails getMember(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(SECRET)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return Member.builder()
-                    .idx(claims.get("memberIdx", Long.class))
-                    .name(claims.get("memberName", String.class))
-                    .email(claims.get("memberEmail", String.class))
-                    .memberId(claims.get("memberId", String.class))
+            return CustomUserDetails.builder()
+                    .member(Member.builder()
+                                .idx(claims.get("memberIdx", Long.class))
+                                .name(claims.get("memberName", String.class))
+                                .email(claims.get("memberEmail", String.class))
+                                .memberId(claims.get("memberId", String.class))
+                                .build())
+                    .authoritySet(claims.get("authoritySet", Set.class))
                     .build();
 
         } catch (ExpiredJwtException e) {
@@ -48,12 +53,13 @@ public class JwtUtil {
     }
 
     public static String generateToken(Long memberIdx, String memberEmail,
-                                       String memberId, String memberName) {
+                                       String memberId, String memberName, Set<String> authoritySet) {
         Claims claims = Jwts.claims();
         claims.put("memberEmail", memberEmail);
         claims.put("memberIdx", memberIdx);
         claims.put("memberId", memberId);
         claims.put("memberName", memberName);
+        claims.put("authoritySet", authoritySet);
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

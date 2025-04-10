@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import lombok.AllArgsConstructor;
@@ -88,6 +89,20 @@ public class MemberDto {
         private String password;
         private String companyCode;
         private String employeeCode;
+        public Member toMember(String encryptedPassword, Company company) {
+            return Member.builder().memberId(this.memberId)
+                    .name(this.name)
+                    .email(this.email)
+                    .isAdmin(false)
+                    .hasPartnerAuth(false)
+                    .hasProdAuth(false)
+                    .status(Member.Status.APPROVED)
+                    .company(company)
+                    .code(employeeCode)
+                    .password(encryptedPassword)
+                    .joinedAt(LocalDateTime.now())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -98,6 +113,16 @@ public class MemberDto {
         private String email;
         private String companyCode;
         private String employeeCode;
+        public static PersonalSignupResponse fromMember(Member member) {
+            return PersonalSignupResponse.builder()
+                    .member_idx(member.getIdx())
+                    .name(member.getName())
+                    .memberId(member.getMemberId())
+                    .email(member.getEmail())
+                    .companyCode(member.getCompany().getCode())
+                    .employeeCode(member.getCode())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -108,6 +133,28 @@ public class MemberDto {
         private String email;
         private String companyName;
         private String registrationNumber;
+        public Member toMember(String encryptedPassword, Company company) {
+            return Member.builder().memberId(this.memberId)
+                            .name(this.name)
+                            .email(this.email)
+                            .isAdmin(true)
+                            .hasPartnerAuth(false)
+                            .hasProdAuth(false)
+                            .status(Member.Status.APPROVED)
+                            .company(company)
+                            .password(encryptedPassword)
+                            .joinedAt(LocalDateTime.now())
+                            .build();
+        }
+        public Company toCompany(String imgUrl) {
+            return Company.builder()
+                    .name(this.companyName)
+                    .registrationNumber(registrationNumber)
+                    .code(registrationNumber)
+                    .imgUrl(imgUrl)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -118,6 +165,23 @@ public class MemberDto {
         private String email;
         private String companyName;
         private String registrationNumber;
+        public static CompanySignupResponse fromMember(Member member) {
+            return CompanySignupResponse.builder()
+                    .member_idx(member.getIdx())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .memberId(member.getMemberId())
+                    .companyName(member.getCompany().getName())
+                    .registrationNumber(member.getCompany().getRegistrationNumber())
+                    .build();
+        }
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class LoginRequest {
+        private String memberId;
+        private String password;
+        private String way;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

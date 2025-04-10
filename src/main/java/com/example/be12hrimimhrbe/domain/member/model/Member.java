@@ -32,8 +32,11 @@ public class Member {
 //    @Enumerated(EnumType.STRING)
 //    private Role role = Role.EMPLOYEE;
 
+    @Column(nullable = false)
     private Boolean isAdmin;
+    @Column(nullable = false)
     private Boolean hasProdAuth;
+    @Column(nullable = false)
     private Boolean hasPartnerAuth;
 
     @Enumerated(EnumType.STRING)

@@ -25,6 +25,8 @@ public class Company {
     private String name;
 
     private String imgUrl;
+    @Column(length = 20)
+    private String code;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

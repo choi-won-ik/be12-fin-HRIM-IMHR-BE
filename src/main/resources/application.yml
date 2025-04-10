@@ -86,6 +86,6 @@ jwt:
   secret: ${JWT_SECRET}
   expired: ${JWT_EXPIRED}
 
-#project:
-#  upload:
-#    path: ${UPLOAD_PATH}
+project:
+  upload:
+    path: ${UPLOAD_PATH}
