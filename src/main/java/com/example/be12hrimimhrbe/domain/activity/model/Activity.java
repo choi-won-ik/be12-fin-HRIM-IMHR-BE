@@ -38,6 +38,10 @@ public class Activity {
 
     private LocalDate performedAt;
 
+    private int ScoreType;
+
     public enum Type { VOLUNTEER, DONATION, EDUCATION }
     public enum Status { PENDING, APPROVED, REJECTED }
+    // 해당 타입
+    public enum ScoreType{E,S,G}
 }

@@ -48,7 +48,9 @@ public class Member {
     public enum Role { EMPLOYEE, MANAGER, EXECUTIVE, MASTER }
     public enum Status { PENDING, APPROVED }
 
-    private int individualScore;
+    private int eScore=0;
+    private int sScore=0;
+    private int gScore=0;
 
     @Column(length = 20)
     private String code;
