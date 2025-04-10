@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.global.config.filter;
 
 
+import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -30,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if(jwtToken != null && !jwtToken.isEmpty()) {
-            Member member = JwtUtil.getMember(jwtToken);
+            CustomUserDetails member = JwtUtil.getMember(jwtToken);
 
 //            if(member != null) {
 //                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =

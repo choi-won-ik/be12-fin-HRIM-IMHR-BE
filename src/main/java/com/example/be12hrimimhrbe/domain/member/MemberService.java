@@ -68,7 +68,7 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String memberId = username.substring(0, username.lastIndexOf("_")-1);
+        String memberId = username.substring(0, username.lastIndexOf("_"));
         String way = username.substring(username.lastIndexOf("_")+1);
         if(way.equals("0")) {
             Optional<Member> result = memberRepository.findByMemberIdAndIsAdmin(memberId, Boolean.TRUE);

@@ -98,6 +98,7 @@ public class MemberDto {
                     .hasProdAuth(false)
                     .status(Member.Status.APPROVED)
                     .company(company)
+                    .code(employeeCode)
                     .password(encryptedPassword)
                     .joinedAt(LocalDateTime.now())
                     .build();
@@ -174,6 +175,13 @@ public class MemberDto {
                     .registrationNumber(member.getCompany().getRegistrationNumber())
                     .build();
         }
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class LoginRequest {
+        private String memberId;
+        private String password;
+        private String way;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
