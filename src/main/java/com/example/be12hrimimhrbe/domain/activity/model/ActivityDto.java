@@ -40,10 +40,10 @@ public class ActivityDto {
         private String title;
         private String startDate;
 
-        //        private Integer status;
-//        private String type;
-//        private String content;
-//        private String fileUrl;
+        private Activity.Status status;
+        private Activity.Type type;
+        private String content;
+        private String fileUrl;
         public ActivityItemResponse(Activity activity) {
             this.activityIdx=activity.getIdx();
             this.title = activity.getTitle();
