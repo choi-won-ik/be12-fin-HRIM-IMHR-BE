@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -43,7 +45,7 @@ public class JwtUtil {
                                 .email(claims.get("memberEmail", String.class))
                                 .memberId(claims.get("memberId", String.class))
                                 .build())
-                    .authoritySet(claims.get("authoritySet", Set.class))
+                    .authoritySet(new HashSet<String>(claims.get("authoritySet", List.class)))
                     .build();
 
         } catch (ExpiredJwtException e) {

@@ -33,13 +33,13 @@ public class JwtFilter extends OncePerRequestFilter {
         if(jwtToken != null && !jwtToken.isEmpty()) {
             CustomUserDetails member = JwtUtil.getMember(jwtToken);
 
-//            if(member != null) {
-//                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                        new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
-//                usernamePasswordAuthenticationToken.setDetails(member);
-//
-//                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//            }
+            if(member != null) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(member);
+
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
 
         }
 
