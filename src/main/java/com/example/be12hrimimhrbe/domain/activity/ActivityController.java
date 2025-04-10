@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.activity;
 
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/activity")
@@ -32,8 +34,11 @@ public class ActivityController {
 
     @PostMapping("/regist")
     @Operation(summary = "ESG활동 등록", description = "ESG활동 등록 기능입니다.")
-    public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> activityRegist(@RequestBody ActivityDto.ActivityListRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<Activity>> activityRegist(
+            @RequestBody ActivityDto.ActivityRegistReq dto, @RequestPart MultipartFile imgFile,@AuthenticationPrincipal Member member
+    ) {
+
+        return ResponseEntity.ok().body(activityService.Regist(dto,imgFile,member));
     }
 
     @GetMapping("/ativityApproval/{idx}")

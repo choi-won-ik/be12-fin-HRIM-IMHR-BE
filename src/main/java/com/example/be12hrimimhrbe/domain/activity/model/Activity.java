@@ -38,8 +38,9 @@ public class Activity {
     private Status status = Status.PENDING;
 
     // 수행 시간
-    @Column(updatable = false)
-    private String performedAt;
+    private int performedAt;
+
+    private int donation;
 
     // 활동 시작 시간
     private LocalDate startDate;
@@ -48,11 +49,9 @@ public class Activity {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt ;
 
-    private int ScoreType;
 
     public enum Type { VOLUNTEER, DONATION, EDUCATION }
     public enum Status { PENDING, APPROVED, REJECTED }
 
-    // 해당 타입
-    public enum ScoreType{E,S,G}
+
 }

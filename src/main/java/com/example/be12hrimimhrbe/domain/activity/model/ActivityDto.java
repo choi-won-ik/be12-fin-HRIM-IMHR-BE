@@ -66,10 +66,11 @@ public class ActivityDto {
     @NoArgsConstructor
     public static class ActivityRegistReq {
         private String userId;
-        private Activity.Type type;
+        private String type;
         private String title;
         private String description;
-        private String fileUrl;
+        private String startDate;
+        private int performance;
     }
 
     @Getter
