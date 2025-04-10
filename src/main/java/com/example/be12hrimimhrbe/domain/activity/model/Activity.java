@@ -44,4 +44,5 @@ public class Activity {
     public enum Status { PENDING, APPROVED, REJECTED }
     // 해당 타입
     public enum ScoreType{E,S,G}
+
 }
