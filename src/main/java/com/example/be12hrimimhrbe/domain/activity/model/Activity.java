@@ -42,9 +42,6 @@ public class Activity {
 
     private int donation;
 
-    // 활동 시작 시간
-    private LocalDate startDate;
-
     // 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt ;
@@ -53,5 +50,15 @@ public class Activity {
     public enum Type { VOLUNTEER, DONATION, EDUCATION }
     public enum Status { PENDING, APPROVED, REJECTED }
 
-
+    public Activity(Activity activity,Activity.Status update){
+        this.idx = activity.idx;
+        this.member = activity.member;
+        this.type = activity.type;
+        this.title = activity.title;
+        this.description = activity.description;
+        this.fileUrl = activity.fileUrl;
+        this.status = update;
+        this.performedAt = activity.performedAt;
+        this.donation = activity.donation;
+    }
 }

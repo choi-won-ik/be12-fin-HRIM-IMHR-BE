@@ -28,8 +28,8 @@ public class ActivityController {
 
     @GetMapping("/detail/{idx}")
     @Operation(summary = "ESG활동 상세 페이지 조회", description = "ESG활동 상세 조회 기능 입니다.")
-    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx) {
-        return ResponseEntity.ok().body(activityService.getDetail(idx));
+    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx,@AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(activityService.getDetail(idx,member));
     }
 
     @PostMapping("/regist")
@@ -41,21 +41,24 @@ public class ActivityController {
         return ResponseEntity.ok().body(activityService.Regist(dto,imgFile,member));
     }
 
-    @GetMapping("/ativityApproval/{idx}")
-    @Operation(summary = "ESG활동 승인 페이지", description = "ESG활동 승인 페이지에 필요한 정보를 불러오는 기능 입니다.")
-    public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> ativityApproval(@PathVariable Long idx) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
-    }
+//    @GetMapping("/ativityApproval/{idx}")
+//    @Operation(summary = "ESG활동 승인 페이지", description = "ESG활동 승인 페이지에 필요한 정보를 불러오는 기능 입니다.")
+//    public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> ativityApproval(@PathVariable Long idx) {
+//        activityService.ativityApproval(idx);
+//        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+//    }
 
-    @PutMapping("/ativityApproval/agree")
+    @PutMapping("/ativityApproval/agree/{idx}")
     @Operation(summary = "ESG활동 승인", description = "직원 ESG활동을 승인 합니다.")
-    public ResponseEntity<BaseResponse<Long>> ativityApprovalAgree() {
+    public ResponseEntity<BaseResponse<Long>> ativityApprovalAgree(@PathVariable Long idx) {
+        activityService.ativityApprovalAgree(idx);
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
-    @PutMapping("/ativityApproval/oppose")
+    @PutMapping("/ativityApproval/oppose/{idx}")
     @Operation(summary = "ESG활동 반려", description = "직원 ESG활동을 반려 합니다.")
-    public ResponseEntity<BaseResponse<Long>> ativityApprovalOppose() {
+    public ResponseEntity<BaseResponse<Long>> ativityApprovalOppose(@PathVariable Long idx) {
+        activityService.ativityApprovalOppose(idx);
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 }
