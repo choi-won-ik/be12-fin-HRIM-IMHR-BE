@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -36,13 +37,22 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
 
-    private LocalDate performedAt;
+    // 수행 시간
+    @Column(updatable = false)
+    private String performedAt;
+
+    // 활동 시작 시간
+    private LocalDate startDate;
+
+    // 
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt ;
 
     private int ScoreType;
 
     public enum Type { VOLUNTEER, DONATION, EDUCATION }
     public enum Status { PENDING, APPROVED, REJECTED }
+
     // 해당 타입
     public enum ScoreType{E,S,G}
-
 }
