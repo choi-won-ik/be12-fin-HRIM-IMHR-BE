@@ -40,6 +40,9 @@ public class ActivityDto {
         private String title;
         private String startDate;
 
+        private String memberId;
+        private String memberName;
+
         private Activity.Status status;
         private Activity.Type type;
         private String content;
@@ -47,7 +50,7 @@ public class ActivityDto {
         public ActivityItemResponse(Activity activity) {
             this.activityIdx=activity.getIdx();
             this.title = activity.getTitle();
-            this.startDate = activity.getStartDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+            this.startDate = activity.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         }
     }
 
@@ -66,10 +69,11 @@ public class ActivityDto {
     @NoArgsConstructor
     public static class ActivityRegistReq {
         private String userId;
-        private Activity.Type type;
+        private String type;
         private String title;
         private String description;
-        private String fileUrl;
+        private String startDate;
+        private int performance;
     }
 
     @Getter

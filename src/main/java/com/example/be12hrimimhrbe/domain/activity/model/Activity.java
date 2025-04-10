@@ -38,21 +38,27 @@ public class Activity {
     private Status status = Status.PENDING;
 
     // 수행 시간
-    @Column(updatable = false)
-    private String performedAt;
+    private int performedAt;
 
-    // 활동 시작 시간
-    private LocalDate startDate;
+    private int donation;
 
     // 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt ;
 
-    private int ScoreType;
 
     public enum Type { VOLUNTEER, DONATION, EDUCATION }
     public enum Status { PENDING, APPROVED, REJECTED }
 
-    // 해당 타입
-    public enum ScoreType{E,S,G}
+    public Activity(Activity activity,Activity.Status update){
+        this.idx = activity.idx;
+        this.member = activity.member;
+        this.type = activity.type;
+        this.title = activity.title;
+        this.description = activity.description;
+        this.fileUrl = activity.fileUrl;
+        this.status = update;
+        this.performedAt = activity.performedAt;
+        this.donation = activity.donation;
+    }
 }

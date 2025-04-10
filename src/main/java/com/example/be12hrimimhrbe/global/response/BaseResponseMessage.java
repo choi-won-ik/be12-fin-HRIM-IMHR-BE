@@ -27,7 +27,8 @@ public enum BaseResponseMessage {
 
 
 
-
+    // 활동 관리 7000
+    MY_ACTIVITY_PROCESSED(false,7004,"이미 처리된 활동입니다."),
 
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),
