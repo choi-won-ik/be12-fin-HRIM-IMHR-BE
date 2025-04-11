@@ -2,10 +2,12 @@ package com.example.be12hrimimhrbe.domain.activity;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "직원 활동내역 관리 기능")
 public class ActivityController {
     private final ActivityService activityService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/myactivity")
     @Operation(summary = "ESG활동 내역 조회", description = "ESG활동 내역을 조회하는 기능 입니다.")
@@ -35,8 +38,10 @@ public class ActivityController {
     @PostMapping("/regist")
     @Operation(summary = "ESG활동 등록", description = "ESG활동 등록 기능입니다.")
     public ResponseEntity<BaseResponse<Activity>> activityRegist(
-            @RequestBody ActivityDto.ActivityRegistReq dto, @RequestPart MultipartFile imgFile,@AuthenticationPrincipal Member member
+            @RequestPart("dto") @Valid ActivityDto.ActivityRegistReq dto, @RequestPart(value = "file", required = false) MultipartFile imgFile
+//            ,@AuthenticationPrincipal Member member
     ) {
+        Member member = memberRepository.findById(1L).get();
 
         return ResponseEntity.ok().body(activityService.Regist(dto,imgFile,member));
     }
