@@ -28,9 +28,10 @@ public class ActivityController {
     @Operation(summary = "ESG활동 내역 조회", description = "ESG활동 내역을 조회하는 기능 입니다.")
     public ResponseEntity<BaseResponse<List<ActivityDto.ActivityListResp>>> getMyActivity(
 //            , @AuthenticationPrincipal Member member
+            int page, int size
     ) {
         Member member = memberRepository.findById(1L).get();
-        return ResponseEntity.ok().body(activityService.getMyActivity(member));
+        return ResponseEntity.ok().body(activityService.getMyActivity(member,page,size));
     }
 
     @GetMapping("/detail/{idx}")
