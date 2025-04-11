@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,14 +27,42 @@ public class ActivityService {
     private final MemberRepository memberRepository;
     private final LocalImageService localImageService;
 
-    public BaseResponse<ActivityDto.ActivityListResponse> getMyActivity(ActivityDto.ActivityListRequest dto) {
-        System.out.println(dto.getMemberIdx());
-        Member member = memberRepository.findById(dto.getMemberIdx())
-                .orElseThrow(() -> new RuntimeException("해당 멤버의 Member가 없습니다."));
-        System.out.println(member.getMemberId());
+    public BaseResponse<List<ActivityDto.ActivityListResp>> getMyActivity(Member member) {
+//        if(member.getRole==Member.Role.MANAGER){
+//            List<ActivityDto.ActivityListResp> result = new ArrayList<>();
+//            List<Activity> list = activityRepository.findAllAndMember();
+//            for (Activity activity : list) {
+//                String formattedDate = activity.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//
+//                result.add(ActivityDto.ActivityListResp.builder()
+//                        .memberId(activity.getMember().getMemberId())
+//                        .memberName(activity.getMember().getName())
+//                        .activityIdx(activity.getIdx())
+//                        .startDate(formattedDate)
+//                        .description(activity.getDescription())
+//                        .status(activity.getStatus())
+//                        .type(activity.getType())
+//
+//                        .build());
+//            }
+//
+//
+//            return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, new ActivityDto.ActivityListResponse(list));
+//
+//        }else{
+//
+        List<ActivityDto.ActivityListResp> result = new ArrayList<>();
         List<Activity> list = activityRepository.findByMember(member);
+        for (Activity activity : list) {
+            ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity,member);
+            index = ActivityDto.ActivityListResp.findType(activity,index);
+            index = ActivityDto.ActivityListResp.findStatus(activity,index);
 
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, new ActivityDto.ActivityListResponse(list));
+            result.add(index);
+        }
+
+        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
+//        }
     }
 
     public BaseResponse<ActivityDto.ActivityItemResponse> getDetail(Long idx,Member member) {
@@ -75,6 +104,7 @@ public class ActivityService {
                     .fileUrl(uploadFilePath)
                     .donation(dto.getPerformance())
                     .createdAt(LocalDateTime.now())
+                    .status(Activity.Status.PENDING)
                     .build();
         }
         // 봉사 시
@@ -93,6 +123,7 @@ public class ActivityService {
                     .fileUrl(uploadFilePath)
                     .performedAt(dto.getPerformance())
                     .createdAt(LocalDateTime.now())
+                     .status(Activity.Status.PENDING)
                     .build();
         }
 

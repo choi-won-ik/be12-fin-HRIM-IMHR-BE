@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/activity")
 @RequiredArgsConstructor
@@ -24,15 +26,17 @@ public class ActivityController {
 
     @GetMapping("/myactivity")
     @Operation(summary = "ESG활동 내역 조회", description = "ESG활동 내역을 조회하는 기능 입니다.")
-    public ResponseEntity<BaseResponse<ActivityDto.ActivityListResponse>> getMyActivity(@RequestBody ActivityDto.ActivityListRequest dto) {
-
-        return ResponseEntity.ok().body(activityService.getMyActivity(dto));
+    public ResponseEntity<BaseResponse<List<ActivityDto.ActivityListResp>>> getMyActivity(
+//            , @AuthenticationPrincipal Member member
+    ) {
+        Member member = memberRepository.findById(1L).get();
+        return ResponseEntity.ok().body(activityService.getMyActivity(member));
     }
 
     @GetMapping("/detail/{idx}")
     @Operation(summary = "ESG활동 상세 페이지 조회", description = "ESG활동 상세 조회 기능 입니다.")
-    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx,@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(activityService.getDetail(idx,member));
+    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
+        return ResponseEntity.ok().body(activityService.getDetail(idx, member));
     }
 
     @PostMapping("/regist")
@@ -43,7 +47,7 @@ public class ActivityController {
     ) {
         Member member = memberRepository.findById(1L).get();
 
-        return ResponseEntity.ok().body(activityService.Regist(dto,imgFile,member));
+        return ResponseEntity.ok().body(activityService.Regist(dto, imgFile, member));
     }
 
 //    @GetMapping("/ativityApproval/{idx}")
