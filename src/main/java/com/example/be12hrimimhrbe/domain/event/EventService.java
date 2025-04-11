@@ -24,6 +24,10 @@ public class EventService {
     }
 
     public Page<EventDto.EventResponse> eventList(Company company, Pageable pageable) {
+        // 테스트용: 인증 주체가 없을 때 임시 company 설정 (테스트 중에만 사용하세요)
+        if (company == null) {
+            company = Company.builder().idx(1L).build(); // 임시 company idx
+        }
         return eventRepository.findAllByCompanyIdx(company.getIdx(), pageable)
                 .map(EventDto.EventResponse::of);
     }
