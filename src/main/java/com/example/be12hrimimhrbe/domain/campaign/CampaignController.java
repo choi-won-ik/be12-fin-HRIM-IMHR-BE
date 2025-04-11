@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/campaign")
 @Tag(name = "캠페인 관리 기능")
 public class CampaignController {
-    @GetMapping("/mycampaign")
+    @GetMapping("/campaignList/idx")
     @Operation(summary = "내 캠페인 내역 조회", description = "내가 참여한 캠페인 내역을 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<CampaignDto.CampaignListResponse>> getCampaigns(@AuthenticationPrincipal Member member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));

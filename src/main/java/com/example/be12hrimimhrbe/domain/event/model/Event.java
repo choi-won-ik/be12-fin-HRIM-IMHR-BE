@@ -18,12 +18,8 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
-
     private String title;
-
-    @Lob
-    private String description;
-
+    private String content;
     private LocalDate startDate;
     private LocalDate endDate;
 

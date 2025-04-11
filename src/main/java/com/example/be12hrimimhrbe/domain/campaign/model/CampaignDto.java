@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.campaign.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class CampaignDto {
+    @Getter
+    @Schema(description = "일정 등록 / 수정 요청 DTO")
+    public static class CampaignRequest {
+
+    }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class CampaignListResponse {
