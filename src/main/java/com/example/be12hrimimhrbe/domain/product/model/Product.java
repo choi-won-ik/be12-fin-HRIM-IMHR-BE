@@ -1,24 +1,20 @@
 package com.example.be12hrimimhrbe.domain.product.model;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Entity
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
-    private String productName;
 
+    private String productName;
     private Boolean ecoCertified;
     private String certificationType;
     private String energyGrade;
@@ -28,7 +24,7 @@ public class Product {
     private Integer unitPrice;
     private Integer salesQty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_idx")
     private Company company;
 }
