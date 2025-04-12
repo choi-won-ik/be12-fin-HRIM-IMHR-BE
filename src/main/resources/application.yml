@@ -89,3 +89,6 @@ jwt:
 project:
   upload:
     path: ${UPLOAD_PATH}
+
+file:
+  upload-path: ${UPLOAD_PATH}
