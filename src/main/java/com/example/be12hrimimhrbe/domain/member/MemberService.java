@@ -7,6 +7,7 @@ import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
+import com.example.be12hrimimhrbe.domain.member.model.PasswordReset;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ import java.util.*;
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
+    private final PasswordResetRepository passwordResetRepository;
     private final PasswordEncoder passwordEncoder;
     private final HrAuthorityRepository hrAuthorityRepository;
     private final JavaMailSender mailSender;
@@ -48,11 +51,36 @@ public class MemberService implements UserDetailsService {
         mailSender.send(message);
     }
 
+    public void sendPasswordReset(String uuid, String email, String host) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("[비밀번호 재설정] IMHR 비밀번호 재설정 안내");
+        message.setText(
+                "아래 링크를 통해 비밀번호 재설정을 진행해주세요.\n "+host+"/change_pw/" + uuid
+        );
+
+        mailSender.send(message);
+    }
+
     public BaseResponse<String> findId(MemberDto.FindIdRequest dto) {
         memberRepository.findByNameAndEmailAndIsAdmin(dto.getName(),
                 dto.getEmail(),
                 dto.getWay().equals("0")).ifPresent(member -> sendIDInfo(dto.getEmail(), member.getMemberId()));
         return new BaseResponse<>(BaseResponseMessage.FIND_ID_SUCCESS, "ID 찾기 성공");
+    }
+
+    @Transactional
+    public BaseResponse<String> findPassword(MemberDto.FindPWRequest dto, String host) {
+        String uuid = UUID.randomUUID().toString();
+        LocalDateTime time = LocalDateTime.now().plusHours(1L);
+        Member member = memberRepository.findByMemberIdAndEmailAndIsAdmin(dto.getMemberId(),
+                                                                        dto.getEmail(),
+                                                                        dto.getWay().equals("0")).orElse(null);
+        if(member != null) {
+            passwordResetRepository.save(PasswordReset.builder().uuid(uuid).member(member).expiryDate(time).build());
+            sendPasswordReset(uuid, member.getEmail(), host);
+        }
+        return new BaseResponse<>(BaseResponseMessage.FIND_PW_SUCCESS, "비밀번호 찾기 성공");
     }
 
     @Transactional
