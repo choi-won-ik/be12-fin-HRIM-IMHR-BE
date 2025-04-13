@@ -35,6 +35,7 @@ public class MemberDto {
     public static class FindPWRequest {
         private String memberId;
         private String email;
+        private String way;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

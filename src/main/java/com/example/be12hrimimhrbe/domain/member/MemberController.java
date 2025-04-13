@@ -6,6 +6,7 @@ import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,8 @@ public class MemberController {
 
     @PostMapping("/find-pw")
     @Operation(summary = "비밀번호 찾기", description = "ID, 이메일을 입력하여 이메일로 비밀번호 재설정 링크를 전송하는 기능입니다.")
-    public ResponseEntity<BaseResponse<String>> findMemberPw(@RequestBody MemberDto.FindPWRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<String>> findMemberPw(@RequestBody MemberDto.FindPWRequest dto, HttpServletRequest request) {
+        return ResponseEntity.ok().body(memberService.findPassword(dto, request.getRemoteHost()));
     }
 
     @PostMapping("/reset-pw")
