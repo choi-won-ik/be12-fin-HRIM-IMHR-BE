@@ -11,6 +11,8 @@ import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,8 +32,28 @@ public class MemberService implements UserDetailsService {
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
     private final HrAuthorityRepository hrAuthorityRepository;
+    private final JavaMailSender mailSender;
     @Value("${project.upload.path}")
     private String defaultUploadPath;
+
+    public void sendIDInfo(String email, String id) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("[ID 찾기] IMHR ID 정보");
+        message.setText(
+                "회원님의 ID는 "+id+" 입니다."
+        );
+
+        mailSender.send(message);
+    }
+
+    public BaseResponse<String> findId(MemberDto.FindIdRequest dto) {
+        memberRepository.findByNameAndEmailAndIsAdmin(dto.getName(),
+                dto.getEmail(),
+                dto.getWay().equals("0")).ifPresent(member -> sendIDInfo(dto.getEmail(), member.getMemberId()));
+        return new BaseResponse<>(BaseResponseMessage.FIND_ID_SUCCESS, "ID 찾기 성공");
+    }
 
     @Transactional
     public BaseResponse<MemberDto.CompanySignupResponse> companySignup(MemberDto.CompanySignupRequest dto, MultipartFile file) {
@@ -71,7 +93,7 @@ public class MemberService implements UserDetailsService {
         String memberId = username.substring(0, username.lastIndexOf("_"));
         String way = username.substring(username.lastIndexOf("_")+1);
         if(way.equals("0")) {
-            Optional<Member> result = memberRepository.findByMemberIdAndIsAdmin(memberId, Boolean.TRUE);
+            Optional<Member> result = memberRepository.findByMemberIdAndIsAdminAndStatus(memberId, Boolean.TRUE, Member.Status.APPROVED);
             if (result.isPresent()) {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";
@@ -83,7 +105,7 @@ public class MemberService implements UserDetailsService {
                 return new CustomUserDetails(result.get(), authoritySet);
             }
         } else if (way.equals("1")) {
-            Optional<Member> result = memberRepository.findByMemberIdAndIsAdmin(memberId, Boolean.FALSE);
+            Optional<Member> result = memberRepository.findByMemberIdAndIsAdminAndStatus(memberId, Boolean.FALSE, Member.Status.APPROVED);
             if (result.isPresent()) {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";

@@ -28,6 +28,7 @@ public class MemberDto {
     public static class FindIdRequest {
         private String name;
         private String email;
+        private String way;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
