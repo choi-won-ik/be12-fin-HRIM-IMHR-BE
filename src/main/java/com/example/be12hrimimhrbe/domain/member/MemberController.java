@@ -27,7 +27,8 @@ public class MemberController {
     @PostMapping("/find-id")
     @Operation(summary = "ID 찾기", description = "이름, 이메일을 입력하여 이메일로 아이디를 전송하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> findMemberId(@RequestBody MemberDto.FindIdRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.FIND_ID_SUCCESS, "ID 찾기 성공"));
+
+        return ResponseEntity.ok().body(memberService.findId(dto));
     }
 
     @PostMapping("/find-pw")
