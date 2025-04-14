@@ -13,7 +13,7 @@ public class ActivityDto {
     @Data @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ActivityListResp{
         private Long activityIdx;
-//        private String title;
+        //        private String title;
         private String startDate;
         private String memberId;
         private String memberName;
@@ -93,11 +93,11 @@ public class ActivityDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ActivityRegistReq {
-//        private String userId;
+        //        private String userId;
         private String type;
         private String title;
         private String description;
-//        private String startDate;
+        //        private String startDate;
         private int performance;
     }
 
