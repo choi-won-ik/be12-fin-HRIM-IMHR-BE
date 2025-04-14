@@ -1,31 +1,26 @@
-package com.example.be12hrimimhrbe.domain.product.model;
+    package com.example.be12hrimimhrbe.domain.product.model;
 
-import com.example.be12hrimimhrbe.domain.company.model.Company;
-import jakarta.persistence.*;
-import lombok.*;
+    import com.example.be12hrimimhrbe.domain.company.model.Company;
+    import jakarta.persistence.*;
+    import lombok.*;
+    @Entity
+    @Getter @Setter @Builder
+    @NoArgsConstructor @AllArgsConstructor
+    public class Product {
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long idx;
 
-@Entity
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idx;
+        private String productName;
+        private Boolean ecoCertified;
+        private String certificationType;
+        private String energyGrade;
+        private Boolean recyclable;
+        private Boolean bioMaterial;
+        private Boolean lowCarbonProcess;
+        private Integer unitPrice;
+        private Integer salesQty;
+        private String imagePath;
 
-    private String productName;
-    private Boolean ecoCertified;
-    private String certificationType;
-    private String energyGrade;
-    private Boolean recyclable;
-    private Boolean bioMaterial;
-    private Boolean lowCarbonProcess;
-    private Integer unitPrice;
-    private Integer salesQty;
-    private String img;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_idx")
-    private Company company;
-}
+        @ManyToOne(fetch = FetchType.LAZY)
+        private Company company;
+    }

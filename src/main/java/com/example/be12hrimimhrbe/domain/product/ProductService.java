@@ -19,9 +19,9 @@ public class ProductService {
     private final CompanyRepository companyRepository;
     private final FileService fileService;
 
-    public BaseResponse<Long> registerProduct(ProductDto.ProductRegistReq dto, MultipartFile imageFile) {
+    public Long registerProduct(ProductDto.ProductRegistReq dto, MultipartFile imageFile) {
         Company company = companyRepository.findById(dto.getCompanyIdx())
-                .orElseThrow(() -> new RuntimeException("회사 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("회사 없음"));
 
         String imagePath = fileService.upload(imageFile);
 
@@ -35,11 +35,35 @@ public class ProductService {
                 .lowCarbonProcess(dto.getLowCarbonProcess())
                 .unitPrice(dto.getUnitPrice())
                 .salesQty(dto.getSalesQty())
+                .imagePath(imagePath)
                 .company(company)
-                .img(imagePath)
                 .build();
 
-        Product saved = productRepository.save(product);
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, saved.getIdx());
+        return productRepository.save(product).getIdx();
+    }
+
+    public ProductDto.ProductDetailResp getDetail(Long idx) {
+        Product product = productRepository.findById(idx)
+                .orElseThrow(() -> new IllegalArgumentException("제품 없음"));
+        return ProductDto.ProductDetailResp.from(product);
+    }
+
+    public void updateProduct(Long idx, ProductDto.ProductUpdateReq dto) {
+        Product product = productRepository.findById(idx)
+                .orElseThrow(() -> new IllegalArgumentException("제품 없음"));
+
+        product.setProductName(dto.getProductName());
+        product.setEcoCertified(dto.getEcoCertified());
+        product.setCertificationType(dto.getCertificationType());
+        product.setEnergyGrade(dto.getEnergyGrade());
+        product.setRecyclable(dto.getRecyclable());
+        product.setBioMaterial(dto.getBioMaterial());
+        product.setLowCarbonProcess(dto.getLowCarbonProcess());
+        product.setUnitPrice(dto.getUnitPrice());
+        product.setSalesQty(dto.getSalesQty());
+    }
+
+    public void deleteProduct(Long idx) {
+        productRepository.deleteById(idx);
     }
 }

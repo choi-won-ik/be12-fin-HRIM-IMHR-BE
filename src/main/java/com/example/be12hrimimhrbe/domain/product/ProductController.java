@@ -24,6 +24,28 @@ public class ProductController {
             @RequestPart("dto") ProductDto.ProductRegistReq dto,
             @RequestPart("image") MultipartFile imageFile
     ) {
-        return ResponseEntity.ok(productService.registerProduct(dto, imageFile));
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, productService.registerProduct(dto, imageFile)));
+    }
+
+    @GetMapping("/detail/{idx}")
+    @Operation(summary = "제품 상세 조회", description = "제품 정보를 상세히 조회합니다.")
+    public ResponseEntity<BaseResponse<ProductDto.ProductDetailResp>> getDetail(@PathVariable Long idx) {
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, productService.getDetail(idx)));
+    }
+
+    @PutMapping("/{idx}")
+    @Operation(summary = "제품 정보 수정", description = "제품 정보를 수정합니다.")
+    public ResponseEntity<BaseResponse<String>> update(
+            @PathVariable Long idx,
+            @RequestBody ProductDto.ProductUpdateReq dto) {
+        productService.updateProduct(idx, dto);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "수정 완료"));
+    }
+
+    @DeleteMapping("/{idx}")
+    @Operation(summary = "제품 삭제", description = "제품을 삭제합니다.")
+    public ResponseEntity<BaseResponse<String>> delete(@PathVariable Long idx) {
+        productService.deleteProduct(idx);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "삭제 완료"));
     }
 }

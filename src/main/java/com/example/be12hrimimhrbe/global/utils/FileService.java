@@ -14,17 +14,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileService {
 
-    @Value("${file.upload-path}")
-    private String uploadPath;
+    @Value("${project.upload.path}")
+    private String uploadDir;
 
     public String upload(MultipartFile file) {
+        if (file.isEmpty()) return null;
+
+        String originalFilename = file.getOriginalFilename();
+        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String uuidName = UUID.randomUUID() + ext;
+        Path savePath = Paths.get(uploadDir, uuidName);
+
         try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(uploadPath, fileName);
-            file.transferTo(filePath);
-            return fileName;
+            file.transferTo(savePath.toFile());
         } catch (IOException e) {
-            throw new RuntimeException("파일 업로드 실패", e);
+            throw new RuntimeException("파일 저장 실패", e);
         }
+
+        return uuidName;
     }
 }
