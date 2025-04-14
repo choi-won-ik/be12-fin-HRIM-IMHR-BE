@@ -7,14 +7,19 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.LocalImageService;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
+import com.example.be12hrimimhrbe.global.utils.FileService;
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,8 +32,11 @@ import java.util.Optional;
 public class ActivityService {
     private final ActivityRepository activityRepository;
     private final LocalImageService localImageService;
+    private final FileService fileService;
+    @Value("${file.upload-path}")
+    private String uploadPath;
 
-    public BaseResponse<List<ActivityDto.ActivityListResp>> getMyActivity(Member member,int page, int size) {
+    public BaseResponse<List<ActivityDto.ActivityListResp>> getMyActivity(Member member, int page, int size) {
         List<ActivityDto.ActivityListResp> result = new ArrayList<>();
 //        if(member.getRole==Member.Role.MANAGER){
 //            List<ActivityDto.ActivityListResp> result = new ArrayList<>();
@@ -48,9 +56,9 @@ public class ActivityService {
 //
         Page<Activity> list = activityRepository.findByMember(member, PageRequest.of(page, size));
         for (Activity activity : list) {
-            ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity,member);
-            index = ActivityDto.ActivityListResp.findType(activity,index);
-            index = ActivityDto.ActivityListResp.findStatus(activity,index);
+            ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
+            index = ActivityDto.ActivityListResp.findType(activity, index);
+            index = ActivityDto.ActivityListResp.findStatus(activity, index);
 
             result.add(index);
         }
@@ -60,9 +68,12 @@ public class ActivityService {
         return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
     }
 
-    public BaseResponse<ActivityDto.ActivityItemResponse> getDetail(Long idx,Member member) {
-        Activity activity = activityRepository.findById(idx)
-                .orElseThrow(() -> new RuntimeException("해당 멤버의 Activity가 없습니다."));
+    public BaseResponse<ActivityDto.ActivityItemResponse> getDetail(Long idx, Member member) {
+        Activity activity = activityRepository.findByIdAndMember(idx);
+
+        // 이미지 url 설정
+        String servedUrl = "http://localhost:8080/img" + activity.getFileUrl();
+
 
         ActivityDto.ActivityItemResponse result = ActivityDto.ActivityItemResponse.builder()
                 .activityIdx(activity.getIdx())
@@ -71,25 +82,26 @@ public class ActivityService {
                 .status(activity.getStatus())
                 .type(activity.getType())
                 .content(activity.getDescription())
-                .fileUrl(activity.getFileUrl())
-                .memberId(member.getMemberId())
-                .memberName(member.getName())
+                .fileUrl(servedUrl)
+                .memberId(activity.getMember().getMemberId())
+                .memberName(activity.getMember().getName())
                 .build();
 
         return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
+
     }
 
     public BaseResponse<Activity> Regist(
-            ActivityDto.ActivityRegistReq dto, MultipartFile imgFile,Member member) {
-        Activity activity=null;
+            ActivityDto.ActivityRegistReq dto, MultipartFile imgFile, Member member) {
+        Activity activity = null;
 
-        Activity.Type activityType=null;
+        Activity.Type activityType = null;
         // 파일 업로드
         String uploadFilePath = localImageService.upload(imgFile);
 
         // 기부 시
-        if(dto.getType().equals("기부")){
-            activityType=Activity.Type.DONATION;
+        if (dto.getType().equals("기부")) {
+            activityType = Activity.Type.DONATION;
 
             activity = Activity.builder()
                     .member(member)
@@ -103,14 +115,14 @@ public class ActivityService {
                     .build();
         }
         // 봉사 시
-        else{
-            if (dto.getType().equals("봉사")){
-                activityType=Activity.Type.VOLUNTEER;
-            }else if(dto.getType().equals("교육")){
-                activityType=Activity.Type.EDUCATION;
+        else {
+            if (dto.getType().equals("봉사")) {
+                activityType = Activity.Type.VOLUNTEER;
+            } else if (dto.getType().equals("교육")) {
+                activityType = Activity.Type.EDUCATION;
             }
 
-             activity = Activity.builder()
+            activity = Activity.builder()
                     .member(member)
                     .type(activityType)
                     .title(null)
@@ -118,7 +130,7 @@ public class ActivityService {
                     .fileUrl(uploadFilePath)
                     .performedAt(dto.getPerformance())
                     .createdAt(LocalDateTime.now())
-                     .status(Activity.Status.PENDING)
+                    .status(Activity.Status.PENDING)
                     .build();
         }
 
@@ -127,11 +139,11 @@ public class ActivityService {
 
     @Transactional
     public BaseResponse<Activity> ativityApprovalAgree(Long idx) {
-        Activity activity=activityRepository.findById(idx).get();
-        if(activity.getType().equals(Activity.Status.PENDING)){
-            activity=new Activity(activity,Activity.Status.APPROVED);
-            try{
-                Activity result=activityRepository.save(activity);
+        Activity activity = activityRepository.findById(idx).get();
+        if (activity.getType().equals(Activity.Status.PENDING)) {
+            activity = new Activity(activity, Activity.Status.APPROVED);
+            try {
+                Activity result = activityRepository.save(activity);
                 return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -142,11 +154,11 @@ public class ActivityService {
 
     @Transactional
     public BaseResponse<Activity> ativityApprovalOppose(Long idx) {
-        Activity activity=activityRepository.findById(idx).get();
-        if(activity.getType().equals(Activity.Status.PENDING)){
-            activity=new Activity(activity,Activity.Status.REJECTED);
-            try{
-                Activity result=activityRepository.save(activity);
+        Activity activity = activityRepository.findById(idx).get();
+        if (activity.getType().equals(Activity.Status.PENDING)) {
+            activity = new Activity(activity, Activity.Status.REJECTED);
+            try {
+                Activity result = activityRepository.save(activity);
                 return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
             } catch (Exception e) {
                 throw new RuntimeException(e);

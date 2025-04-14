@@ -51,12 +51,12 @@ public class MemberService implements UserDetailsService {
         mailSender.send(message);
     }
 
-    public void sendPasswordReset(String uuid, String email, String host) {
+    public void sendPasswordReset(String uuid, String email, String origin) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("[비밀번호 재설정] IMHR 비밀번호 재설정 안내");
         message.setText(
-                "아래 링크를 통해 비밀번호 재설정을 진행해주세요.\n "+host+"/change_pw/" + uuid
+                "아래 링크를 통해 비밀번호 재설정을 진행해주세요.\n "+origin+"/changepassword/" + uuid
         );
 
         mailSender.send(message);
@@ -70,7 +70,7 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public BaseResponse<String> findPassword(MemberDto.FindPWRequest dto, String host) {
+    public BaseResponse<String> findPassword(MemberDto.FindPWRequest dto, String origin) {
         String uuid = UUID.randomUUID().toString();
         LocalDateTime time = LocalDateTime.now().plusHours(1L);
         Member member = memberRepository.findByMemberIdAndEmailAndIsAdmin(dto.getMemberId(),
@@ -78,7 +78,7 @@ public class MemberService implements UserDetailsService {
                                                                         dto.getWay().equals("0")).orElse(null);
         if(member != null) {
             passwordResetRepository.save(PasswordReset.builder().uuid(uuid).member(member).expiryDate(time).build());
-            sendPasswordReset(uuid, member.getEmail(), host);
+            sendPasswordReset(uuid, member.getEmail(), origin);
         }
         return new BaseResponse<>(BaseResponseMessage.FIND_PW_SUCCESS, "비밀번호 찾기 성공");
     }

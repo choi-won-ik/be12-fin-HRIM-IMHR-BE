@@ -34,8 +34,9 @@ public class EventController {
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.REQUEST_SUCCESS, response));
     }
 
-    @GetMapping("/list")
-    @Operation(summary = "일정 리스트", description = "이번달 일정을 확인 합니다.")
+    // [관리자](달력) 회사 일정 리스트
+    @GetMapping("/companyeventList")
+    @Operation(summary = "기업 일정 리스트", description = "이번달 일정을 확인 합니다.")
     public ResponseEntity<BaseResponse<Page<EventDto.EventResponse>>> list(
             @AuthenticationPrincipal Company company,
             @Parameter(hidden = true) Pageable pageable) {
@@ -44,7 +45,7 @@ public class EventController {
     }
 
     @GetMapping("/date")
-    @Operation(summary = "특정 날짜 일정 상세 조회", description = "선택 일정을 상세 조회 합니다.")
+    @Operation(summary = "특정 날짜의 일정 리스트 조회", description = "선택 날짜의 일정 리스트를 상세 조회 합니다.")
     public ResponseEntity<BaseResponse<List<EventDto.EventResponse>>> readEvent(
             @AuthenticationPrincipal Company company,
             @RequestParam("date") @Parameter(description = "조회할 날짜 (yyyy-MM-dd)") String date
@@ -52,6 +53,16 @@ public class EventController {
         LocalDate localDate = LocalDate.parse(date);
         List<EventDto.EventResponse> responses = eventService.readEventByDate(company, localDate);
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,responses));
+    }
+
+    @GetMapping("/date/{idx}")
+    @Operation(summary = "특정 일정 상세 조회", description = "선택 일정을 상세 조회 합니다.")
+    public ResponseEntity<BaseResponse<EventDto.EventResponse>> readEventDetail(
+            @AuthenticationPrincipal Company company,
+            @PathVariable Long idx
+    ) {
+        EventDto.EventResponse response = eventService.readEventDetail(company, idx);
+        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,response));
     }
 
     @DeleteMapping("/delete/{idx}")

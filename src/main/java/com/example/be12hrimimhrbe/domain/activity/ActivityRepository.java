@@ -15,8 +15,13 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     Page<Activity> findByMember(Member member, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"activity","activity.member"})
+    @EntityGraph(attributePaths = {"member"})
     @Query("SELECT a FROM Activity a " +
             "LEFT JOIN a.member m ")
     List<Activity> findAllAndMember();
+
+    @EntityGraph(attributePaths = {"member"})
+    @Query("SELECT a FROM Activity a " +
+            "LEFT JOIN a.member m ")
+    Activity findByIdAndMember(Long idx);
 }
