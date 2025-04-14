@@ -33,6 +33,14 @@ public class EventService {
                 .map(EventDto.EventResponse::of);
     }
 
+    public EventDto.EventResponse readEventDetail(Company company, Long idx) {
+        if (company == null) {
+            company = Company.builder().idx(1L).build(); // 임시 company idx
+        }
+        Event event = eventRepository.findByIdxAndCompanyIdx(idx, company.getIdx()).orElseThrow(() -> new RuntimeException("해당 일정이 존재하지 않습니다."));
+        return EventDto.EventResponse.of(event);
+    }
+
     public List<EventDto.EventResponse> readEventByDate(Company company, LocalDate date) {
         if (company == null) {
             company = Company.builder().idx(1L).build(); // 임시 company idx
