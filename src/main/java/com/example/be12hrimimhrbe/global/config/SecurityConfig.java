@@ -72,7 +72,8 @@ public class SecurityConfig {
                 (auth) -> auth
                         .requestMatchers(
                                 "/member/login", "/member/signup/*","/member/logout","/activity/myactivity",
-                                "/error", "/swagger-ui/**", "/v3/api-docs/**", "/event/**",
+                                "/member/find-id", "/member/find-pw", "/member/reset-pw",
+                                "/error", "/swagger-ui/**", "/v3/api-docs/**",
                                 "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated()
         );

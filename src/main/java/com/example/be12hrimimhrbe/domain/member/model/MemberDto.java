@@ -28,18 +28,21 @@ public class MemberDto {
     public static class FindIdRequest {
         private String name;
         private String email;
+        private String way;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class FindPWRequest {
         private String memberId;
         private String email;
+        private String way;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ResetPasswordRequest {
         private String oldPassword;
         private String newPassword;
+        private String uuid;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

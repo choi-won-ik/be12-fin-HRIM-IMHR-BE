@@ -7,10 +7,13 @@ import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
+import com.example.be12hrimimhrbe.domain.member.model.PasswordReset;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -28,10 +32,81 @@ import java.util.*;
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
+    private final PasswordResetRepository passwordResetRepository;
     private final PasswordEncoder passwordEncoder;
     private final HrAuthorityRepository hrAuthorityRepository;
+    private final JavaMailSender mailSender;
     @Value("${project.upload.path}")
     private String defaultUploadPath;
+
+    public void sendIDInfo(String email, String id) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("[ID 찾기] IMHR ID 정보");
+        message.setText(
+                "회원님의 ID는 "+id+" 입니다."
+        );
+
+        mailSender.send(message);
+    }
+
+    public void sendPasswordReset(String uuid, String email, String host) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("[비밀번호 재설정] IMHR 비밀번호 재설정 안내");
+        message.setText(
+                "아래 링크를 통해 비밀번호 재설정을 진행해주세요.\n "+host+"/change_pw/" + uuid
+        );
+
+        mailSender.send(message);
+    }
+
+    public BaseResponse<String> findId(MemberDto.FindIdRequest dto) {
+        memberRepository.findByNameAndEmailAndIsAdmin(dto.getName(),
+                dto.getEmail(),
+                dto.getWay().equals("0")).ifPresent(member -> sendIDInfo(dto.getEmail(), member.getMemberId()));
+        return new BaseResponse<>(BaseResponseMessage.FIND_ID_SUCCESS, "ID 찾기 성공");
+    }
+
+    @Transactional
+    public BaseResponse<String> findPassword(MemberDto.FindPWRequest dto, String host) {
+        String uuid = UUID.randomUUID().toString();
+        LocalDateTime time = LocalDateTime.now().plusHours(1L);
+        Member member = memberRepository.findByMemberIdAndEmailAndIsAdmin(dto.getMemberId(),
+                                                                        dto.getEmail(),
+                                                                        dto.getWay().equals("0")).orElse(null);
+        if(member != null) {
+            passwordResetRepository.save(PasswordReset.builder().uuid(uuid).member(member).expiryDate(time).build());
+            sendPasswordReset(uuid, member.getEmail(), host);
+        }
+        return new BaseResponse<>(BaseResponseMessage.FIND_PW_SUCCESS, "비밀번호 찾기 성공");
+    }
+
+    public BaseResponse<String> passwordReset(MemberDto.ResetPasswordRequest dto, CustomUserDetails customMember) {
+        if(customMember != null) {
+            Member member = memberRepository.findById(customMember.getMember().getIdx()).orElseThrow();
+            if(!passwordEncoder.matches(dto.getOldPassword(), member.getPassword()))
+                return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_UNMATCHED, "실패");
+            memberRepository.save(member.updateMember(Member.builder()
+                    .password(passwordEncoder.encode(dto.getNewPassword()))
+                    .build()));
+            return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_SUCCESS, "비밀번호 변경 성공");
+        } else {
+            PasswordReset passwordReset = passwordResetRepository
+                    .findByUuidAndExpiryDateAfter(dto.getUuid(), LocalDateTime.now())
+                    .orElse(null);
+            if(passwordReset == null) {
+                return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_NULL, "인증 실패");
+            }
+
+            Member member = passwordReset.getMember();
+            memberRepository.save(member.updateMember(Member.builder()
+                    .password(passwordEncoder.encode(dto.getNewPassword()))
+                    .build()));
+            return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_SUCCESS, "비밀번호 변경 성공");
+        }
+    }
 
     @Transactional
     public BaseResponse<MemberDto.CompanySignupResponse> companySignup(MemberDto.CompanySignupRequest dto, MultipartFile file) {
@@ -71,7 +146,7 @@ public class MemberService implements UserDetailsService {
         String memberId = username.substring(0, username.lastIndexOf("_"));
         String way = username.substring(username.lastIndexOf("_")+1);
         if(way.equals("0")) {
-            Optional<Member> result = memberRepository.findByMemberIdAndIsAdmin(memberId, Boolean.TRUE);
+            Optional<Member> result = memberRepository.findByMemberIdAndIsAdminAndStatus(memberId, Boolean.TRUE, Member.Status.APPROVED);
             if (result.isPresent()) {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";
@@ -83,7 +158,7 @@ public class MemberService implements UserDetailsService {
                 return new CustomUserDetails(result.get(), authoritySet);
             }
         } else if (way.equals("1")) {
-            Optional<Member> result = memberRepository.findByMemberIdAndIsAdmin(memberId, Boolean.FALSE);
+            Optional<Member> result = memberRepository.findByMemberIdAndIsAdminAndStatus(memberId, Boolean.FALSE, Member.Status.APPROVED);
             if (result.isPresent()) {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";

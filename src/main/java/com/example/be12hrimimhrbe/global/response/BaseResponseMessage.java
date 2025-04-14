@@ -23,6 +23,10 @@ public enum BaseResponseMessage {
     PERSONAL_SIGNUP_SUCCESS(true, 2200, "개인 회원 가입 성공"),
     PERSONAL_SIGNUP_NOT_FOUND_COMPANY(false, 2404, "회사 정보를 찾지 못했습니다."),
     FIND_ID_SUCCESS(true, 2200, "ID 찾기 성공"),
+    FIND_PW_SUCCESS(true, 2200, "비밀번호 찾기 성공"),
+    RESET_PASSWORD_SUCCESS(true, 2200, "비밀번호 재설정 성공"),
+    RESET_PASSWORD_UNMATCHED(false, 2403, "이전 비밀번호가 일치하지 않습니다."),
+    RESET_PASSWORD_NULL(false, 2404, "uuid를 찾지 못했습니다."),
 
 
 

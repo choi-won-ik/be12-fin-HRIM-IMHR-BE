@@ -61,4 +61,25 @@ public class Member {
 
     @Column(length = 20)
     private String code;
+
+    public Member updateMember(Member member) {
+        return Member.builder()
+                .idx(this.getIdx())
+                .memberId(this.memberId)
+                .name(member.getName() == null ? this.name : member.getName())
+                .email(this.email)
+                .password(member.getPassword() == null ? this.password : member.getPassword())
+                .joinedAt(this.joinedAt)
+                .isAdmin(this.isAdmin)
+                .hasProdAuth(this.hasProdAuth)
+                .hasPartnerAuth(this.hasPartnerAuth)
+                .status(this.status)
+                .company(this.company)
+                .department(this.department)
+                .eScore(this.eScore)
+                .sScore(this.sScore)
+                .gScore(this.gScore)
+                .code(this.code)
+                .build();
+    }
 }

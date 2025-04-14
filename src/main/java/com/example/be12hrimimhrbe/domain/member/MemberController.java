@@ -1,11 +1,13 @@
 package com.example.be12hrimimhrbe.domain.member;
 
+import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -27,19 +29,21 @@ public class MemberController {
     @PostMapping("/find-id")
     @Operation(summary = "ID 찾기", description = "이름, 이메일을 입력하여 이메일로 아이디를 전송하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> findMemberId(@RequestBody MemberDto.FindIdRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.FIND_ID_SUCCESS, "ID 찾기 성공"));
+
+        return ResponseEntity.ok().body(memberService.findId(dto));
     }
 
     @PostMapping("/find-pw")
     @Operation(summary = "비밀번호 찾기", description = "ID, 이메일을 입력하여 이메일로 비밀번호 재설정 링크를 전송하는 기능입니다.")
-    public ResponseEntity<BaseResponse<String>> findMemberPw(@RequestBody MemberDto.FindPWRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<String>> findMemberPw(@RequestBody MemberDto.FindPWRequest dto, HttpServletRequest request) {
+        return ResponseEntity.ok().body(memberService.findPassword(dto, request.getRemoteHost()));
     }
 
     @PostMapping("/reset-pw")
     @Operation(summary = "비밀번호 재설정", description = "비밀번호를 재설정 합니다.")
-    public ResponseEntity<BaseResponse<String>> resetMemberPw(@RequestBody MemberDto.ResetPasswordRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<String>> resetMemberPw(@RequestBody MemberDto.ResetPasswordRequest dto,
+                                                              @AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(memberService.passwordReset(dto, member));
     }
 
     @GetMapping("/detail/info/{idx}")

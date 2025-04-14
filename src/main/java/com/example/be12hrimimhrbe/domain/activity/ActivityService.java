@@ -26,7 +26,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ActivityService {
     private final ActivityRepository activityRepository;
-    private final MemberRepository memberRepository;
     private final LocalImageService localImageService;
 
     public BaseResponse<List<ActivityDto.ActivityListResp>> getMyActivity(Member member,int page, int size) {
@@ -95,7 +94,7 @@ public class ActivityService {
             activity = Activity.builder()
                     .member(member)
                     .type(activityType)
-                    .title(null)
+                    .title(dto.getTitle())
                     .description(dto.getDescription())
                     .fileUrl(uploadFilePath)
                     .donation(dto.getPerformance())
