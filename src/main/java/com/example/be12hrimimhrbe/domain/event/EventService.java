@@ -28,11 +28,11 @@ public class EventService {
         return EventDto.EventResponse.of(event);
     }
 
-    public Page<EventDto.EventResponse> eventList(Company company, Pageable pageable) {
-        if (company == null) {
-            company = Company.builder().idx(1L).build(); // 임시 company idx
+    public Page<EventDto.EventResponse> eventList(Long companyIdx, Pageable pageable) {
+        if (companyIdx == null) {
+            companyIdx = 1L; // 임시 company idx
         }
-        return eventRepository.findAllByCompanyIdx(company.getIdx(), pageable)
+        return eventRepository.findAllByCompanyIdx(companyIdx, pageable)
                 .map(EventDto.EventResponse::of);
     }
 
