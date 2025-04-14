@@ -73,7 +73,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/member/login", "/member/signup/*","/member/logout","/activity/detail/*","/img/**",
                                 "/member/find-id", "/member/find-pw", "/member/reset-pw",
-                                "/error", "/swagger-ui/**", "/v3/api-docs/**", "/event/**",
+                                "/error", "/swagger-ui/**", "/v3/api-docs/**",
                                 "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated()
         );
