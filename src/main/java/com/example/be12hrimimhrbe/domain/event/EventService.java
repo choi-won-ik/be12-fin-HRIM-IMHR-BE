@@ -21,6 +21,9 @@ public class EventService {
 
     @Transactional
     public EventDto.EventResponse eventRegister(Company company, EventDto.EventRequest dto) {
+        if (company == null) {
+            company = Company.builder().idx(1L).build(); // 임시 company idx
+        }
         Event event = eventRepository.save(dto.toEntity(company));
         return EventDto.EventResponse.of(event);
     }
