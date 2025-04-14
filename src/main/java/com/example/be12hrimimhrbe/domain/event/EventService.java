@@ -48,4 +48,13 @@ public class EventService {
         List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(company.getIdx(), date, date);
         return events.stream().map(EventDto.EventResponse::of).toList();
     }
+
+    public boolean deleteEvent(Company company, Long idx) {
+        if (company == null) {
+            company = Company.builder().idx(1L).build(); // 임시 company idx
+        }
+        Event event = eventRepository.findByIdxAndCompanyIdx(idx, company.getIdx()).orElseThrow(() ->  new IllegalArgumentException("해당 일정이 존재하지 않거나 권한이 없습니다."));
+        eventRepository.delete(event);
+        return true;
+    }
 }
