@@ -42,6 +42,7 @@ public class MemberDto {
     public static class ResetPasswordRequest {
         private String oldPassword;
         private String newPassword;
+        private String uuid;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
