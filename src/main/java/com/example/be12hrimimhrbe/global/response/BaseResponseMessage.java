@@ -12,6 +12,7 @@ public enum BaseResponseMessage {
     // 요청 성공, 실패, 내부 서버 오류
     REQUEST_SUCCESS(true, 200, "요청이 정상적으로 처리되었습니다"),
     REQUEST_FAIL(false, 404, "요청을 실패했습니다."),
+    FORBIDDEN(false, 403, "금지된 요청입니다."),
     INTERNAL_SERVER_ERROR(false, 500, "내부 서버 오류"),
 
     // ========================================================================================================================
@@ -29,7 +30,8 @@ public enum BaseResponseMessage {
     RESET_PASSWORD_SUCCESS(true, 2200, "비밀번호 재설정 성공"),
     RESET_PASSWORD_UNMATCHED(false, 2403, "이전 비밀번호가 일치하지 않습니다."),
     RESET_PASSWORD_NULL(false, 2404, "uuid를 찾지 못했습니다."),
-
+    MEMBER_DETAIL_SUCCESS(true, 2200, "회원 상세 정보 조회 성공"),
+    MEMBER_SEARCH_NOT_FOUND(false, 2404, "해당 회원을 찾지 못했습니다."),
 
 
 
