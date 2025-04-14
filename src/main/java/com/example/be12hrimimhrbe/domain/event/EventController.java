@@ -35,12 +35,13 @@ public class EventController {
     }
 
     // [관리자](달력) 회사 일정 리스트
-    @GetMapping("/list")
+    @GetMapping("/list/{companyIdx}")
     @Operation(summary = "기업 일정 리스트", description = "이번달 일정을 확인 합니다.")
     public ResponseEntity<BaseResponse<Page<EventDto.EventResponse>>> list(
-            @AuthenticationPrincipal Company company,
-            @Parameter(hidden = true) Pageable pageable) {
-        Page<EventDto.EventResponse> responses = eventService.eventList(company, pageable);
+            @PathVariable Long companyIdx,
+            @Parameter(hidden = true) Pageable pageable)
+    {
+        Page<EventDto.EventResponse> responses = eventService.eventList(companyIdx, pageable);
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,responses));
     }
 
