@@ -19,6 +19,8 @@ public class EventDto {
         private String title;
         @Schema(description = "일정 내용", example = "회계부서의 위크숍일정입니다.")
         private String content;
+        @Schema(description = "일정 색깔", example = "#94D4F3")
+        private String color;
         @Schema(description = "시작 날짜", example = "2025-01-01")
         private LocalDate startDate;
         @Schema(description = "끝 날짜", example = "2025-01-02")
@@ -29,6 +31,7 @@ public class EventDto {
                     .idx(idx)
                     .title(title)
                     .content(content)
+                    .color(color)
                     .startDate(startDate)
                     .endDate(endDate)
                     .company(company)
@@ -44,6 +47,8 @@ public class EventDto {
         private String title;
         @Schema(description = "일정 내용", example = "회계부서의 위크숍일정입니다.")
         private String content;
+        @Schema(description = "일정 색깔", example = "#94D4F3")
+        private String color;
         @Schema(description = "시작 날짜", example = "2025-01-01")
         private LocalDate startDate;
         @Schema(description = "끝 날짜", example = "2025-01-02")
@@ -54,6 +59,7 @@ public class EventDto {
                     .idx(event.getIdx())
                     .title(event.getTitle())
                     .content(event.getContent())
+                    .color(event.getColor())
                     .startDate(event.getStartDate())
                     .endDate(event.getEndDate())
                     .build();

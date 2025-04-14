@@ -72,7 +72,7 @@ public class SecurityConfig {
                 (auth) -> auth
                         .requestMatchers(
                                 "/member/login", "/member/signup/*","/member/logout","/activity/myactivity",
-                                "/error", "/swagger-ui/**", "/v3/api-docs/**",
+                                "/error", "/swagger-ui/**", "/v3/api-docs/**", "/event/**",
                                 "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated()
         );
