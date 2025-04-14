@@ -20,5 +20,6 @@ public class ProductDto {
         private Integer unitPrice;
         private Integer salesQty;
         private Long companyIdx;
+        private String img;
     }
 }

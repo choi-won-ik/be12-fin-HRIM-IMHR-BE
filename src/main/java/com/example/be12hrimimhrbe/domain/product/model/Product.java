@@ -23,6 +23,7 @@ public class Product {
     private Boolean lowCarbonProcess;
     private Integer unitPrice;
     private Integer salesQty;
+    private String img;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_idx")
