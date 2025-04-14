@@ -5,6 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EventRepository extends JpaRepository<Event, Long> {
+import java.time.LocalDate;
+import java.util.List;
+
+public interface    EventRepository extends JpaRepository<Event, Long> {
     Page<Event> findAllByCompanyIdx(Long companyIdx, Pageable pageable);
+
+    List<Event> findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Long companyIdx, LocalDate startDate, LocalDate endDate);
 }

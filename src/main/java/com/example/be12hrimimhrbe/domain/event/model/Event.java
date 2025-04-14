@@ -20,6 +20,7 @@ public class Event {
     private Long idx;
     private String title;
     private String content;
+    private String color;
     private LocalDate startDate;
     private LocalDate endDate;
 
