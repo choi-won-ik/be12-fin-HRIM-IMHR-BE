@@ -36,6 +36,7 @@ public class ProductService {
                 .unitPrice(dto.getUnitPrice())
                 .salesQty(dto.getSalesQty())
                 .company(company)
+                .img(imagePath)
                 .build();
 
         Product saved = productRepository.save(product);
