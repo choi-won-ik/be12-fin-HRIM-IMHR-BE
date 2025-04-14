@@ -95,7 +95,7 @@ public class ActivityDto {
     public static class ActivityRegistReq {
 //        private String userId;
         private String type;
-//        private String title;
+        private String title;
         private String description;
 //        private String startDate;
         private int performance;
