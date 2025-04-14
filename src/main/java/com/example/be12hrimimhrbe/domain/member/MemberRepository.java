@@ -9,4 +9,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByMemberIdAndIsAdminAndStatus(String memberId, Boolean isAdmin, Member.Status status);
     Optional<Member> findByNameAndEmailAndIsAdmin(String name, String email, Boolean isAdmin);
     Optional<Member> findByMemberIdAndEmailAndIsAdmin(String memberId, String email, Boolean isAdmin);
+    Optional<Member> findByEmailAndIsAdmin(String email, Boolean isAdmin);
+    Optional<Member> findByMemberIdAndIsAdmin(String memberId, Boolean isAdmin);
 }

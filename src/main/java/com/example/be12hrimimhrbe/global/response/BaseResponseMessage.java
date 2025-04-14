@@ -22,6 +22,8 @@ public enum BaseResponseMessage {
     COMPANY_SIGNUP_NOT_FOUND_FILE(false, 2404, "파일을 찾지 못했습니다."),
     PERSONAL_SIGNUP_SUCCESS(true, 2200, "개인 회원 가입 성공"),
     PERSONAL_SIGNUP_NOT_FOUND_COMPANY(false, 2404, "회사 정보를 찾지 못했습니다."),
+    SIGNUP_DUPLICATE_ID(false, 2403, "ID가 중복됩니다."),
+    SIGNUP_DUPLICATE_EMAIL(false, 2403, "Email이 중복됩니다."),
     FIND_ID_SUCCESS(true, 2200, "ID 찾기 성공"),
     FIND_PW_SUCCESS(true, 2200, "비밀번호 찾기 성공"),
     RESET_PASSWORD_SUCCESS(true, 2200, "비밀번호 재설정 성공"),

@@ -111,6 +111,14 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public BaseResponse<MemberDto.CompanySignupResponse> companySignup(MemberDto.CompanySignupRequest dto, MultipartFile file) {
         String uploadFilePath = null;
+        Optional<Member> result = memberRepository.findByMemberIdAndIsAdmin(dto.getMemberId(), true);
+        if(result.isPresent()) {
+            return new BaseResponse<>(BaseResponseMessage.SIGNUP_DUPLICATE_ID, null);
+        }
+        result = memberRepository.findByEmailAndIsAdmin(dto.getEmail(), true);
+        if(result.isPresent()) {
+            return new BaseResponse<>(BaseResponseMessage.SIGNUP_DUPLICATE_EMAIL, null);
+        }
         if(file!=null && !file.isEmpty()) {
             String originalFilename = file.getOriginalFilename();
 
@@ -131,6 +139,14 @@ public class MemberService implements UserDetailsService {
     }
 
     public BaseResponse<MemberDto.PersonalSignupResponse> personalSignup(MemberDto.PersonalSignupRequest dto) {
+        Optional<Member> result = memberRepository.findByMemberIdAndIsAdmin(dto.getMemberId(), false);
+        if(result.isPresent()) {
+            return new BaseResponse<>(BaseResponseMessage.SIGNUP_DUPLICATE_ID, null);
+        }
+        result = memberRepository.findByEmailAndIsAdmin(dto.getEmail(), false);
+        if(result.isPresent()) {
+            return new BaseResponse<>(BaseResponseMessage.SIGNUP_DUPLICATE_EMAIL, null);
+        }
         Company company = companyRepository.findByCode(dto.getCompanyCode()).orElse(null);
         if(company==null) {
             return new BaseResponse<>(BaseResponseMessage.PERSONAL_SIGNUP_NOT_FOUND_COMPANY, null);
