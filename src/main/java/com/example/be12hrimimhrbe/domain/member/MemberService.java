@@ -83,6 +83,31 @@ public class MemberService implements UserDetailsService {
         return new BaseResponse<>(BaseResponseMessage.FIND_PW_SUCCESS, "비밀번호 찾기 성공");
     }
 
+    public BaseResponse<String> passwordReset(MemberDto.ResetPasswordRequest dto, CustomUserDetails customMember) {
+        if(customMember != null) {
+            Member member = memberRepository.findById(customMember.getMember().getIdx()).orElseThrow();
+            if(!passwordEncoder.matches(dto.getOldPassword(), member.getPassword()))
+                return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_UNMATCHED, "실패");
+            memberRepository.save(member.updateMember(Member.builder()
+                    .password(passwordEncoder.encode(dto.getNewPassword()))
+                    .build()));
+            return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_SUCCESS, "비밀번호 변경 성공");
+        } else {
+            PasswordReset passwordReset = passwordResetRepository
+                    .findByUuidAndExpiryDateAfter(dto.getUuid(), LocalDateTime.now())
+                    .orElse(null);
+            if(passwordReset == null) {
+                return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_NULL, "인증 실패");
+            }
+
+            Member member = passwordReset.getMember();
+            memberRepository.save(member.updateMember(Member.builder()
+                    .password(passwordEncoder.encode(dto.getNewPassword()))
+                    .build()));
+            return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_SUCCESS, "비밀번호 변경 성공");
+        }
+    }
+
     @Transactional
     public BaseResponse<MemberDto.CompanySignupResponse> companySignup(MemberDto.CompanySignupRequest dto, MultipartFile file) {
         String uploadFilePath = null;

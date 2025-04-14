@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.member;
 
+import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
@@ -40,8 +41,9 @@ public class MemberController {
 
     @PostMapping("/reset-pw")
     @Operation(summary = "비밀번호 재설정", description = "비밀번호를 재설정 합니다.")
-    public ResponseEntity<BaseResponse<String>> resetMemberPw(@RequestBody MemberDto.ResetPasswordRequest dto) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<String>> resetMemberPw(@RequestBody MemberDto.ResetPasswordRequest dto,
+                                                              @AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(memberService.passwordReset(dto, member));
     }
 
     @GetMapping("/detail/info/{idx}")
