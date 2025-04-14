@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,11 @@ public class ActivityController {
 
     @GetMapping("/detail/{idx}")
     @Operation(summary = "ESG활동 상세 페이지 조회", description = "ESG활동 상세 조회 기능 입니다.")
-    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
+    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx
+//            , @AuthenticationPrincipal Member member
+    ) throws IOException {
+        Member member = memberRepository.findById(1L).get();
+        System.out.println("동작");
         return ResponseEntity.ok().body(activityService.getDetail(idx, member));
     }
 
