@@ -52,16 +52,30 @@ public class MemberDto {
         private String email;
         private String company;
         private Department department;
-        private String role;
-        private Integer status;
+        private List<String> roles;
+        private Member.Status status;
         private LocalDateTime joinedAt;
+        public static InfoResponse fromEntity(Member member, List<String> roles) {
+            return InfoResponse.builder()
+                    .idx(member.getIdx())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .company(member.getCompany().getName())
+                    .department(member.getDepartment())
+                    .roles(roles)
+                    .status(member.getStatus())
+                    .joinedAt(member.getJoinedAt())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class InfoDetailResponse {
         private InfoResponse info;
         private DepartmentDto.DepartmentListResponse departments;
-        private List<String> roles;
+        public static InfoDetailResponse fromEntity(InfoResponse info, DepartmentDto.DepartmentListResponse departments) {
+            return InfoDetailResponse.builder().info(info).departments(departments).build();
+        }
     }
 
     public static class InfoDetailRequest {

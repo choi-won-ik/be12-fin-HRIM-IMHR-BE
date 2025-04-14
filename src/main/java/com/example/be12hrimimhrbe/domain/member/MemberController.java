@@ -8,7 +8,9 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,25 +49,40 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.passwordReset(dto, member));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/detail/info/{idx}")
     @Operation(summary = "회원 상세 조회", description = "관리자가 회원을 관리하기 위해 상세 정보를 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<MemberDto.InfoDetailResponse>> detailInfo(@PathVariable Long idx,
-                                                                                 @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+                                                                                 @AuthenticationPrincipal CustomUserDetails member
+                                                                                 ) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
+        return ResponseEntity.ok().body(memberService.getStaffDetail(idx));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/detail/modify/{idx}")
     @Operation(summary = "회원정보 수정", description = "회원 정보를 수정합니다.")
     public ResponseEntity<BaseResponse<String>> detailModify(@PathVariable Long idx,
-                                                             @AuthenticationPrincipal Member member,
+                                                             @AuthenticationPrincipal CustomUserDetails member,
                                                              @RequestBody MemberDto.InfoDetailRequest dto) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
     @DeleteMapping("/delete/{idx}")
     @Operation(summary = "회원 탈퇴", description = "관리자가 회원을 탈퇴 처리하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> deleteMember(@PathVariable Long idx,
-                                                             @AuthenticationPrincipal Member member) {
+                                                             @AuthenticationPrincipal CustomUserDetails member) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 

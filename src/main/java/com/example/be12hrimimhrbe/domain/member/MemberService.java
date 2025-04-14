@@ -4,6 +4,9 @@ import com.example.be12hrimimhrbe.domain.authority.HrAuthorityRepository;
 import com.example.be12hrimimhrbe.domain.authority.model.HrAuthority;
 import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.department.DepartmentRepository;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
+import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
@@ -32,6 +35,7 @@ import java.util.*;
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
+    private final DepartmentRepository departmentRepository;
     private final PasswordResetRepository passwordResetRepository;
     private final PasswordEncoder passwordEncoder;
     private final HrAuthorityRepository hrAuthorityRepository;
@@ -108,6 +112,27 @@ public class MemberService implements UserDetailsService {
         }
     }
 
+    public BaseResponse<MemberDto.InfoDetailResponse> getStaffDetail(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member == null)
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        List<String> roles = new ArrayList<>();
+        if(member.getIsAdmin()) roles.add("ROLE_ADMIN");
+        if(member.getHasPartnerAuth()) roles.add("ROLE_PARTNER");
+        if(member.getHasProdAuth()) roles.add("ROLE_PROD");
+        String prefix = "ROLE_";
+        List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(member);
+        for (HrAuthority hrAuthority : hrAuthorities) {
+            roles.add(prefix + hrAuthority.getDepartment().getIdx());
+        }
+        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany());
+        MemberDto.InfoDetailResponse infoDetailResponse = MemberDto.InfoDetailResponse.fromEntity(
+                MemberDto.InfoResponse.fromEntity(member, roles),
+                DepartmentDto.DepartmentListResponse.builder().departments(departments).build()
+        );
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_DETAIL_SUCCESS, infoDetailResponse);
+    }
+
     @Transactional
     public BaseResponse<MemberDto.CompanySignupResponse> companySignup(MemberDto.CompanySignupRequest dto, MultipartFile file) {
         String uploadFilePath = null;
@@ -167,6 +192,8 @@ public class MemberService implements UserDetailsService {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";
                 authoritySet.add(prefix + "ADMIN");
+                if(result.get().getHasProdAuth()) authoritySet.add(prefix + "PROD");
+                if(result.get().getHasPartnerAuth()) authoritySet.add(prefix + "PARTNER");
                 List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(result.get());
                 for (HrAuthority hrAuthority : hrAuthorities) {
                     authoritySet.add(prefix + hrAuthority.getDepartment().getIdx());
@@ -178,6 +205,8 @@ public class MemberService implements UserDetailsService {
             if (result.isPresent()) {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";
+                if(result.get().getHasProdAuth()) authoritySet.add(prefix + "PROD");
+                if(result.get().getHasPartnerAuth()) authoritySet.add(prefix + "PARTNER");
                 List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(result.get());
                 for (HrAuthority hrAuthority : hrAuthorities) {
                     authoritySet.add(prefix + hrAuthority.getDepartment().getIdx());
@@ -186,5 +215,12 @@ public class MemberService implements UserDetailsService {
             }
         }
         return null;
+    }
+
+    public boolean isSameCompany(Long oriIdx, Long otherIdx) {
+        Member oriMember = memberRepository.findById(oriIdx).orElse(null);
+        Member otherMember = memberRepository.findById(otherIdx).orElse(null);
+        return oriMember != null && otherMember != null
+                && oriMember.getCompany().getIdx().equals(otherMember.getCompany().getIdx());
     }
 }
