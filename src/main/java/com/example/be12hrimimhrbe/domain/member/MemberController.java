@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Enumeration;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class MemberController {
     @PostMapping("/find-pw")
     @Operation(summary = "비밀번호 찾기", description = "ID, 이메일을 입력하여 이메일로 비밀번호 재설정 링크를 전송하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> findMemberPw(@RequestBody MemberDto.FindPWRequest dto, HttpServletRequest request) {
-        return ResponseEntity.ok().body(memberService.findPassword(dto, request.getRemoteHost()));
+        return ResponseEntity.ok().body(memberService.findPassword(dto, request.getHeader("Origin")));
     }
 
     @PostMapping("/reset-pw")
