@@ -35,7 +35,7 @@ public class EventController {
     }
 
     // [관리자](달력) 회사 일정 리스트
-    @GetMapping("/companyeventList")
+    @GetMapping("/list")
     @Operation(summary = "기업 일정 리스트", description = "이번달 일정을 확인 합니다.")
     public ResponseEntity<BaseResponse<Page<EventDto.EventResponse>>> list(
             @AuthenticationPrincipal Company company,
@@ -67,7 +67,10 @@ public class EventController {
 
     @DeleteMapping("/delete/{idx}")
     @Operation(summary = "일정 제거", description = "선택 일정을 제거 합니다.")
-    public ResponseEntity<BaseResponse<Boolean>> Delete(@PathVariable Long idx) {
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,null));
+    public ResponseEntity<BaseResponse<Boolean>> Delete(
+            @AuthenticationPrincipal Company company,
+            @PathVariable Long idx) {
+        boolean isDeleted = eventService.deleteEvent(company, idx);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, isDeleted));
     }
 }
