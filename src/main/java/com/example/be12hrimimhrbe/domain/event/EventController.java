@@ -48,25 +48,26 @@ public class EventController {
     }
 
     // [관리자](달력) 회사 일정 리스트
-    @GetMapping("/list/{companyIdx}")
+    @GetMapping("/month/list")
     @Operation(summary = "기업 일정 리스트", description = "이번달 일정을 확인 합니다.")
-    public ResponseEntity<BaseResponse<Page<EventDto.EventResponse>>> list(
-            @PathVariable Long companyIdx,
-            @Parameter(hidden = true) Pageable pageable, OutputStream outputStream)
+    public ResponseEntity<BaseResponse<List<EventDto.EventResponse>>> list(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @RequestParam int year,
+            @RequestParam int month
+    )
     {
-        Page<EventDto.EventResponse> responses = eventService.eventList(companyIdx, pageable);
-        System.out.println("응답 데이터: " + responses.toString());
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.CALENDAR_LIST_SUCCESS,responses));
+        List<EventDto.EventResponse> responses = eventService.eventList(member.getMember(), year, month);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, responses));
     }
 
-    @GetMapping("/date/{companyIdx}")
+    @GetMapping("/date/list")
     @Operation(summary = "특정 날짜의 일정 리스트 조회", description = "선택 날짜의 일정 리스트를 상세 조회 합니다.")
     public ResponseEntity<BaseResponse<List<EventDto.EventResponse>>> readEvent(
-            @PathVariable Long companyIdx,
+            @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam("date") @Parameter(description = "조회할 날짜 (yyyy-MM-dd)") String date
     ) {
         LocalDate localDate = LocalDate.parse(date);
-        List<EventDto.EventResponse> responses = eventService.readEventByDate(companyIdx, localDate);
+        List<EventDto.EventResponse> responses = eventService.readEventByDate(member.getMember(), localDate);
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS,responses));
     }
 
