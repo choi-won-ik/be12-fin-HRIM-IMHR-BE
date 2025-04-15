@@ -64,7 +64,10 @@ public class MemberDto {
         private String email;
         private String company;
         private Department department;
-        private List<String> roles;
+        private Boolean isAdmin;
+        private Boolean hasProdAuth;
+        private Boolean hasPartnerAuth;
+        private List<String> hrRoles;
         private Member.Status status;
         private LocalDateTime joinedAt;
         public static InfoResponse fromEntity(Member member, List<String> roles) {
@@ -74,7 +77,10 @@ public class MemberDto {
                     .email(member.getEmail())
                     .company(member.getCompany().getName())
                     .department(member.getDepartment())
-                    .roles(roles)
+                    .isAdmin(member.getIsAdmin())
+                    .hasProdAuth(member.getHasProdAuth())
+                    .hasPartnerAuth(member.getHasPartnerAuth())
+                    .hrRoles(roles)
                     .status(member.getStatus())
                     .joinedAt(member.getJoinedAt())
                     .build();
@@ -84,8 +90,8 @@ public class MemberDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class InfoDetailResponse {
         private InfoResponse info;
-        private DepartmentDto.DepartmentListResponse departments;
-        public static InfoDetailResponse fromEntity(InfoResponse info, DepartmentDto.DepartmentListResponse departments) {
+        private List<Department> departments;
+        public static InfoDetailResponse fromEntity(InfoResponse info, List<Department> departments) {
             return InfoDetailResponse.builder().info(info).departments(departments).build();
         }
     }
