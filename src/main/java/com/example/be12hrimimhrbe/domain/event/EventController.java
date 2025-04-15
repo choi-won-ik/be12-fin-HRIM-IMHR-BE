@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,9 +40,10 @@ public class EventController {
     @Operation(summary = "기업 일정 리스트", description = "이번달 일정을 확인 합니다.")
     public ResponseEntity<BaseResponse<Page<EventDto.EventResponse>>> list(
             @PathVariable Long companyIdx,
-            @Parameter(hidden = true) Pageable pageable)
+            @Parameter(hidden = true) Pageable pageable, OutputStream outputStream)
     {
         Page<EventDto.EventResponse> responses = eventService.eventList(companyIdx, pageable);
+        System.out.println("응답 데이터: " + responses.toString());
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,responses));
     }
 
