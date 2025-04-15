@@ -85,6 +85,7 @@ public class ActivityService {
                 .fileUrl(servedUrl)
                 .memberId(activity.getMember().getMemberId())
                 .memberName(activity.getMember().getName())
+//                .memberRole(activity.getMember().getRole)
                 .build();
 
         return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
@@ -138,13 +139,14 @@ public class ActivityService {
     }
 
     @Transactional
-    public BaseResponse<Activity> ativityApprovalAgree(Long idx) {
+    public BaseResponse<Long> ativityApprovalAgree(Long idx) {
         Activity activity = activityRepository.findById(idx).get();
-        if (activity.getType().equals(Activity.Status.PENDING)) {
+
+        if (activity.getStatus().equals(Activity.Status.PENDING)) {
             activity = new Activity(activity, Activity.Status.APPROVED);
             try {
                 Activity result = activityRepository.save(activity);
-                return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
+                return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result.getIdx());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -153,13 +155,13 @@ public class ActivityService {
     }
 
     @Transactional
-    public BaseResponse<Activity> ativityApprovalOppose(Long idx) {
+    public BaseResponse<Long> ativityApprovalOppose(Long idx) {
         Activity activity = activityRepository.findById(idx).get();
-        if (activity.getType().equals(Activity.Status.PENDING)) {
+        if (activity.getStatus().equals(Activity.Status.PENDING)) {
             activity = new Activity(activity, Activity.Status.REJECTED);
             try {
                 Activity result = activityRepository.save(activity);
-                return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
+                return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result.getIdx());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

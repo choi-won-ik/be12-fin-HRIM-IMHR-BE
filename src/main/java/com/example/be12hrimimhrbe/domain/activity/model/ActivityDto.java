@@ -65,6 +65,7 @@ public class ActivityDto {
 
         private String memberId;
         private String memberName;
+        private String memberRole;
 
         private Activity.Status status;
         private Activity.Type type;

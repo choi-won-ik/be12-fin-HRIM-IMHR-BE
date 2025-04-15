@@ -12,6 +12,7 @@ public enum BaseResponseMessage {
     // 요청 성공, 실패, 내부 서버 오류
     REQUEST_SUCCESS(true, 200, "요청이 정상적으로 처리되었습니다"),
     REQUEST_FAIL(false, 404, "요청을 실패했습니다."),
+    FORBIDDEN(false, 403, "금지된 요청입니다."),
     INTERNAL_SERVER_ERROR(false, 500, "내부 서버 오류"),
 
     // ========================================================================================================================
@@ -29,6 +30,22 @@ public enum BaseResponseMessage {
     RESET_PASSWORD_SUCCESS(true, 2200, "비밀번호 재설정 성공"),
     RESET_PASSWORD_UNMATCHED(false, 2403, "이전 비밀번호가 일치하지 않습니다."),
     RESET_PASSWORD_NULL(false, 2404, "uuid를 찾지 못했습니다."),
+    MEMBER_DETAIL_SUCCESS(true, 2200, "회원 상세 정보 조회 성공"),
+    MEMBER_SEARCH_NOT_FOUND(false, 2404, "해당 회원을 찾지 못했습니다."),
+    MEMBER_RESIGN_SUCCESS(true, 2200, "회원 탈퇴 처리에 성공했습니다."),
+    MYINFO_RETRIEVE_SUCCESS(true, 2200, "내 정보 조회에 성공했습니다."),
+    MYACTIVITY_RETRIEVE_SUCCESS(true, 2200, "내 활동내역 조회에 성공했습니다."),
+    MEMBER_APPROVE_SUCCESS(true, 2200, "회원 승인 완료"),
+    MEMBER_REJECT_SUCCESS(true, 2200, "회원 반려 완료"),
+    MEMBER_LIST_SUCCESS(true, 2200, "회원 전체 리스트 반환"),
+
+    // 캘린더 관리(이벤트 & 캠페인) 6000
+    CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),
+    CALENDAR_EVENT_UPDATE_SUCCESS(true,6201, "회사 일정 수정을 성공했습니다."),
+    CALENDAR_EVENT_DELETE_SUCCESS(true,6200, "회사 일정 삭제를 성공했습니다."),
+    CALENDAR_LIST_SUCCESS(true,6200, "회사 일정 전체 리스트 반환"),
+    CALENDAR_EVENT_BY_DAY_LIST_SUCCESS(true,6200, "회사 일정 일별 리스트 반환"),
+    CALENDAR_EVENT_DETAIL_SUCCESS(true,6200, "회사 일정 상세 조회에 성공했습니다."),
 
 
 

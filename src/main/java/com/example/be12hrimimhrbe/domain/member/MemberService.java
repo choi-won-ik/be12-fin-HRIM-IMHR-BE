@@ -1,13 +1,24 @@
 package com.example.be12hrimimhrbe.domain.member;
 
+import com.example.be12hrimimhrbe.domain.activity.ActivityRepository;
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.authority.HrAuthorityRepository;
 import com.example.be12hrimimhrbe.domain.authority.model.HrAuthority;
+import com.example.be12hrimimhrbe.domain.campaign.CampaignRepository;
+import com.example.be12hrimimhrbe.domain.campaign.model.Campaign;
 import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.department.DepartmentRepository;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
+import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
+import com.example.be12hrimimhrbe.domain.feedback.FeedbackResponseRepository;
+import com.example.be12hrimimhrbe.domain.feedback.model.FeedbackResponse;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.domain.member.model.PasswordReset;
+import com.example.be12hrimimhrbe.domain.notification.NotificationRepository;
+import com.example.be12hrimimhrbe.domain.notification.model.Notification;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +37,19 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
+    private final DepartmentRepository departmentRepository;
     private final PasswordResetRepository passwordResetRepository;
+    private final CampaignRepository campaignRepository;
+    private final FeedbackResponseRepository feedbackResponseRepository;
+    private final ActivityRepository activityRepository;
+    private final NotificationRepository notificationRepository;
     private final PasswordEncoder passwordEncoder;
     private final HrAuthorityRepository hrAuthorityRepository;
     private final JavaMailSender mailSender;
@@ -83,6 +100,7 @@ public class MemberService implements UserDetailsService {
         return new BaseResponse<>(BaseResponseMessage.FIND_PW_SUCCESS, "비밀번호 찾기 성공");
     }
 
+    @Transactional
     public BaseResponse<String> passwordReset(MemberDto.ResetPasswordRequest dto, CustomUserDetails customMember) {
         if(customMember != null) {
             Member member = memberRepository.findById(customMember.getMember().getIdx()).orElseThrow();
@@ -106,6 +124,81 @@ public class MemberService implements UserDetailsService {
                     .build()));
             return new BaseResponse<>(BaseResponseMessage.RESET_PASSWORD_SUCCESS, "비밀번호 변경 성공");
         }
+    }
+
+    public BaseResponse<MemberDto.InfoDetailResponse> getStaffDetail(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member == null)
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        List<String> roles = new ArrayList<>();
+        if(member.getIsAdmin()) roles.add("ROLE_ADMIN");
+        if(member.getHasPartnerAuth()) roles.add("ROLE_PARTNER");
+        if(member.getHasProdAuth()) roles.add("ROLE_PROD");
+        String prefix = "ROLE_";
+        List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(member);
+        for (HrAuthority hrAuthority : hrAuthorities) {
+            roles.add(prefix + hrAuthority.getDepartment().getIdx());
+        }
+        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany());
+        MemberDto.InfoDetailResponse infoDetailResponse = MemberDto.InfoDetailResponse.fromEntity(
+                MemberDto.InfoResponse.fromEntity(member, roles),
+                DepartmentDto.DepartmentListResponse.builder().departments(departments).build()
+        );
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_DETAIL_SUCCESS, infoDetailResponse);
+    }
+
+    public boolean deleteMember(Member member) {
+        List<Campaign> campaigns = campaignRepository.findAllByMember(member);
+        List<FeedbackResponse> feedbackResponsesFrom = feedbackResponseRepository.findAllByFrom(member);
+        List<FeedbackResponse> feedbackResponsesTo = feedbackResponseRepository.findAllByTo(member);
+        List<Activity> activities = activityRepository.findAllByMember(member);
+        List<Notification> notifications = notificationRepository.findAllByMember(member);
+        campaignRepository.deleteAll(campaigns);
+        feedbackResponseRepository.deleteAll(feedbackResponsesFrom);
+        feedbackResponseRepository.deleteAll(feedbackResponsesTo);
+        activityRepository.deleteAll(activities);
+        notificationRepository.deleteAll(notifications);
+        memberRepository.delete(member);
+        return true;
+    }
+
+    @Transactional
+    public BaseResponse<String> deleteMember(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member == null)
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "해당 회원이 없습니다.");
+        deleteMember(member);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_RESIGN_SUCCESS, "탈퇴 처리 성공");
+    }
+
+    public BaseResponse<MemberDto.InfoResponse> getMyInfo(CustomUserDetails customMember) {
+        Member member = memberRepository.findById(customMember.getMember().getIdx()).orElse(null);
+        if(member == null)
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        List<String> roles = customMember.getAuthoritySet().stream().toList();
+        return new BaseResponse<>(BaseResponseMessage.MYINFO_RETRIEVE_SUCCESS,
+                MemberDto.InfoResponse.fromEntity(member, roles));
+    }
+
+    public BaseResponse<MemberDto.ActivityResponse> getMyActivity(CustomUserDetails customMember) {
+        List<Activity> activities = activityRepository.findAllByMember(customMember.getMember());
+        List<Campaign> campaigns = campaignRepository.findAllByMember(customMember.getMember());
+        List<MemberDto.ActivityItem> activityItems = activities.stream()
+                                                            .map(MemberDto.ActivityItem::fromActivity)
+                                                            .toList();
+        List<MemberDto.ActivityItem> campaignsItems = campaigns.stream()
+                .map(campaign -> MemberDto.ActivityItem.fromCampaign(campaign, campaign.getEvent()))
+                .toList();
+        List<MemberDto.ActivityItem> mergedItems = new ArrayList<>();
+        Collections.addAll(mergedItems, activityItems.toArray(new MemberDto.ActivityItem[0]));
+        Collections.addAll(mergedItems, campaignsItems.toArray(new MemberDto.ActivityItem[0]));
+
+        return new BaseResponse<>(BaseResponseMessage.MYACTIVITY_RETRIEVE_SUCCESS,
+                    MemberDto.ActivityResponse.builder()
+                            .member_idx(customMember.getMember().getIdx())
+                            .activities(mergedItems)
+                            .build()
+                );
     }
 
     @Transactional
@@ -157,6 +250,39 @@ public class MemberService implements UserDetailsService {
                 MemberDto.PersonalSignupResponse.fromMember(member));
     }
 
+    @Transactional
+    public BaseResponse<String> approveMember(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member==null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        member.approve();
+        memberRepository.save(member);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_APPROVE_SUCCESS, "해당 회원의 가입이 승인되었습니다.");
+    }
+
+    @Transactional
+    public BaseResponse<String> rejectMember(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member==null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        deleteMember(member);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_REJECT_SUCCESS, "해당 회원은 가입이 반려되었습니다.");
+    }
+
+    public BaseResponse<List<MemberDto.MemberShortResponse>> getMemberAll(Member customMember) {
+        Member member = memberRepository.findById(customMember.getIdx()).orElse(null);
+        if(member==null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        Company company = member.getCompany();
+        List<Member> members = memberRepository.findAllByCompany(company);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_LIST_SUCCESS,
+                    members.stream().map(MemberDto.MemberShortResponse::fromEntity).toList()
+                );
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String memberId = username.substring(0, username.lastIndexOf("_"));
@@ -167,6 +293,8 @@ public class MemberService implements UserDetailsService {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";
                 authoritySet.add(prefix + "ADMIN");
+                if(result.get().getHasProdAuth()) authoritySet.add(prefix + "PROD");
+                if(result.get().getHasPartnerAuth()) authoritySet.add(prefix + "PARTNER");
                 List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(result.get());
                 for (HrAuthority hrAuthority : hrAuthorities) {
                     authoritySet.add(prefix + hrAuthority.getDepartment().getIdx());
@@ -178,6 +306,8 @@ public class MemberService implements UserDetailsService {
             if (result.isPresent()) {
                 Set<String> authoritySet = new HashSet<>();
                 String prefix = "ROLE_";
+                if(result.get().getHasProdAuth()) authoritySet.add(prefix + "PROD");
+                if(result.get().getHasPartnerAuth()) authoritySet.add(prefix + "PARTNER");
                 List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(result.get());
                 for (HrAuthority hrAuthority : hrAuthorities) {
                     authoritySet.add(prefix + hrAuthority.getDepartment().getIdx());
@@ -186,5 +316,12 @@ public class MemberService implements UserDetailsService {
             }
         }
         return null;
+    }
+
+    public boolean isSameCompany(Long oriIdx, Long otherIdx) {
+        Member oriMember = memberRepository.findById(oriIdx).orElse(null);
+        Member otherMember = memberRepository.findById(otherIdx).orElse(null);
+        return oriMember != null && otherMember != null
+                && oriMember.getCompany().getIdx().equals(otherMember.getCompany().getIdx());
     }
 }

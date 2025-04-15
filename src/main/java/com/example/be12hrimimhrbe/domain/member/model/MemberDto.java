@@ -1,9 +1,12 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.campaign.model.Campaign;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
+import com.example.be12hrimimhrbe.domain.event.model.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,10 +21,19 @@ public class MemberDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberShortResponse {
         private Long idx;
-        private Integer status;
+        private Member.Status status;
         private String memberId;
         private String name;
         private LocalDateTime joinedAt;
+        public static MemberShortResponse fromEntity(Member member) {
+            return MemberShortResponse.builder()
+                    .idx(member.getIdx())
+                    .status(member.getStatus())
+                    .memberId(member.getMemberId())
+                    .name(member.getName())
+                    .joinedAt(member.getJoinedAt())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -52,16 +64,30 @@ public class MemberDto {
         private String email;
         private String company;
         private Department department;
-        private String role;
-        private Integer status;
+        private List<String> roles;
+        private Member.Status status;
         private LocalDateTime joinedAt;
+        public static InfoResponse fromEntity(Member member, List<String> roles) {
+            return InfoResponse.builder()
+                    .idx(member.getIdx())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .company(member.getCompany().getName())
+                    .department(member.getDepartment())
+                    .roles(roles)
+                    .status(member.getStatus())
+                    .joinedAt(member.getJoinedAt())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class InfoDetailResponse {
         private InfoResponse info;
         private DepartmentDto.DepartmentListResponse departments;
-        private List<String> roles;
+        public static InfoDetailResponse fromEntity(InfoResponse info, DepartmentDto.DepartmentListResponse departments) {
+            return InfoDetailResponse.builder().info(info).departments(departments).build();
+        }
     }
 
     public static class InfoDetailRequest {
@@ -81,7 +107,25 @@ public class MemberDto {
         private Long campaignIdx;
         private String type;
         private String content;
+        private String title;
         private LocalDate date;
+        public static ActivityItem fromActivity(Activity activity) {
+            return ActivityItem.builder()
+                    .activityIdx(activity.getIdx())
+                    .type(activity.getType().toString())
+                    .title(activity.getTitle())
+                    .content(activity.getDescription())
+                    .date(activity.getCreatedAt().toLocalDate())
+                    .build();
+        }
+        public static ActivityItem fromCampaign(Campaign campaign, Event event) {
+            return ActivityItem.builder()
+                    .campaignIdx(campaign.getIdx())
+                    .content(event.getContent())
+                    .title(event.getTitle())
+                    .date(event.getEndDate())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

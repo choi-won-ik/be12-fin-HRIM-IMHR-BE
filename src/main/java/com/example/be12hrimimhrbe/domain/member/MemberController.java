@@ -8,7 +8,9 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,38 +49,54 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.passwordReset(dto, member));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/detail/info/{idx}")
     @Operation(summary = "회원 상세 조회", description = "관리자가 회원을 관리하기 위해 상세 정보를 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<MemberDto.InfoDetailResponse>> detailInfo(@PathVariable Long idx,
-                                                                                 @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+                                                                                 @AuthenticationPrincipal CustomUserDetails member
+                                                                                 ) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
+        return ResponseEntity.ok().body(memberService.getStaffDetail(idx));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/detail/modify/{idx}")
     @Operation(summary = "회원정보 수정", description = "회원 정보를 수정합니다.")
     public ResponseEntity<BaseResponse<String>> detailModify(@PathVariable Long idx,
-                                                             @AuthenticationPrincipal Member member,
+                                                             @AuthenticationPrincipal CustomUserDetails member,
                                                              @RequestBody MemberDto.InfoDetailRequest dto) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{idx}")
     @Operation(summary = "회원 탈퇴", description = "관리자가 회원을 탈퇴 처리하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> deleteMember(@PathVariable Long idx,
-                                                             @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+                                                             @AuthenticationPrincipal CustomUserDetails member) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
+        return ResponseEntity.ok().body(memberService.deleteMember(idx));
     }
 
     @PostMapping("/myinfo")
     @Operation(summary = "내 정보 조회", description = "내 정보를 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<MemberDto.InfoResponse>> myinfo(@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<MemberDto.InfoResponse>> myinfo(@AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(memberService.getMyInfo(member));
     }
 
     @PostMapping("/myactivity/list")
     @Operation(summary = "내 ESG 관련 활동 조회", description = "캠페인, 교육을 포함한 내 ESG 관련 활동을 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<MemberDto.ActivityResponse>> myactivity(@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<MemberDto.ActivityResponse>> myactivity(@AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(memberService.getMyActivity(member));
     }
 
     @PostMapping("/signup/personal")
@@ -94,22 +112,33 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.companySignup(dto, file));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/approve/{idx}")
     @Operation(summary = "회원 승인", description = "관리자가 임직원 회원의 가입을 승인합니다.")
-    public ResponseEntity<BaseResponse<String>> approveMember(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<String>> approveMember(@PathVariable Long idx, @AuthenticationPrincipal CustomUserDetails member) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
+        return ResponseEntity.ok().body(memberService.approveMember(idx));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/reject/{idx}")
     @Operation(summary = "회원 반려", description = "관리자가 임직원 회원의 가입을 반려합니다.")
-    public ResponseEntity<BaseResponse<String>> rejectMember(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<String>> rejectMember(@PathVariable Long idx, @AuthenticationPrincipal CustomUserDetails member) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
+        return ResponseEntity.ok().body(memberService.rejectMember(idx));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/list")
     @Operation(summary = "회원 내역", description = "회원 리스트를 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(memberService.getMemberAll(member.getMember()));
     }
 
     @GetMapping("/reportDetail/{idx}")
