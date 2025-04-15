@@ -90,8 +90,8 @@ public class MemberDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class InfoDetailResponse {
         private InfoResponse info;
-        private DepartmentDto.DepartmentListResponse departments;
-        public static InfoDetailResponse fromEntity(InfoResponse info, DepartmentDto.DepartmentListResponse departments) {
+        private List<Department> departments;
+        public static InfoDetailResponse fromEntity(InfoResponse info, List<Department> departments) {
             return InfoDetailResponse.builder().info(info).departments(departments).build();
         }
     }

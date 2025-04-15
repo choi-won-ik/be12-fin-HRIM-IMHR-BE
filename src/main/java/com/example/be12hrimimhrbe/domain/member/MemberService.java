@@ -131,18 +131,14 @@ public class MemberService implements UserDetailsService {
         if(member == null)
             return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
         List<String> roles = new ArrayList<>();
-        if(member.getIsAdmin()) roles.add("ROLE_ADMIN");
-        if(member.getHasPartnerAuth()) roles.add("ROLE_PARTNER");
-        if(member.getHasProdAuth()) roles.add("ROLE_PROD");
-        String prefix = "ROLE_";
         List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(member);
         for (HrAuthority hrAuthority : hrAuthorities) {
-            roles.add(prefix + hrAuthority.getDepartment().getIdx());
+            roles.add(""+hrAuthority.getDepartment().getIdx());
         }
         List<Department> departments = departmentRepository.findAllByCompany(member.getCompany());
         MemberDto.InfoDetailResponse infoDetailResponse = MemberDto.InfoDetailResponse.fromEntity(
                 MemberDto.InfoResponse.fromEntity(member, roles),
-                DepartmentDto.DepartmentListResponse.builder().departments(departments).build()
+                departments
         );
         return new BaseResponse<>(BaseResponseMessage.MEMBER_DETAIL_SUCCESS, infoDetailResponse);
     }
@@ -175,7 +171,11 @@ public class MemberService implements UserDetailsService {
         Member member = memberRepository.findById(customMember.getMember().getIdx()).orElse(null);
         if(member == null)
             return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
-        List<String> roles = customMember.getAuthoritySet().stream().toList();
+        List<String> roles = new ArrayList<>();
+        List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(member);
+        for (HrAuthority hrAuthority : hrAuthorities) {
+            roles.add(""+hrAuthority.getDepartment().getIdx());
+        }
         return new BaseResponse<>(BaseResponseMessage.MYINFO_RETRIEVE_SUCCESS,
                 MemberDto.InfoResponse.fromEntity(member, roles));
     }
