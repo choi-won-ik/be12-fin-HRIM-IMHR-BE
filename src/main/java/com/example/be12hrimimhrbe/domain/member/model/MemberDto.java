@@ -1,9 +1,12 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.campaign.model.Campaign;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
+import com.example.be12hrimimhrbe.domain.event.model.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -95,7 +98,25 @@ public class MemberDto {
         private Long campaignIdx;
         private String type;
         private String content;
+        private String title;
         private LocalDate date;
+        public static ActivityItem fromActivity(Activity activity) {
+            return ActivityItem.builder()
+                    .activityIdx(activity.getIdx())
+                    .type(activity.getType().toString())
+                    .title(activity.getTitle())
+                    .content(activity.getDescription())
+                    .date(activity.getCreatedAt().toLocalDate())
+                    .build();
+        }
+        public static ActivityItem fromCampaign(Campaign campaign, Event event) {
+            return ActivityItem.builder()
+                    .campaignIdx(campaign.getIdx())
+                    .content(event.getContent())
+                    .title(event.getTitle())
+                    .date(event.getEndDate())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

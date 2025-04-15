@@ -95,7 +95,7 @@ public class MemberController {
 
     @PostMapping("/myactivity/list")
     @Operation(summary = "내 ESG 관련 활동 조회", description = "캠페인, 교육을 포함한 내 ESG 관련 활동을 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<MemberDto.ActivityResponse>> myactivity(@AuthenticationPrincipal Member member) {
+    public ResponseEntity<BaseResponse<MemberDto.ActivityResponse>> myactivity(@AuthenticationPrincipal CustomUserDetails member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 

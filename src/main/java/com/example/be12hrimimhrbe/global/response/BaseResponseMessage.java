@@ -34,6 +34,7 @@ public enum BaseResponseMessage {
     MEMBER_SEARCH_NOT_FOUND(false, 2404, "해당 회원을 찾지 못했습니다."),
     MEMBER_RESIGN_SUCCESS(true, 2200, "회원 탈퇴 처리에 성공했습니다."),
     MYINFO_RETRIEVE_SUCCESS(true, 2200, "내 정보 조회에 성공했습니다."),
+    MYACTIVITY_RETRIEVE_SUCCESS(true, 2200, "내 활동내역 조회에 성공했습니다."),
 
 
     // 활동 관리 7000
