@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,13 +39,21 @@ public class EventService {
         return EventDto.EventResponse.of(updated);
     }
 
-    public Page<EventDto.EventResponse> eventList(Long companyIdx, Pageable pageable) {
-        return eventRepository.findAllByCompanyIdx(companyIdx, pageable)
-                .map(EventDto.EventResponse::of);
+    public List<EventDto.EventResponse> eventList(Member member, int year, int month) {
+        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+
+        List<Event> events = eventRepository.findByCompany_IdxAndStartDateBetween(newMember.getCompany().getIdx(), start, end);
+
+        return events.stream()
+                .map(EventDto.EventResponse::of)
+                .collect(Collectors.toList());
     }
 
-    public List<EventDto.EventResponse> readEventByDate(Long companyIdx, LocalDate date) {
-        List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(companyIdx, date, date);
+    public List<EventDto.EventResponse> readEventByDate(Member member, LocalDate date) {
+        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+        List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(newMember.getCompany().getIdx(), date, date);
         return events.stream().map(EventDto.EventResponse::of).toList();
     }
 
