@@ -112,21 +112,32 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.companySignup(dto, file));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/approve/{idx}")
     @Operation(summary = "회원 승인", description = "관리자가 임직원 회원의 가입을 승인합니다.")
-    public ResponseEntity<BaseResponse<String>> approveMember(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<String>> approveMember(@PathVariable Long idx, @AuthenticationPrincipal CustomUserDetails member) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
+        return ResponseEntity.ok().body(memberService.approveMember(idx));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/reject/{idx}")
     @Operation(summary = "회원 반려", description = "관리자가 임직원 회원의 가입을 반려합니다.")
-    public ResponseEntity<BaseResponse<String>> rejectMember(@PathVariable Long idx, @AuthenticationPrincipal Member member) {
+    public ResponseEntity<BaseResponse<String>> rejectMember(@PathVariable Long idx, @AuthenticationPrincipal CustomUserDetails member) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/list")
     @Operation(summary = "회원 내역", description = "회원 리스트를 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal Member member) {
+    public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal CustomUserDetails member) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
