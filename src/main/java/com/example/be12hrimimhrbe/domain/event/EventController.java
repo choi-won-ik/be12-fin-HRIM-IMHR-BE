@@ -3,6 +3,7 @@ package com.example.be12hrimimhrbe.domain.event;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.event.model.Event;
 import com.example.be12hrimimhrbe.domain.event.model.EventDto;
+import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.product.model.ProductDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
@@ -30,8 +31,8 @@ public class EventController {
 
     @PostMapping("/register")
     @Operation(summary = "일정 등록", description = "새 일정을 등록하는 기능 입니다.")
-    public ResponseEntity<BaseResponse<EventDto.EventResponse>> register(@AuthenticationPrincipal Company company, @RequestBody EventDto.EventRequest dto) {
-        EventDto.EventResponse response = eventService.eventRegister(company, dto);
+    public ResponseEntity<BaseResponse<EventDto.EventResponse>> register(@AuthenticationPrincipal CustomUserDetails manber, @RequestBody EventDto.EventRequest dto) {
+        EventDto.EventResponse response = eventService.eventRegister(manber.getMember(), dto);
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.REQUEST_SUCCESS, response));
     }
 
@@ -47,18 +48,18 @@ public class EventController {
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,responses));
     }
 
-    @GetMapping("/date")
+    @GetMapping("/date/{companyIdx}")
     @Operation(summary = "특정 날짜의 일정 리스트 조회", description = "선택 날짜의 일정 리스트를 상세 조회 합니다.")
     public ResponseEntity<BaseResponse<List<EventDto.EventResponse>>> readEvent(
-            @AuthenticationPrincipal Company company,
+            @PathVariable Long companyIdx,
             @RequestParam("date") @Parameter(description = "조회할 날짜 (yyyy-MM-dd)") String date
     ) {
         LocalDate localDate = LocalDate.parse(date);
-        List<EventDto.EventResponse> responses = eventService.readEventByDate(company, localDate);
+        List<EventDto.EventResponse> responses = eventService.readEventByDate(companyIdx, localDate);
         return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,responses));
     }
 
-    @GetMapping("/date/{idx}")
+    @GetMapping("/eventDetail/{idx}")
     @Operation(summary = "특정 일정 상세 조회", description = "선택 일정을 상세 조회 합니다.")
     public ResponseEntity<BaseResponse<EventDto.EventResponse>> readEventDetail(
             @AuthenticationPrincipal Company company,
