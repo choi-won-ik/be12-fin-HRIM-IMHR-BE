@@ -261,6 +261,7 @@ public class MemberService implements UserDetailsService {
         return new BaseResponse<>(BaseResponseMessage.MEMBER_APPROVE_SUCCESS, "해당 회원의 가입이 승인되었습니다.");
     }
 
+    @Transactional
     public BaseResponse<String> rejectMember(Long idx) {
         Member member = memberRepository.findById(idx).orElse(null);
         if(member==null) {
@@ -268,6 +269,18 @@ public class MemberService implements UserDetailsService {
         }
         deleteMember(member);
         return new BaseResponse<>(BaseResponseMessage.MEMBER_REJECT_SUCCESS, "해당 회원은 가입이 반려되었습니다.");
+    }
+
+    public BaseResponse<List<MemberDto.MemberShortResponse>> getMemberAll(Member customMember) {
+        Member member = memberRepository.findById(customMember.getIdx()).orElse(null);
+        if(member==null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        Company company = member.getCompany();
+        List<Member> members = memberRepository.findAllByCompany(company);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_LIST_SUCCESS,
+                    members.stream().map(MemberDto.MemberShortResponse::fromEntity).toList()
+                );
     }
 
     @Override
