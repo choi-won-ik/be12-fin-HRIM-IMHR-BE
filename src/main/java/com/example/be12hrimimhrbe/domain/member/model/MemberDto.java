@@ -21,10 +21,19 @@ public class MemberDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class MemberShortResponse {
         private Long idx;
-        private Integer status;
+        private Member.Status status;
         private String memberId;
         private String name;
         private LocalDateTime joinedAt;
+        public static MemberShortResponse fromEntity(Member member) {
+            return MemberShortResponse.builder()
+                    .idx(member.getIdx())
+                    .status(member.getStatus())
+                    .memberId(member.getMemberId())
+                    .name(member.getName())
+                    .joinedAt(member.getJoinedAt())
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
