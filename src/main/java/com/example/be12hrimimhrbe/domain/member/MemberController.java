@@ -138,7 +138,7 @@ public class MemberController {
     @PostMapping("/list")
     @Operation(summary = "회원 내역", description = "회원 리스트를 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal CustomUserDetails member) {
-        return ResponseEntity.ok().body(memberService.getMemberAll());
+        return ResponseEntity.ok().body(memberService.getMemberAll(member.getMember()));
     }
 
     @GetMapping("/reportDetail/{idx}")
