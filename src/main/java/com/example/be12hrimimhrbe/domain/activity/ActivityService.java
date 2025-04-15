@@ -157,9 +157,7 @@ public class ActivityService {
     @Transactional
     public BaseResponse<Long> ativityApprovalOppose(Long idx) {
         Activity activity = activityRepository.findById(idx).get();
-        System.out.println("-------------------------");
         if (activity.getStatus().equals(Activity.Status.PENDING)) {
-            System.out.println("-------------------------");
             activity = new Activity(activity, Activity.Status.REJECTED);
             try {
                 Activity result = activityRepository.save(activity);
