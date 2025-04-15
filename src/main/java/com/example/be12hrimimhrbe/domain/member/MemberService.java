@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -172,6 +173,27 @@ public class MemberService implements UserDetailsService {
         List<String> roles = customMember.getAuthoritySet().stream().toList();
         return new BaseResponse<>(BaseResponseMessage.MYINFO_RETRIEVE_SUCCESS,
                 MemberDto.InfoResponse.fromEntity(member, roles));
+    }
+
+    public BaseResponse<MemberDto.ActivityResponse> getMyActivity(CustomUserDetails customMember) {
+        List<Activity> activities = activityRepository.findAllByMember(customMember.getMember());
+        List<Campaign> campaigns = campaignRepository.findAllByMember(customMember.getMember());
+        List<MemberDto.ActivityItem> activityItems = activities.stream()
+                                                            .map(MemberDto.ActivityItem::fromActivity)
+                                                            .toList();
+        List<MemberDto.ActivityItem> campaignsItems = campaigns.stream()
+                .map(campaign -> MemberDto.ActivityItem.fromCampaign(campaign, campaign.getEvent()))
+                .toList();
+        List<MemberDto.ActivityItem> mergedItems = new ArrayList<>();
+        Collections.addAll(mergedItems, activityItems.toArray(new MemberDto.ActivityItem[0]));
+        Collections.addAll(mergedItems, campaignsItems.toArray(new MemberDto.ActivityItem[0]));
+
+        return new BaseResponse<>(BaseResponseMessage.MYACTIVITY_RETRIEVE_SUCCESS,
+                    MemberDto.ActivityResponse.builder()
+                            .member_idx(customMember.getMember().getIdx())
+                            .activities(mergedItems)
+                            .build()
+                );
     }
 
     @Transactional
