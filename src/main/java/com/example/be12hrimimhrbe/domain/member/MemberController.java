@@ -131,7 +131,7 @@ public class MemberController {
             return ResponseEntity.status(HttpStatusCode.valueOf(403))
                     .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
         }
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+        return ResponseEntity.ok().body(memberService.rejectMember(idx));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
