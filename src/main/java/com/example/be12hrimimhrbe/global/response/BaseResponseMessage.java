@@ -36,6 +36,7 @@ public enum BaseResponseMessage {
     MYINFO_RETRIEVE_SUCCESS(true, 2200, "내 정보 조회에 성공했습니다."),
     MYACTIVITY_RETRIEVE_SUCCESS(true, 2200, "내 활동내역 조회에 성공했습니다."),
     MEMBER_APPROVE_SUCCESS(true, 2200, "회원 승인 완료"),
+    MEMBER_REJECT_SUCCESS(true, 2200, "회원 반려 완료"),
 
 
     // 활동 관리 7000

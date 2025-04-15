@@ -147,11 +147,7 @@ public class MemberService implements UserDetailsService {
         return new BaseResponse<>(BaseResponseMessage.MEMBER_DETAIL_SUCCESS, infoDetailResponse);
     }
 
-    @Transactional
-    public BaseResponse<String> deleteMember(Long idx) {
-        Member member = memberRepository.findById(idx).orElse(null);
-        if(member == null)
-            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "해당 회원이 없습니다.");
+    public boolean deleteMember(Member member) {
         List<Campaign> campaigns = campaignRepository.findAllByMember(member);
         List<FeedbackResponse> feedbackResponsesFrom = feedbackResponseRepository.findAllByFrom(member);
         List<FeedbackResponse> feedbackResponsesTo = feedbackResponseRepository.findAllByTo(member);
@@ -163,6 +159,15 @@ public class MemberService implements UserDetailsService {
         activityRepository.deleteAll(activities);
         notificationRepository.deleteAll(notifications);
         memberRepository.delete(member);
+        return true;
+    }
+
+    @Transactional
+    public BaseResponse<String> deleteMember(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member == null)
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "해당 회원이 없습니다.");
+        deleteMember(member);
         return new BaseResponse<>(BaseResponseMessage.MEMBER_RESIGN_SUCCESS, "탈퇴 처리 성공");
     }
 
@@ -254,6 +259,15 @@ public class MemberService implements UserDetailsService {
         member.approve();
         memberRepository.save(member);
         return new BaseResponse<>(BaseResponseMessage.MEMBER_APPROVE_SUCCESS, "해당 회원의 가입이 승인되었습니다.");
+    }
+
+    public BaseResponse<String> rejectMember(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member==null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        deleteMember(member);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_REJECT_SUCCESS, "해당 회원은 가입이 반려되었습니다.");
     }
 
     @Override
