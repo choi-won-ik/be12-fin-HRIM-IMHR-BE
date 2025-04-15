@@ -88,4 +88,8 @@ public class Member {
                 .code(this.code)
                 .build();
     }
+
+    public void setNotificationCount(int notificationCount) {
+        this.notificationCount = notificationCount;
+    }
 }

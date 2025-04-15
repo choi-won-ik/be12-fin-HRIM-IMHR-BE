@@ -83,8 +83,7 @@ public class ActivityService {
                 .type(activity.getType())
                 .content(activity.getDescription())
                 .fileUrl(servedUrl)
-                .memberId(activity.getMember().getMemberId())
-                .memberName(activity.getMember().getName())
+                .member(activity.getMember())
 //                .memberRole(activity.getMember().getRole)
                 .build();
 
