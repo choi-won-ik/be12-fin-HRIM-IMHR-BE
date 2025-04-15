@@ -245,6 +245,17 @@ public class MemberService implements UserDetailsService {
                 MemberDto.PersonalSignupResponse.fromMember(member));
     }
 
+    @Transactional
+    public BaseResponse<String> approveMember(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member==null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        member.approve();
+        memberRepository.save(member);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_APPROVE_SUCCESS, "해당 회원의 가입이 승인되었습니다.");
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String memberId = username.substring(0, username.lastIndexOf("_"));

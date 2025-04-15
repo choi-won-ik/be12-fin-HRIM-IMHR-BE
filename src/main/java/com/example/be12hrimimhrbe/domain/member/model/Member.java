@@ -64,6 +64,10 @@ public class Member {
 
     private int notificationCount;
 
+    public void approve() {
+        this.status = Status.APPROVED;
+    }
+
     public Member updateMember(Member member) {
         return Member.builder()
                 .idx(this.getIdx())
