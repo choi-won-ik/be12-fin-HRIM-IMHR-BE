@@ -31,9 +31,20 @@ public class EventController {
 
     @PostMapping("/register")
     @Operation(summary = "일정 등록", description = "새 일정을 등록하는 기능 입니다.")
-    public ResponseEntity<BaseResponse<EventDto.EventResponse>> register(@AuthenticationPrincipal CustomUserDetails manber, @RequestBody EventDto.EventRequest dto) {
-        EventDto.EventResponse response = eventService.eventRegister(manber.getMember(), dto);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.REQUEST_SUCCESS, response));
+    public ResponseEntity<BaseResponse<EventDto.EventResponse>> register(@AuthenticationPrincipal CustomUserDetails member, @RequestBody EventDto.EventRequest dto) {
+        EventDto.EventResponse response = eventService.eventRegister(member.getMember(), dto);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_REGISTER_SUCCESS, response));
+    }
+
+    @PutMapping("/update/{eventIdx}")
+    @Operation(summary = "일정 수정", description = "등록했던 이벤트를 수정하는 기능입니다.")
+    public ResponseEntity<BaseResponse<EventDto.EventResponse>> update(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable Long eventIdx,
+            @RequestBody EventDto.EventRequest dto
+    ) {
+        EventDto.EventResponse response = eventService.updateEvent(member.getMember(), eventIdx, dto);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_UPDATE_SUCCESS, response));
     }
 
     // [관리자](달력) 회사 일정 리스트
@@ -45,7 +56,7 @@ public class EventController {
     {
         Page<EventDto.EventResponse> responses = eventService.eventList(companyIdx, pageable);
         System.out.println("응답 데이터: " + responses.toString());
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,responses));
+        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.CALENDAR_LIST_SUCCESS,responses));
     }
 
     @GetMapping("/date/{companyIdx}")
@@ -56,7 +67,7 @@ public class EventController {
     ) {
         LocalDate localDate = LocalDate.parse(date);
         List<EventDto.EventResponse> responses = eventService.readEventByDate(companyIdx, localDate);
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,responses));
+        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS,responses));
     }
 
     @GetMapping("/eventDetail/{idx}")
@@ -66,7 +77,7 @@ public class EventController {
             @PathVariable Long idx
     ) {
         EventDto.EventResponse response = eventService.readEventDetail(company, idx);
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.SWGGER_SUCCESS,response));
+        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS,response));
     }
 
     @DeleteMapping("/delete/{idx}")
@@ -75,6 +86,6 @@ public class EventController {
             @AuthenticationPrincipal Company company,
             @PathVariable Long idx) {
         boolean isDeleted = eventService.deleteEvent(company, idx);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, isDeleted));
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DELETE_SUCCESS, isDeleted));
     }
 }

@@ -39,6 +39,16 @@ public enum BaseResponseMessage {
     MEMBER_REJECT_SUCCESS(true, 2200, "회원 반려 완료"),
     MEMBER_LIST_SUCCESS(true, 2200, "회원 전체 리스트 반환"),
 
+    // 캘린더 관리(이벤트 & 캠페인) 6000
+    CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),
+    CALENDAR_EVENT_UPDATE_SUCCESS(true,6201, "회사 일정 수정을 성공했습니다."),
+    CALENDAR_EVENT_DELETE_SUCCESS(true,6200, "회사 일정 삭제를 성공했습니다."),
+    CALENDAR_LIST_SUCCESS(true,6200, "회사 일정 전체 리스트 반환"),
+    CALENDAR_EVENT_BY_DAY_LIST_SUCCESS(true,6200, "회사 일정 일별 리스트 반환"),
+    CALENDAR_EVENT_DETAIL_SUCCESS(true,6200, "회사 일정 상세 조회에 성공했습니다."),
+
+
+
 
     // 활동 관리 7000
     MY_ACTIVITY_PROCESSED(false,7004,"이미 처리된 활동입니다."),

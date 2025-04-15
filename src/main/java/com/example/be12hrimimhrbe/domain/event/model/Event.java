@@ -24,6 +24,14 @@ public class Event {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    public void updateFromDto(EventDto.EventRequest dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.startDate = dto.getStartDate();
+        this.endDate = dto.getEndDate();
+        this.color = dto.getColor();
+    }
+
     @ManyToOne
     @JoinColumn(name = "company_idx")
     private Company company;

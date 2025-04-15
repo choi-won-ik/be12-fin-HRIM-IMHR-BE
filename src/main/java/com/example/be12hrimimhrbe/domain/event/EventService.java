@@ -29,19 +29,28 @@ public class EventService {
         return EventDto.EventResponse.of(event);
     }
 
+    public EventDto.EventResponse updateEvent(Member member, Long idx, EventDto.EventRequest dto) {
+        Event event = eventRepository.findById(idx).orElseThrow();
+
+        event.updateFromDto(dto);
+
+        Event updated = eventRepository.save(event);
+        return EventDto.EventResponse.of(updated);
+    }
+
     public Page<EventDto.EventResponse> eventList(Long companyIdx, Pageable pageable) {
         return eventRepository.findAllByCompanyIdx(companyIdx, pageable)
                 .map(EventDto.EventResponse::of);
     }
 
-    public EventDto.EventResponse readEventDetail(Company company, Long idx) {
-        Event event = eventRepository.findByIdxAndCompanyIdx(idx, company.getIdx()).orElseThrow(() -> new RuntimeException("해당 일정이 존재하지 않습니다."));
-        return EventDto.EventResponse.of(event);
-    }
-
     public List<EventDto.EventResponse> readEventByDate(Long companyIdx, LocalDate date) {
         List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(companyIdx, date, date);
         return events.stream().map(EventDto.EventResponse::of).toList();
+    }
+
+    public EventDto.EventResponse readEventDetail(Company company, Long idx) {
+        Event event = eventRepository.findByIdxAndCompanyIdx(idx, company.getIdx()).orElseThrow();
+        return EventDto.EventResponse.of(event);
     }
 
     public boolean deleteEvent(Company company, Long idx) {
