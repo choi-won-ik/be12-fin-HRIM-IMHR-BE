@@ -165,6 +165,15 @@ public class MemberService implements UserDetailsService {
         return new BaseResponse<>(BaseResponseMessage.MEMBER_RESIGN_SUCCESS, "탈퇴 처리 성공");
     }
 
+    public BaseResponse<MemberDto.InfoResponse> getMyInfo(CustomUserDetails customMember) {
+        Member member = memberRepository.findById(customMember.getMember().getIdx()).orElse(null);
+        if(member == null)
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        List<String> roles = customMember.getAuthoritySet().stream().toList();
+        return new BaseResponse<>(BaseResponseMessage.MYINFO_RETRIEVE_SUCCESS,
+                MemberDto.InfoResponse.fromEntity(member, roles));
+    }
+
     @Transactional
     public BaseResponse<MemberDto.CompanySignupResponse> companySignup(MemberDto.CompanySignupRequest dto, MultipartFile file) {
         String uploadFilePath = null;

@@ -75,6 +75,7 @@ public class MemberController {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{idx}")
     @Operation(summary = "회원 탈퇴", description = "관리자가 회원을 탈퇴 처리하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> deleteMember(@PathVariable Long idx,
@@ -83,13 +84,13 @@ public class MemberController {
             return ResponseEntity.status(HttpStatusCode.valueOf(403))
                     .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
         }
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+        return ResponseEntity.ok().body(memberService.deleteMember(idx));
     }
 
     @PostMapping("/myinfo")
     @Operation(summary = "내 정보 조회", description = "내 정보를 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<MemberDto.InfoResponse>> myinfo(@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+    public ResponseEntity<BaseResponse<MemberDto.InfoResponse>> myinfo(@AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(memberService.getMyInfo(member));
     }
 
     @PostMapping("/myactivity/list")
