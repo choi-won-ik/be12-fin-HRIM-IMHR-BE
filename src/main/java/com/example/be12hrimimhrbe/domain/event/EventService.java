@@ -31,8 +31,8 @@ public class EventService {
     }
 
     public EventDto.EventResponse updateEvent(Member member, Long idx, EventDto.EventRequest dto) {
-        Event event = eventRepository.findById(idx).orElseThrow();
-
+        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+        Event event = eventRepository.findByCompanyIdxAndIdx(newMember.getCompany().getIdx(), idx);
         event.updateFromDto(dto);
 
         Event updated = eventRepository.save(event);

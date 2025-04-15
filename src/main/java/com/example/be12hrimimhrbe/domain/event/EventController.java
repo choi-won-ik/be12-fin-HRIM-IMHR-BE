@@ -68,7 +68,7 @@ public class EventController {
     ) {
         LocalDate localDate = LocalDate.parse(date);
         List<EventDto.EventResponse> responses = eventService.readEventByDate(member.getMember(), localDate);
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS,responses));
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS, responses));
     }
 
     @GetMapping("/eventDetail/{idx}")
@@ -78,7 +78,7 @@ public class EventController {
             @PathVariable Long idx
     ) {
         EventDto.EventResponse response = eventService.readEventDetail(company, idx);
-        return ResponseEntity.ok(new BaseResponse(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS,response));
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS, response));
     }
 
     @DeleteMapping("/delete/{idx}")
