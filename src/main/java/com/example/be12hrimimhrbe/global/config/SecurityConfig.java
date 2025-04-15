@@ -76,7 +76,6 @@ public class SecurityConfig {
                                 "/member/login", "/member/signup/*","/member/logout","/activity/detail/*","/img/**",
                                 "/member/find-id", "/member/find-pw", "/member/reset-pw",
                                 "/error", "/swagger-ui/**", "/v3/api-docs/**",
-//                                "/event/**",
                                 "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated()
         );
