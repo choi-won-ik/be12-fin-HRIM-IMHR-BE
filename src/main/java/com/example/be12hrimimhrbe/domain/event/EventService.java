@@ -71,8 +71,9 @@ public class EventService {
     }
 
 //  이벤트 상세 조회
-    public EventDto.EventResponse readEventDetail(Company company, Long idx) {
-        Event event = eventRepository.findByIdxAndCompanyIdx(idx, company.getIdx()).orElseThrow();
+    public EventDto.EventResponse readEventDetail(Member member, Long idx) {
+        Member nm = memberRepository.findById(member.getIdx()).orElseThrow();
+        Event event = eventRepository.findByCompanyIdxAndIdx(nm.getCompany().getIdx(), idx);
         return EventDto.EventResponse.of(event);
     }
 

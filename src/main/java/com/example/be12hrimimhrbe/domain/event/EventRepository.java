@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     Page<Event> findByCompanyIdx(Long companyIdx, Pageable pageable);
+
 //  이벤트 월별, 일별 조회 쿼리
     List<Event> findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Long companyIdx, LocalDate startDate, LocalDate endDate);
 
