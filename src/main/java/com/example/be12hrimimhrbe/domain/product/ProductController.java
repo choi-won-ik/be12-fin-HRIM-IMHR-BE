@@ -48,6 +48,7 @@ public class ProductController {
             @PathVariable Long idx,
             @RequestBody ProductDto.ProductUpdateReq dto
     ) {
+
         productService.updateProduct(idx, dto);
         return ResponseEntity.ok(
                 new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "수정 완료")

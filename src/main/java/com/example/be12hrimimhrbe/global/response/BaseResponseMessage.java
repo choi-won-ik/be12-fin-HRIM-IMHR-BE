@@ -16,6 +16,10 @@ public enum BaseResponseMessage {
     INTERNAL_SERVER_ERROR(false, 500, "내부 서버 오류"),
 
     // ========================================================================================================================
+    //부서 기능(1000)
+    DEPARTMENT_UPDATE_SUCCESS(true, 2200, "부서 설정에 성공했습니다."),
+    DEPARTMENT_RETRIEVE_SUCCESS(true, 2200, "부서 조회에 성공했습니다."),
+
     // 회원 기능(2000)
     // 회원가입 2000
     LOGIN_SUCCESS(true, 2201, "로그인 되었습니다."),

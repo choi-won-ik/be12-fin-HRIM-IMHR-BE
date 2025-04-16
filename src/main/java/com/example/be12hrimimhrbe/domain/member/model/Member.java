@@ -81,7 +81,7 @@ public class Member {
                 .hasPartnerAuth(this.hasPartnerAuth)
                 .status(this.status)
                 .company(this.company)
-                .department(this.department)
+                .department(member.getDepartment() == null ? this.department : member.getDepartment())
                 .eScore(this.eScore)
                 .sScore(this.sScore)
                 .gScore(this.gScore)
