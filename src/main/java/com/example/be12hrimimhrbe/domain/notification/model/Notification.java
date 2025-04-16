@@ -21,6 +21,7 @@ public class Notification {
 
     private Boolean isRead;
 
+    private String title;
     private String content;
 
     @ManyToOne
