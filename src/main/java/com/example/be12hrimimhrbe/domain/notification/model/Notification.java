@@ -24,6 +24,8 @@ public class Notification {
     private String title;
     private String content;
 
+    private String url;
+
     @ManyToOne
     @JoinColumn(name = "member_idx")
     private Member member;

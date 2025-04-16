@@ -14,6 +14,7 @@ public class NotificationDto {
         private Member member;
         private String title;
         private String content;
+        public String url;
     }
 
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -23,6 +24,7 @@ public class NotificationDto {
         private String content;
         private boolean isRead;
         private String createdAt;
+        private String url;
 
         public static NotificationResp from(Notification notification, Member member) {
             String formattedDate = notification.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -33,6 +35,7 @@ public class NotificationDto {
                     .createdAt(formattedDate)
                     .isRead(notification.getIsRead())
                     .member(member)
+                    .url(notification.getUrl())
                     .build();
         }
     }

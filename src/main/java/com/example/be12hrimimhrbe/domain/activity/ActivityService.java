@@ -54,7 +54,7 @@ public class ActivityService {
 //
 //        }else{
 //
-        Page<Activity> list = activityRepository.findByMember(member, PageRequest.of(page, size));
+        Page<Activity> list = activityRepository.findAllByMember(member, PageRequest.of(page, size));
         for (Activity activity : list) {
             ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
             index = ActivityDto.ActivityListResp.findType(activity, index);
