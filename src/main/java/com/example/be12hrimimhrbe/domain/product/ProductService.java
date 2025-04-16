@@ -27,7 +27,7 @@ public class ProductService {
         Company company = companyRepository.findById(dto.getCompanyIdx())
                 .orElseThrow(() -> new IllegalArgumentException("❗ 회사 정보를 찾을 수 없습니다."));
 
-        String imagePath = fileService.upload(imageFile);
+        String imagePath = "http://localhost:8080/img/" + fileService.upload(imageFile);
 
         Product product = Product.builder()
                 .productName(dto.getProductName())
@@ -41,6 +41,7 @@ public class ProductService {
                 .salesQty(dto.getSalesQty())
                 .imagePath(imagePath)
                 .company(company)
+                .serialNumber(dto.getSerialNumber())
                 .build();
 
         return productRepository.save(product).getIdx();
@@ -58,7 +59,8 @@ public class ProductService {
     /**
      * ✅ 제품 수정
      */
-    public void updateProduct(Long idx, ProductDto.ProductUpdateReq dto) {
+    public Long updateProduct(Long idx, ProductDto.ProductUpdateReq dto) {
+
         Product product = productRepository.findById(idx)
                 .orElseThrow(() -> new IllegalArgumentException("❗ 수정할 제품이 존재하지 않습니다."));
 
@@ -71,6 +73,10 @@ public class ProductService {
         product.setLowCarbonProcess(dto.getLowCarbonProcess());
         product.setUnitPrice(dto.getUnitPrice());
         product.setSalesQty(dto.getSalesQty());
+        product.setSerialNumber(dto.getSerialNumber());
+
+        return productRepository.save(product).getIdx();
+
     }
 
     /**
