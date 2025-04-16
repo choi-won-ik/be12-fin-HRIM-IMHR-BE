@@ -143,6 +143,7 @@ public class MemberService implements UserDetailsService {
         return new BaseResponse<>(BaseResponseMessage.MEMBER_DETAIL_SUCCESS, infoDetailResponse);
     }
 
+    @Transactional
     public boolean deleteMember(Member member) {
         List<Campaign> campaigns = campaignRepository.findAllByMember(member);
         List<FeedbackResponse> feedbackResponsesFrom = feedbackResponseRepository.findAllByFrom(member);
