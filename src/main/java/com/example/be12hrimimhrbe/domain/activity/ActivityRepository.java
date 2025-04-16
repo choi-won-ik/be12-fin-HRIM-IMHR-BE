@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
-    @EntityGraph(attributePaths = {"member"})
-    @Query("SELECT a FROM Activity a " +
-            "LEFT JOIN a.member m ")
-    Page<Activity> findByMember(Member member, Pageable pageable);
+//    @EntityGraph(attributePaths = {"member"})
+//    @Query("SELECT a FROM Activity a " +
+//            "LEFT JOIN a.member m ")
+    Page<Activity> findAllByMember(Member member, Pageable pageable);
 
     List<Activity> findAllByMember(Member member);
 

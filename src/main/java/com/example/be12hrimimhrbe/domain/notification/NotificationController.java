@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -27,10 +24,12 @@ import java.util.List;
 public class NotificationController {
     private final NotificationService notificationService;
 
-    @MessageMapping("/approve/{memberIdx}")
+    @MessageMapping("/notification/approve/{memberIdx}")
     @Operation(summary = "활동내역 승인", description = "활동내역 승인 알림 기능 입니다.")
-    public void approveMsg(
-            @Payload NotificationDto.ApproveMsgReq dto) {
+    public void approveMsg(@Payload NotificationDto.ApproveMsgReq dto) {
+        System.out.println(dto.getUrl());
+        System.out.println(dto.getMember().getIdx());
+
         notificationService.approveMsg(dto);
     }
 
