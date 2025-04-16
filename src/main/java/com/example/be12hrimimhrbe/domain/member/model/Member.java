@@ -86,6 +86,7 @@ public class Member {
                 .sScore(this.sScore)
                 .gScore(this.gScore)
                 .code(this.code)
+                .notificationCount(this.notificationCount)
                 .build();
     }
 
