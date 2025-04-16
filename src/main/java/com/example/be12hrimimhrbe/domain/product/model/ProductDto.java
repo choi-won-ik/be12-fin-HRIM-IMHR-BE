@@ -24,6 +24,7 @@ public class ProductDto {
         private Integer unitPrice;            // 단가
         private Integer salesQty;             // 판매 수량
         private Long companyIdx;              // 소속 회사 ID
+        private String serialNumber;          //시리얼 넘버 추가
     }
 
     /**
@@ -44,6 +45,7 @@ public class ProductDto {
         private Boolean lowCarbonProcess;
         private Integer unitPrice;
         private Integer salesQty;
+        private String serialNumber; //시리얼 넘버 추가
     }
 
     /**
@@ -67,6 +69,7 @@ public class ProductDto {
         private Integer salesQty;
         private String imagePath;
         private String companyName;
+        private String serialNumber; //시리얼 넘버 추가
 
         /**
          * 🔁 Product 엔티티로부터 DTO 변환
@@ -85,6 +88,7 @@ public class ProductDto {
                     .salesQty(product.getSalesQty())
                     .imagePath(product.getImagePath())
                     .companyName(product.getCompany().getName())
+                    .serialNumber(product.getSerialNumber())//DTO로 변환
                     .build();
         }
     }
