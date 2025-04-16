@@ -9,6 +9,7 @@ import com.example.be12hrimimhrbe.domain.product.model.ProductDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class EventService {
     private final EventRepository eventRepository;
     private final MemberRepository memberRepository;
 
+//  이벤트 생성
     @Transactional
     public EventDto.EventResponse eventRegister(Member member, EventDto.EventRequest dto) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
@@ -30,6 +32,7 @@ public class EventService {
         return EventDto.EventResponse.of(event);
     }
 
+//  이벤트 수정
     public EventDto.EventResponse updateEvent(Member member, Long idx, EventDto.EventRequest dto) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         Event event = eventRepository.findByCompanyIdxAndIdx(newMember.getCompany().getIdx(), idx);
@@ -39,29 +42,41 @@ public class EventService {
         return EventDto.EventResponse.of(updated);
     }
 
+//  페이지별 이벤트 리스트
+    public Page<EventDto.EventResponse> pageList(Member member, Pageable pageable) {
+        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+        Page<Event> events = eventRepository.findByCompanyIdx(newMember.getCompany().getIdx(), pageable);
+        return events.map(EventDto.EventResponse::of);
+    }
+
+//  월별 이벤트 리스트
     public List<EventDto.EventResponse> eventList(Member member, int year, int month) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
-        List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(newMember.getCompany().getIdx(), end, start);
-        System.out.println(events.toString());
+        List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual
+                (newMember.getCompany().getIdx(), end, start);
         return events.stream()
                 .map(EventDto.EventResponse::of)
                 .collect(Collectors.toList());
     }
 
+//  일별 이벤트 리스트
     public List<EventDto.EventResponse> readEventByDate(Member member, LocalDate date) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
-        List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(newMember.getCompany().getIdx(), date, date);
+        List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual
+                (newMember.getCompany().getIdx(), date, date);
         return events.stream().map(EventDto.EventResponse::of).toList();
     }
 
+//  이벤트 상세 조회
     public EventDto.EventResponse readEventDetail(Company company, Long idx) {
         Event event = eventRepository.findByIdxAndCompanyIdx(idx, company.getIdx()).orElseThrow();
         return EventDto.EventResponse.of(event);
     }
 
+//  이벤트 삭제
     public boolean deleteEvent(Member member, Long idx) {
         Member newm = memberRepository.findById(member.getIdx()).orElseThrow();
         Event event = eventRepository.findByIdxAndCompanyIdx(idx, newm.getCompany().getIdx()).orElseThrow(() ->  new IllegalArgumentException("해당 일정이 존재하지 않거나 권한이 없습니다."));
