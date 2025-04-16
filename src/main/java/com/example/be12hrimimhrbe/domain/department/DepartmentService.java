@@ -28,7 +28,7 @@ public class DepartmentService {
         List<Department> createDepartments = dto.toCreateEntity(member.getCompany());
         List<Department> deleteDepartments = dto.toDeleteEntity();
         departmentRepository.saveAll(createDepartments);
-        departmentRepository.deleteAll(deleteDepartments);
+        departmentRepository.deleteAllInBatch(deleteDepartments);
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_UPDATE_SUCCESS, "부서 설정 완료");
     }
 

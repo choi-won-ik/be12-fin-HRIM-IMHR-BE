@@ -35,6 +35,7 @@ public enum BaseResponseMessage {
     RESET_PASSWORD_UNMATCHED(false, 2403, "이전 비밀번호가 일치하지 않습니다."),
     RESET_PASSWORD_NULL(false, 2404, "uuid를 찾지 못했습니다."),
     MEMBER_DETAIL_SUCCESS(true, 2200, "회원 상세 정보 조회 성공"),
+    MEMBER_MODIFY_SUCCESS(true, 2200, "회원 정보 수정 성공"),
     MEMBER_SEARCH_NOT_FOUND(false, 2404, "해당 회원을 찾지 못했습니다."),
     MEMBER_RESIGN_SUCCESS(true, 2200, "회원 탈퇴 처리에 성공했습니다."),
     MYINFO_RETRIEVE_SUCCESS(true, 2200, "내 정보 조회에 성공했습니다."),

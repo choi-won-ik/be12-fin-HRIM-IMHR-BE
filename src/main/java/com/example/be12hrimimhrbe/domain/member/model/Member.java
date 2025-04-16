@@ -68,7 +68,7 @@ public class Member {
         this.status = Status.APPROVED;
     }
 
-    public Member updateMember(Member member) {
+public Member updateMember(Member member) {
         return Member.builder()
                 .idx(this.getIdx())
                 .memberId(this.memberId)
@@ -76,9 +76,9 @@ public class Member {
                 .email(this.email)
                 .password(member.getPassword() == null ? this.password : member.getPassword())
                 .joinedAt(this.joinedAt)
-                .isAdmin(this.isAdmin)
-                .hasProdAuth(this.hasProdAuth)
-                .hasPartnerAuth(this.hasPartnerAuth)
+                .isAdmin(member.getIsAdmin() == null? this.isAdmin : member.getIsAdmin())
+                .hasProdAuth(member.hasProdAuth == null? this.hasProdAuth : member.hasProdAuth)
+                .hasPartnerAuth(member.getHasPartnerAuth() == null? this.hasPartnerAuth : member.hasPartnerAuth)
                 .status(this.status)
                 .company(this.company)
                 .department(member.getDepartment() == null ? this.department : member.getDepartment())
