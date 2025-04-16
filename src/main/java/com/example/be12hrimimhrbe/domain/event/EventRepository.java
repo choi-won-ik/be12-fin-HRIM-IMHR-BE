@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-    List<Event> findByCompany_IdxAndStartDateBetween(Long companyIdx, LocalDate startDate, LocalDate endDate);
     Optional<Event> findByIdxAndCompanyIdx(Long idx, Long companyIdx);
     List<Event> findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Long companyIdx, LocalDate startDate, LocalDate endDate);
 
