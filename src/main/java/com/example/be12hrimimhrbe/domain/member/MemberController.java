@@ -8,6 +8,7 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,16 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Enumeration;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
 @Tag(name = "유저 관리 기능")
 public class MemberController {
-
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     @PostMapping("/find-id")
     @Operation(summary = "ID 찾기", description = "이름, 이메일을 입력하여 이메일로 아이디를 전송하는 기능입니다.")
@@ -72,7 +69,7 @@ public class MemberController {
             return ResponseEntity.status(HttpStatusCode.valueOf(403))
                     .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
         }
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
+        return ResponseEntity.ok().body(memberService.modifyMember(idx, dto));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

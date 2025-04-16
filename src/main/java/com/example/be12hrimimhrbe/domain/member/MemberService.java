@@ -150,11 +150,11 @@ public class MemberService implements UserDetailsService {
         List<FeedbackResponse> feedbackResponsesTo = feedbackResponseRepository.findAllByTo(member);
         List<Activity> activities = activityRepository.findAllByMember(member);
         List<Notification> notifications = notificationRepository.findAllByMember(member);
-        campaignRepository.deleteAll(campaigns);
-        feedbackResponseRepository.deleteAll(feedbackResponsesFrom);
-        feedbackResponseRepository.deleteAll(feedbackResponsesTo);
-        activityRepository.deleteAll(activities);
-        notificationRepository.deleteAll(notifications);
+        campaignRepository.deleteAllInBatch(campaigns);
+        feedbackResponseRepository.deleteAllInBatch(feedbackResponsesFrom);
+        feedbackResponseRepository.deleteAllInBatch(feedbackResponsesTo);
+        activityRepository.deleteAllInBatch(activities);
+        notificationRepository.deleteAllInBatch(notifications);
         memberRepository.delete(member);
         return true;
     }
@@ -324,5 +324,24 @@ public class MemberService implements UserDetailsService {
         Member otherMember = memberRepository.findById(otherIdx).orElse(null);
         return oriMember != null && otherMember != null
                 && oriMember.getCompany().getIdx().equals(otherMember.getCompany().getIdx());
+    }
+
+    @Transactional
+    public BaseResponse<String> modifyMember(Long idx, MemberDto.InfoDetailRequest dto) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member == null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        List<HrAuthority> authorities = hrAuthorityRepository.findAllByMember(member);
+        hrAuthorityRepository.deleteAllInBatch(authorities);
+        dto.getHrRoles().forEach(hrRole -> {
+            hrAuthorityRepository.save(HrAuthority.builder()
+                    .member(member)
+                    .department(departmentRepository.findById(Long.parseLong(hrRole)).orElseThrow())
+                    .build());
+        });
+        Member newMember = member.updateMember(dto.toEntity(idx));
+        memberRepository.save(newMember);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_MODIFY_SUCCESS, "회원 정보 수정 성공");
     }
 }
