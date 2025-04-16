@@ -44,8 +44,8 @@ public class EventService {
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
-        List<Event> events = eventRepository.findByCompany_IdxAndStartDateBetween(newMember.getCompany().getIdx(), start, end);
-
+        List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(newMember.getCompany().getIdx(), end, start);
+        System.out.println(events.toString());
         return events.stream()
                 .map(EventDto.EventResponse::of)
                 .collect(Collectors.toList());
@@ -62,8 +62,9 @@ public class EventService {
         return EventDto.EventResponse.of(event);
     }
 
-    public boolean deleteEvent(Company company, Long idx) {
-        Event event = eventRepository.findByIdxAndCompanyIdx(idx, company.getIdx()).orElseThrow(() ->  new IllegalArgumentException("해당 일정이 존재하지 않거나 권한이 없습니다."));
+    public boolean deleteEvent(Member member, Long idx) {
+        Member newm = memberRepository.findById(member.getIdx()).orElseThrow();
+        Event event = eventRepository.findByIdxAndCompanyIdx(idx, newm.getCompany().getIdx()).orElseThrow(() ->  new IllegalArgumentException("해당 일정이 존재하지 않거나 권한이 없습니다."));
         eventRepository.delete(event);
         return true;
     }

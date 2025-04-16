@@ -49,7 +49,7 @@ public class EventController {
 
     // [관리자](달력) 회사 일정 리스트
     @GetMapping("/month/list")
-    @Operation(summary = "기업 일정 리스트", description = "이번달 일정을 확인 합니다.")
+    @Operation(summary = "기업 일정 리스트", description = "원하는 달의 모든 일정을 확인 합니다.")
     public ResponseEntity<BaseResponse<List<EventDto.EventResponse>>> list(
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam int year,
@@ -84,9 +84,9 @@ public class EventController {
     @DeleteMapping("/delete/{idx}")
     @Operation(summary = "일정 제거", description = "선택 일정을 제거 합니다.")
     public ResponseEntity<BaseResponse<Boolean>> Delete(
-            @AuthenticationPrincipal Company company,
+            @AuthenticationPrincipal CustomUserDetails member,
             @PathVariable Long idx) {
-        boolean isDeleted = eventService.deleteEvent(company, idx);
+        boolean isDeleted = eventService.deleteEvent(member.getMember(), idx);
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DELETE_SUCCESS, isDeleted));
     }
 }
