@@ -27,8 +27,6 @@ public class NotificationController {
     @MessageMapping("/notification/approve/{memberIdx}")
     @Operation(summary = "활동내역 승인", description = "활동내역 승인 알림 기능 입니다.")
     public void approveMsg(@Payload NotificationDto.ApproveMsgReq dto) {
-        System.out.println(dto.getUrl());
-        System.out.println(dto.getMember().getIdx());
 
         notificationService.approveMsg(dto);
     }
