@@ -44,6 +44,9 @@ public enum BaseResponseMessage {
     MEMBER_REJECT_SUCCESS(true, 2200, "회원 반려 완료"),
     MEMBER_LIST_SUCCESS(true, 2200, "회원 전체 리스트 반환"),
 
+    // 협력사 기능(3000)
+    PARTNER_LIST_SUCCESS(true, 3200, "협력사 리스트 반환 성공"),
+
     // 캘린더 관리(이벤트 & 캠페인) 6000
     CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),
     CALENDAR_EVENT_UPDATE_SUCCESS(true,6201, "회사 일정 수정을 성공했습니다."),

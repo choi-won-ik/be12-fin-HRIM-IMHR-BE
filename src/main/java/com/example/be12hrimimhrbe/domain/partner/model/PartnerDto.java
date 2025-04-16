@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class PartnerDto {
+
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class PartnerListResp {
         @Schema(description = "회사명", example = "한화시스템")
@@ -19,5 +20,14 @@ public class PartnerDto {
         private Integer governanceScore;
         @Schema(description = "esg 총 점수", example = "74")
         private Integer totalScore;
+        public static PartnerListResp fromEntity(Partner partner) {
+            return PartnerListResp.builder()
+            .companyName(partner.getName())
+            .environmentScore(partner.getScore().getEnvironmentScore())
+            .socialScore(partner.getScore().getSocialScore())
+            .governanceScore(partner.getScore().getGovernanceScore())
+            .totalScore(partner.getScore().getTotalScore())
+            .build();
+        }
     }
 }
