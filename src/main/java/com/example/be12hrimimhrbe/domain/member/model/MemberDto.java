@@ -62,6 +62,7 @@ public class MemberDto {
         private Long idx;
         private String name;
         private String email;
+        private String memberId;
         private String company;
         private Department department;
         private Boolean isAdmin;
@@ -74,6 +75,7 @@ public class MemberDto {
             return InfoResponse.builder()
                     .idx(member.getIdx())
                     .name(member.getName())
+                    .memberId(member.getMemberId())
                     .email(member.getEmail())
                     .company(member.getCompany().getName())
                     .department(member.getDepartment())
