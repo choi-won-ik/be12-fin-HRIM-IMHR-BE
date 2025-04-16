@@ -21,7 +21,10 @@ public class Notification {
 
     private Boolean isRead;
 
+    private String title;
     private String content;
+
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "member_idx")

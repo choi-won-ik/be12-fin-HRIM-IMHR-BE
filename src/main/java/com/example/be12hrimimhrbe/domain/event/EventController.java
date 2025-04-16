@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -47,9 +48,22 @@ public class EventController {
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_UPDATE_SUCCESS, response));
     }
 
-    // [관리자](달력) 회사 일정 리스트
+    //  회사 페이지별 일정 리스트 - 캠페인 페이지
+    @GetMapping("/pageList")
+    @Operation(summary = "기업 페이지별 일정 리스트", description = "페이지별로 일정을 조회 합니다.")
+    public ResponseEntity<BaseResponse<Page<EventDto.EventResponse>>> pageList(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<EventDto.EventResponse> responses = eventService.pageList(member.getMember(), pageable);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, responses));
+    }
+
+    // 월별 일정 리스트
     @GetMapping("/month/list")
-    @Operation(summary = "기업 일정 리스트", description = "이번달 일정을 확인 합니다.")
+    @Operation(summary = "기업 월별 일정 리스트", description = "월별 일정을 확인합니다.")
     public ResponseEntity<BaseResponse<List<EventDto.EventResponse>>> list(
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam int year,
@@ -60,8 +74,9 @@ public class EventController {
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, responses));
     }
 
+//  일별 일정 리스트 조회
     @GetMapping("/date/list")
-    @Operation(summary = "특정 날짜의 일정 리스트 조회", description = "선택 날짜의 일정 리스트를 상세 조회 합니다.")
+    @Operation(summary = "일별 일정 리스트 조회", description = "선택 날짜의 일정 리스트를 조회 합니다.")
     public ResponseEntity<BaseResponse<List<EventDto.EventResponse>>> readEvent(
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam("date") @Parameter(description = "조회할 날짜 (yyyy-MM-dd)") String date
@@ -84,9 +99,9 @@ public class EventController {
     @DeleteMapping("/delete/{idx}")
     @Operation(summary = "일정 제거", description = "선택 일정을 제거 합니다.")
     public ResponseEntity<BaseResponse<Boolean>> Delete(
-            @AuthenticationPrincipal Company company,
+            @AuthenticationPrincipal CustomUserDetails member,
             @PathVariable Long idx) {
-        boolean isDeleted = eventService.deleteEvent(company, idx);
+        boolean isDeleted = eventService.deleteEvent(member.getMember(), idx);
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DELETE_SUCCESS, isDeleted));
     }
 }

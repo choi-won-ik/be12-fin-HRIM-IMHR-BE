@@ -164,4 +164,12 @@ public class MemberController {
     ) {
         return ResponseEntity.ok().body(new BaseResponse<>(null, null));
     }
+
+
+    @PostMapping("/info")
+    @Operation(summary = "내 정보 조회", description = "내 정보를 조회하는 기능입니다.")
+    public Member info(@AuthenticationPrincipal CustomUserDetails member) {
+        System.out.println(member.getMember().getName());
+        return member.getMember();
+    }
 }

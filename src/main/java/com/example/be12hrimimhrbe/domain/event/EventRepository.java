@@ -11,9 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-    List<Event> findByCompany_IdxAndStartDateBetween(Long companyIdx, LocalDate startDate, LocalDate endDate);
-    Optional<Event> findByIdxAndCompanyIdx(Long idx, Long companyIdx);
+    Page<Event> findByCompanyIdx(Long companyIdx, Pageable pageable);
+//  이벤트 월별, 일별 조회 쿼리
     List<Event> findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Long companyIdx, LocalDate startDate, LocalDate endDate);
 
+//  이벤트 수정 쿼리
     Event findByCompanyIdxAndIdx(Long companyIdx, Long idx);
+
+//  이벤트 상세 조회와 삭제 쿼리
+    Optional<Event> findByIdxAndCompanyIdx(Long idx, Long companyIdx);
 }
