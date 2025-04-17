@@ -55,6 +55,10 @@ public enum BaseResponseMessage {
     CALENDAR_EVENT_BY_DAY_LIST_SUCCESS(true,6200, "회사 일정 일별 리스트 반환"),
     CALENDAR_EVENT_DETAIL_SUCCESS(true,6200, "회사 일정 상세 조회에 성공했습니다."),
 
+    // 캘린더 - 캠페인 관리
+    CALENDAR_CAMPAIGN_REGISTER_SUCCESS(true, 6400, "캠페인 참가 사원 등록을 성공했습니다."),
+    CALENDAR_CAMPAIGN_UPDATE_SUCCESS(true, 6400, "캠페인 참가 사원 수정을 성공했습니다."),
+    CALENDAR_CAMPAIGN_DETAIL_SUCCESS(true, 6400, "캠페인 상세 조회를 성공했습니다."),
 
 
 
