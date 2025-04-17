@@ -34,6 +34,7 @@ public class Product {
 
     private String imagePath; // 이미지 경로
 
+
     private String serialNumber; // 시리얼 넘버
 
     // 연관된 회사 정보
