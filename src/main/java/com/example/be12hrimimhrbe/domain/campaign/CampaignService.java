@@ -28,8 +28,24 @@ public class CampaignService {
 
         List<Member> members = memberRepository.findAllById(req.getMemberIdxList());
         List<Campaign> toSave = new ArrayList<>();
-        List<Long> faild = new ArrayList<>();
+        List<Long> failed = new ArrayList<>();
+        for (Member member : members) {
+            try {
+                boolean alreadyExists = campaignRepository.existsByEventAndMember(event, member);
+                if (alreadyExists) continue;
 
-        return faild;
+                Campaign campaign = Campaign.builder()
+                        .event(event)
+                        .member(member)
+                        .build();
+
+                toSave.add(campaign);
+            } catch (Exception e) {
+                failed.add(member.getIdx());
+            }
+        }
+
+        campaignRepository.saveAll(toSave);
+        return failed;
     }
 }
