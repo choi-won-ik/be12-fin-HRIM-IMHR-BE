@@ -18,13 +18,17 @@ import java.util.Set;
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private Member member;
-    private Set<String> authoritySet;
+    private Set<String> hrAuthoritySet;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        authoritySet.forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority)));
+        String prefix = "ROLE_";
+        if(member.getIsAdmin()) authorities.add(new SimpleGrantedAuthority(prefix + "ADMIN"));
+        if(member.getHasProdAuth()) authorities.add(new SimpleGrantedAuthority(prefix + "PROD"));
+        if(member.getHasPartnerAuth()) authorities.add(new SimpleGrantedAuthority(prefix + "PARTNER"));
+        hrAuthoritySet.forEach(authority -> authorities.add(new SimpleGrantedAuthority(prefix + authority)));
         return authorities;
     }
 

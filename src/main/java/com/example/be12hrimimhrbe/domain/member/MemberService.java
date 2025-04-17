@@ -291,29 +291,22 @@ public class MemberService implements UserDetailsService {
         if(way.equals("0")) {
             Optional<Member> result = memberRepository.findByMemberIdAndIsAdminAndStatus(memberId, Boolean.TRUE, Member.Status.APPROVED);
             if (result.isPresent()) {
-                Set<String> authoritySet = new HashSet<>();
-                String prefix = "ROLE_";
-                authoritySet.add(prefix + "ADMIN");
-                if(result.get().getHasProdAuth()) authoritySet.add(prefix + "PROD");
-                if(result.get().getHasPartnerAuth()) authoritySet.add(prefix + "PARTNER");
+                Set<String> hrAuthoritySet = new HashSet<>();
                 List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(result.get());
                 for (HrAuthority hrAuthority : hrAuthorities) {
-                    authoritySet.add(prefix + hrAuthority.getDepartment().getIdx());
+                    hrAuthoritySet.add("" + hrAuthority.getDepartment().getIdx());
                 }
-                return new CustomUserDetails(result.get(), authoritySet);
+                return new CustomUserDetails(result.get(), hrAuthoritySet);
             }
         } else if (way.equals("1")) {
             Optional<Member> result = memberRepository.findByMemberIdAndIsAdminAndStatus(memberId, Boolean.FALSE, Member.Status.APPROVED);
             if (result.isPresent()) {
-                Set<String> authoritySet = new HashSet<>();
-                String prefix = "ROLE_";
-                if(result.get().getHasProdAuth()) authoritySet.add(prefix + "PROD");
-                if(result.get().getHasPartnerAuth()) authoritySet.add(prefix + "PARTNER");
+                Set<String> hrAuthoritySet = new HashSet<>();
                 List<HrAuthority> hrAuthorities = hrAuthorityRepository.findAllByMember(result.get());
                 for (HrAuthority hrAuthority : hrAuthorities) {
-                    authoritySet.add(prefix + hrAuthority.getDepartment().getIdx());
+                    hrAuthoritySet.add(""+ hrAuthority.getDepartment().getIdx());
                 }
-                return new CustomUserDetails(result.get(), authoritySet);
+                return new CustomUserDetails(result.get(), hrAuthoritySet);
             }
         }
         return null;

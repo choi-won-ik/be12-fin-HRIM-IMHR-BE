@@ -69,7 +69,10 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         Member member = cud.getMember();
         String jwtToken = JwtUtil.generateToken(member.getIdx(), member.getEmail(),
                 member.getMemberId(),
-                member.getName(), cud.getAuthoritySet());
+                member.getName(), cud.getHrAuthoritySet(), member.getIsAdmin(),
+                member.getHasProdAuth(), member.getHasPartnerAuth(),
+                member.getCompany(), member.getDepartment(), member.getStatus()
+        );
 
 
 //        일반적인 객체 생성 및 객체의 변수에 값을 설정하는 방법

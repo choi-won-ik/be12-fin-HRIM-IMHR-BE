@@ -1,6 +1,8 @@
 package com.example.be12hrimimhrbe.global.utils;
 
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import io.jsonwebtoken.Claims;
@@ -44,8 +46,14 @@ public class JwtUtil {
                                 .name(claims.get("memberName", String.class))
                                 .email(claims.get("memberEmail", String.class))
                                 .memberId(claims.get("memberId", String.class))
+                                .isAdmin(claims.get("isAdmin", Boolean.class))
+                                .hasProdAuth(claims.get("hasProdAuth", Boolean.class))
+                                .hasPartnerAuth(claims.get("hasPartnerAuth", Boolean.class))
+                                .company(Company.builder().idx(claims.get("companyIdx", Long.class)).build())
+                                .department(Department.builder().idx(claims.get("departmentIdx", Long.class)).build())
+                                .status(Member.Status.valueOf(claims.get("memberStatus", String.class)))
                                 .build())
-                    .authoritySet(new HashSet<String>(claims.get("authoritySet", List.class)))
+                    .hrAuthoritySet(new HashSet<String>(claims.get("hrAuthoritySet", List.class)))
                     .build();
 
         } catch (ExpiredJwtException e) {
@@ -55,13 +63,22 @@ public class JwtUtil {
     }
 
     public static String generateToken(Long memberIdx, String memberEmail,
-                                       String memberId, String memberName, Set<String> authoritySet) {
+                                       String memberId, String memberName, Set<String> hrAuthoritySet,
+                                       Boolean isAdmin, Boolean hasProdAuth, Boolean hasPartnerAuth,
+                                       Company company, Department department, Member.Status status
+                                       ) {
         Claims claims = Jwts.claims();
         claims.put("memberEmail", memberEmail);
         claims.put("memberIdx", memberIdx);
         claims.put("memberId", memberId);
         claims.put("memberName", memberName);
-        claims.put("authoritySet", authoritySet);
+        claims.put("hrAuthoritySet", hrAuthoritySet);
+        claims.put("isAdmin", isAdmin);
+        claims.put("hasProdAuth", hasProdAuth);
+        claims.put("hasPartnerAuth", hasPartnerAuth);
+        claims.put("companyIdx", company.getIdx());
+        claims.put("departmentIdx", department == null ? null : department.getIdx());
+        claims.put("memberStatus", status == null ? null : status.name());
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
