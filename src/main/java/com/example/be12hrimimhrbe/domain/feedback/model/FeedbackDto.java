@@ -18,6 +18,9 @@ public class FeedbackDto {
     public static class FeedbackTemplateResponse{
         private Long templateIdx;
         private List<FeedbackQuestionItem> questions;
+        public static FeedbackTemplateResponse from(Long templateIdx, List<FeedbackQuestionItem> questions){
+            return FeedbackTemplateResponse.builder().templateIdx(templateIdx).questions(questions).build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

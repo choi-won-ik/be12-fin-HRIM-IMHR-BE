@@ -47,6 +47,11 @@ public enum BaseResponseMessage {
     // 협력사 기능(3000)
     PARTNER_LIST_SUCCESS(true, 3200, "협력사 리스트 반환 성공"),
 
+    // 피드백 기능(4000)
+    FEEDBACK_TEMPLATE_CREATE_SUCCESS(true, 4200, "피드백 양식 생성 성공"),
+    FEEDBACK_TEMPLATE_RETRIEVE_SUCCESS(true, 4200, "피드백 양식 조회 성공"),
+    FEEDBACK_TEMPLATE_NOT_FOUND(false, 4404, "피드백 존재하지 않음"),
+
     // 캘린더 관리(이벤트 & 캠페인) 6000
     CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),
     CALENDAR_EVENT_UPDATE_SUCCESS(true,6201, "회사 일정 수정을 성공했습니다."),

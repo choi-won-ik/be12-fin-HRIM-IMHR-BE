@@ -23,8 +23,8 @@ public class FeedbackController {
 
     @GetMapping("/template")
     @Operation(summary = "피드백 양식 조회", description = "피드백 양식 조회 기능입니다.")
-    public ResponseEntity<BaseResponse<FeedbackDto.FeedbackTemplateResponse>> getFeedbackTemplate(@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(feedbackService.getFeedbackTemplate(member));
+    public ResponseEntity<BaseResponse<FeedbackDto.FeedbackTemplateResponse>> getFeedbackTemplate(@AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(feedbackService.getFeedbackTemplate(member.getMember()));
     }
 
     @PostMapping("/answer/{toMemberId}")

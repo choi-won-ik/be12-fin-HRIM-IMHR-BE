@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -19,6 +20,7 @@ public class FeedbackTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
     private String title;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "company_idx")
