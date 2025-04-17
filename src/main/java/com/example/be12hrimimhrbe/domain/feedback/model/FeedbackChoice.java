@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Builder
@@ -18,6 +20,7 @@ public class FeedbackChoice {
 
     @ManyToOne
     @JoinColumn(name = "question_idx")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private FeedbackQuestion question;
 
     private String choiceText;

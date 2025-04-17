@@ -31,15 +31,33 @@ public class FeedbackDto {
     public static class FeedbackQuestionItem {
         private Long questionIdx;
         private String question;
-        private Integer type;
+        private FeedbackQuestion.QuestionType type;
         private Integer sortOrder;
         private List<FeedbackChoiceItem> choices;
+
+        public FeedbackQuestion toEntity(FeedbackTemplate template) {
+            return FeedbackQuestion.builder()
+                    .template(template)
+                    .questionText(question)
+                    .type(type)
+                    .sortOrder(sortOrder)
+                    .isRequired(true)
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class FeedbackChoiceItem {
         private Long choiceIdx;
         private String text;
+
+        public FeedbackChoice toEntity(FeedbackQuestion question) {
+            return FeedbackChoice.builder()
+                    .question(question)
+                    .choiceText(text)
+                    .value(0) // 기본값 설정
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

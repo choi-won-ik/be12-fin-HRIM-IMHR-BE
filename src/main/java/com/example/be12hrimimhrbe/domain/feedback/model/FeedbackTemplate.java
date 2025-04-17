@@ -1,13 +1,13 @@
 package com.example.be12hrimimhrbe.domain.feedback.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.be12hrimimhrbe.domain.company.model.Company;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -19,4 +19,11 @@ public class FeedbackTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
     private String title;
+
+    @ManyToOne
+    @JoinColumn(name = "company_idx")
+    private Company company;
+
+    @OneToMany(mappedBy = "template")
+    private List<FeedbackQuestion> questions;
 }
