@@ -14,6 +14,7 @@ import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,16 +91,21 @@ public class FeedbackService {
         });
 
         // Add new questions
-        dto.getInsertQuestions().forEach(question -> {
-            var newQuestion = feedbackQuestionRepository.save(question.toEntity(template));
-            question.getChoices().forEach(choice -> {
-                feedbackChoiceRepository.save(choice.toEntity(newQuestion));
+        if(!dto.getInsertQuestions().isEmpty()) {
+            dto.getInsertQuestions().forEach(question -> {
+                FeedbackQuestion newQuestion = feedbackQuestionRepository.save(question.toEntity(template));
+                if(question.getChoices() != null) {
+                    question.getChoices().forEach(choice -> {
+                        feedbackChoiceRepository.save(choice.toEntity(newQuestion));
+                    });
+                }
             });
-        });
+        }
 
         return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "Template modified successfully");
     }
 
+    @Transactional
     public BaseResponse<String> createFeedbackTemplate(Member customMember, FeedbackDto.FeedbackModifyRequest dto) {
         Member member = memberRepository.findById(customMember.getIdx()).orElse(null);
         if(member == null) {
@@ -108,14 +114,20 @@ public class FeedbackService {
         Company company = member.getCompany();
         FeedbackTemplate template = FeedbackTemplate.builder()
                 .company(company)
+                .createdAt(LocalDateTime.now())
                 .build();
         feedbackTemplateRepository.save(template);
-        dto.getInsertQuestions().forEach(question -> {
-            var newQuestion = feedbackQuestionRepository.save(question.toEntity(template));
-            question.getChoices().forEach(choice -> {
-                feedbackChoiceRepository.save(choice.toEntity(newQuestion));
+        if(!dto.getInsertQuestions().isEmpty()) {
+            dto.getInsertQuestions().forEach(question -> {
+                FeedbackQuestion newQuestion = feedbackQuestionRepository.save(question.toEntity(template));
+                if(question.getChoices() != null) {
+                    question.getChoices().forEach(choice -> {
+                        feedbackChoiceRepository.save(choice.toEntity(newQuestion));
+                    });
+                }
             });
-        });
+        }
+
         return new BaseResponse<>(BaseResponseMessage.FEEDBACK_TEMPLATE_CREATE_SUCCESS, "피드백 양식 생성 성공");
     }
 }
