@@ -10,6 +10,7 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +27,17 @@ public class FeedbackService {
     private final FeedbackResponseRepository feedbackResponseRepository;
     private final MemberRepository memberRepository;
 
-    public BaseResponse<FeedbackDto.FeedbackTemplateResponse> getFeedbackTemplate(Member member) {
-        FeedbackTemplate template = feedbackTemplateRepository.findByCompany(member.getCompany())
-                .orElseThrow(() -> new RuntimeException("Feedback template not found"));
-
+    public BaseResponse<FeedbackDto.FeedbackTemplateResponse> getFeedbackTemplate(Member customMember) {
+        Member member = memberRepository.findById(customMember.getIdx()).orElse(null);
+        if (member == null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        List<FeedbackTemplate> templates = feedbackTemplateRepository
+                                            .findAllByCompanyOrderByCreatedAtDesc(member.getCompany(), Limit.of(1));
+        if (templates.isEmpty()) {
+            return new BaseResponse<>(BaseResponseMessage.FEEDBACK_TEMPLATE_NOT_FOUND, null);
+        }
+        FeedbackTemplate template = templates.get(0);
         List<FeedbackDto.FeedbackQuestionItem> questions = template.getQuestions().stream()
                 .map(question -> FeedbackDto.FeedbackQuestionItem.builder()
                         .questionIdx(question.getIdx())
@@ -45,11 +53,8 @@ public class FeedbackService {
                         .build())
                 .collect(Collectors.toList());
 
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS,
-                FeedbackDto.FeedbackTemplateResponse.builder()
-                        .templateIdx(template.getIdx())
-                        .questions(questions)
-                        .build());
+        return new BaseResponse<>(BaseResponseMessage.FEEDBACK_TEMPLATE_RETRIEVE_SUCCESS,
+                FeedbackDto.FeedbackTemplateResponse.from(template.getIdx(), questions));
     }
 
     @Transactional
@@ -111,6 +116,6 @@ public class FeedbackService {
                 feedbackChoiceRepository.save(choice.toEntity(newQuestion));
             });
         });
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "Template created successfully");
+        return new BaseResponse<>(BaseResponseMessage.FEEDBACK_TEMPLATE_CREATE_SUCCESS, "피드백 양식 생성 성공");
     }
 }
