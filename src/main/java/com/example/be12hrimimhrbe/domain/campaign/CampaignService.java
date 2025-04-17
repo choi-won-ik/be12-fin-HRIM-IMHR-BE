@@ -2,11 +2,11 @@ package com.example.be12hrimimhrbe.domain.campaign;
 
 import com.example.be12hrimimhrbe.domain.campaign.model.Campaign;
 import com.example.be12hrimimhrbe.domain.campaign.model.CampaignDto;
-import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
 import com.example.be12hrimimhrbe.domain.event.EventRepository;
 import com.example.be12hrimimhrbe.domain.event.model.Event;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
+import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CampaignService {
     private final CampaignRepository campaignRepository;
-    private final CompanyRepository companyRepository;
     private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
 
@@ -47,5 +46,19 @@ public class CampaignService {
 
         campaignRepository.saveAll(toSave);
         return failed;
+    }
+
+    @Transactional
+    public List<MemberDto.MemberShortResponse> memberList(Long eventIdx) {
+        List<Campaign> campaigns = campaignRepository.findAllByEventIdx(eventIdx);
+        List<MemberDto.MemberShortResponse> members = new ArrayList<>();
+
+        for (Campaign campaign : campaigns) {
+            Member campaginmember = memberRepository.findByIdx(campaign.getMember().getIdx());
+            if (campaginmember != null) {
+                members.add(MemberDto.MemberShortResponse.fromEntity(campaginmember));
+            }
+        }
+        return members;
     }
 }

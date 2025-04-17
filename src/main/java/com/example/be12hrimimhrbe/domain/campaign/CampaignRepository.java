@@ -10,4 +10,5 @@ import java.util.List;
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     List<Campaign> findAllByMember(Member member);
     Boolean existsByEventAndMember(Event event, Member member);
+    List<Campaign> findAllByEventIdx(Long eventIdx);
 }
