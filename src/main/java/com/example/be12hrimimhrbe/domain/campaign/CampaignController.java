@@ -25,7 +25,7 @@ public class CampaignController {
             @RequestBody CampaignDto.CampaignRequest request
     ) {
         List<Long> failedList = campaignService.register(request);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.))
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_REGISTER_SUCCESS, failedList));
     }
 
 
