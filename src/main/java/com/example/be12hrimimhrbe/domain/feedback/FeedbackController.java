@@ -46,7 +46,7 @@ public class FeedbackController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/modify")
+    @PostMapping("/create")
     @Operation(summary = "피드백 양식 생성", description = "피드백 양식을 생성하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> createFeedback(@AuthenticationPrincipal CustomUserDetails member,
                                                                @RequestBody FeedbackDto.FeedbackModifyRequest dto) {
