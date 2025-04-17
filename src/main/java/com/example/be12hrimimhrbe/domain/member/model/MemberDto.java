@@ -299,4 +299,34 @@ public class MemberDto {
         private String endMonth;
     }
 
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class TokenInfoResponse {
+        private Long idx;
+        private String name;
+        private String memberId;
+        private String email;
+        private Boolean isAdmin;
+        private Boolean hasPartnerAuth;
+        private Boolean hasProdAuth;
+        private Member.Status status;
+        private Long companyIdx;
+        private Long departmentIdx;
+        private List<String> hrAuthorities;
+        public static TokenInfoResponse fromMember(Member member, List<String> hrAuthorities) {
+            return TokenInfoResponse.builder()
+                    .idx(member.getIdx())
+                    .name(member.getName())
+                    .memberId(member.getMemberId())
+                    .email(member.getEmail())
+                    .isAdmin(member.getIsAdmin())
+                    .hasPartnerAuth(member.getHasPartnerAuth())
+                    .hasProdAuth(member.getHasProdAuth())
+                    .status(member.getStatus())
+                    .companyIdx(member.getCompany().getIdx())
+                    .departmentIdx(member.getDepartment().getIdx())
+                    .hrAuthorities(hrAuthorities)
+                    .build();
+        }
+    }
+
 }
