@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.be12hrimimhrbe.domain.partner.model.Partner;
 
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
-    List<Partner> findAllById(Long idx);
-} 
+    List<Partner> findAllByIdx(Long idx);
+}

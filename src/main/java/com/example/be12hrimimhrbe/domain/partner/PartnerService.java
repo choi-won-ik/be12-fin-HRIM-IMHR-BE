@@ -17,7 +17,7 @@ public class PartnerService {
     private final PartnerRepository partnerRepository;
 
     public BaseResponse<List<PartnerDto.PartnerListResp>> getPartnerList(Long idx) {
-        List<Partner> partners = partnerRepository.findAllById(idx);
+        List<Partner> partners = partnerRepository.findAllByIdx(idx);
         return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_SUCCESS, 
             partners.stream().map(PartnerDto.PartnerListResp::fromEntity).collect(Collectors.toList())
         );
