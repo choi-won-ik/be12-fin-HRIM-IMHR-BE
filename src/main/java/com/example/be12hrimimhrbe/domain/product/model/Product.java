@@ -34,8 +34,9 @@ public class Product {
 
     private String imagePath; // 이미지 경로
 
-
     private String serialNumber; // 시리얼 넘버
+
+    //private String growthRate;	//증가율
 
     // 연관된 회사 정보
     @ManyToOne(fetch = FetchType.LAZY)

@@ -75,6 +75,7 @@ public class ProductDto {
         private String imagePath;            //이미지 경로
         private Long companyIdx;              // 소속 회사 ID
         private String serialNumber;          //시리얼 넘버 추가
+        private String growthRate;	          //증가율
 
         /**
          * 🔁 Product 엔티티로부터 DTO 변환
