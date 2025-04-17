@@ -73,4 +73,12 @@ public class ActivityController {
     ) {
         return ResponseEntity.ok().body(activityService.ativityApprovalOppose(member.getMember(),idx));
     }
+
+    @DeleteMapping("/delete/{idx}")
+    @Operation(summary = "ESG활동 삭제", description = "나의 ESG활동을 삭제합니다.")
+    public ResponseEntity<BaseResponse<Long>> activityDelete(
+            @PathVariable Long idx,@AuthenticationPrincipal CustomUserDetails member
+    ) {
+        return ResponseEntity.ok().body(activityService.ativityDelete(member.getMember(),idx));
+    }
 }
