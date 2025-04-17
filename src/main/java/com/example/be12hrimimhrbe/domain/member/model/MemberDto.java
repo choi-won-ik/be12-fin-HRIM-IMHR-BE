@@ -70,7 +70,7 @@ public class MemberDto {
         private Boolean hasPartnerAuth;
         private List<String> hrRoles;
         private Member.Status status;
-        private LocalDateTime joinedAt;
+        private LocalDate joinedAt;
         public static InfoResponse fromEntity(Member member, List<String> roles) {
             return InfoResponse.builder()
                     .idx(member.getIdx())
@@ -84,7 +84,7 @@ public class MemberDto {
                     .hasPartnerAuth(member.getHasPartnerAuth())
                     .hrRoles(roles)
                     .status(member.getStatus())
-                    .joinedAt(member.getJoinedAt())
+                    .joinedAt(member.getJoinedAt().toLocalDate())
                     .build();
         }
     }
@@ -98,9 +98,22 @@ public class MemberDto {
         }
     }
 
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class InfoDetailRequest {
-        private Long departmentIdx;
-        private List<String> roles;
+        private Department department;
+        private Boolean isAdmin;
+        private Boolean hasProdAuth;
+        private Boolean hasPartnerAuth;
+        private List<String> hrRoles;
+        public Member toEntity(Long idx) {
+            return Member.builder()
+                    .idx(idx)
+                    .isAdmin(isAdmin)
+                    .hasProdAuth(hasProdAuth)
+                    .hasPartnerAuth(hasPartnerAuth)
+                    .department(department)
+                    .build();
+        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor

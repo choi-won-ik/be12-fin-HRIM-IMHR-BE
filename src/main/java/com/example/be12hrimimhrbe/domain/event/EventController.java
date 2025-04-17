@@ -89,10 +89,10 @@ public class EventController {
     @GetMapping("/eventDetail/{idx}")
     @Operation(summary = "특정 일정 상세 조회", description = "선택 일정을 상세 조회 합니다.")
     public ResponseEntity<BaseResponse<EventDto.EventResponse>> readEventDetail(
-            @AuthenticationPrincipal Company company,
+            @AuthenticationPrincipal CustomUserDetails member,
             @PathVariable Long idx
     ) {
-        EventDto.EventResponse response = eventService.readEventDetail(company, idx);
+        EventDto.EventResponse response = eventService.readEventDetail(member.getMember(), idx);
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS, response));
     }
 
