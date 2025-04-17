@@ -14,6 +14,7 @@ public class ProductDto {
     @AllArgsConstructor
     @Builder
     public static class ProductRegistReq {
+        private Long idx;                     //제품 idx
         private String productName;           // 제품명
         private Boolean ecoCertified;         // 환경 인증 여부
         private String certificationType;     // 인증 종류
@@ -23,6 +24,7 @@ public class ProductDto {
         private Boolean lowCarbonProcess;     // 탄소 저감형 공정 여부
         private Integer unitPrice;            // 단가
         private Integer salesQty;             // 판매 수량
+        private String imagePath;            //이미지 경로
         private Long companyIdx;              // 소속 회사 ID
         private String serialNumber;          //시리얼 넘버 추가
     }
@@ -36,16 +38,19 @@ public class ProductDto {
     @AllArgsConstructor
     @Builder
     public static class ProductUpdateReq {
-        private String productName;
-        private Boolean ecoCertified;
-        private String certificationType;
-        private String energyGrade;
-        private Boolean recyclable;
-        private Boolean bioMaterial;
-        private Boolean lowCarbonProcess;
-        private Integer unitPrice;
-        private Integer salesQty;
-        private String serialNumber; //시리얼 넘버 추가
+        private Long idx;                     //제품 idx
+        private String productName;           // 제품명
+        private Boolean ecoCertified;         // 환경 인증 여부
+        private String certificationType;     // 인증 종류
+        private String energyGrade;           // 에너지 효율 등급
+        private Boolean recyclable;           // 재활용 가능 여부
+        private Boolean bioMaterial;          // 생분해성 소재 여부
+        private Boolean lowCarbonProcess;     // 탄소 저감형 공정 여부
+        private Integer unitPrice;            // 단가
+        private Integer salesQty;             // 판매 수량
+        private String imagePath;            //이미지 경로
+        private Long companyIdx;              // 소속 회사 ID
+        private String serialNumber;          //시리얼 넘버 추가
     }
 
     /**
@@ -57,26 +62,26 @@ public class ProductDto {
     @AllArgsConstructor
     @Builder
     public static class ProductDetailResp {
-        private Long productIdx;
-        private String productName;
-        private Boolean ecoCertified;
-        private String certificationType;
-        private String energyGrade;
-        private Boolean recyclable;
-        private Boolean bioMaterial;
-        private Boolean lowCarbonProcess;
-        private Integer unitPrice;
-        private Integer salesQty;
-        private String imagePath;
-        private String companyName;
-        private String serialNumber; //시리얼 넘버 추가
+        private Long idx;                     //제품 idx
+        private String productName;           // 제품명
+        private Boolean ecoCertified;         // 환경 인증 여부
+        private String certificationType;     // 인증 종류
+        private String energyGrade;           // 에너지 효율 등급
+        private Boolean recyclable;           // 재활용 가능 여부
+        private Boolean bioMaterial;          // 생분해성 소재 여부
+        private Boolean lowCarbonProcess;     // 탄소 저감형 공정 여부
+        private Integer unitPrice;            // 단가
+        private Integer salesQty;             // 판매 수량
+        private String imagePath;            //이미지 경로
+        private Long companyIdx;              // 소속 회사 ID
+        private String serialNumber;          //시리얼 넘버 추가
 
         /**
          * 🔁 Product 엔티티로부터 DTO 변환
          */
         public static ProductDetailResp from(Product product) {
             return ProductDetailResp.builder()
-                    .productIdx(product.getIdx())
+                    .idx(product.getIdx())
                     .productName(product.getProductName())
                     .ecoCertified(product.getEcoCertified())
                     .certificationType(product.getCertificationType())
@@ -87,7 +92,7 @@ public class ProductDto {
                     .unitPrice(product.getUnitPrice())
                     .salesQty(product.getSalesQty())
                     .imagePath(product.getImagePath())
-                    .companyName(product.getCompany().getName())
+                    .companyIdx(product.getCompany().getIdx())
                     .serialNumber(product.getSerialNumber())//DTO로 변환
                     .build();
         }
