@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class FeedbackQuestion {
 
     @ManyToOne
     @JoinColumn(name = "template_idx")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private FeedbackTemplate template;
 
     @OneToMany(mappedBy = "question")
