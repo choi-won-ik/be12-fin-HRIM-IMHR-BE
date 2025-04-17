@@ -98,6 +98,7 @@ public class ActivityService {
 
     }
 
+    @Transactional
     public BaseResponse<Activity> Regist(
             ActivityDto.ActivityRegistReq dto, MultipartFile imgFile, Member member) {
         Activity activity = null;
@@ -140,39 +141,60 @@ public class ActivityService {
                     .status(Activity.Status.PENDING)
                     .build();
         }
+        try{
+            Activity result=activityRepository.save(activity);
+            return new BaseResponse<>(BaseResponseMessage.ACTIVITY_REGIST_SUCCESS, result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, activityRepository.save(activity));
     }
 
     @Transactional
-    public BaseResponse<Long> ativityApprovalAgree(Long idx) {
+    public BaseResponse<Long> ativityApprovalAgree(Member member,Long idx) {
         Activity activity = activityRepository.findById(idx).get();
-
-        if (activity.getStatus().equals(Activity.Status.PENDING)) {
-            activity = new Activity(activity, Activity.Status.APPROVED);
-            try {
-                Activity result = activityRepository.save(activity);
-                return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result.getIdx());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+        
+        if(member.getIsAdmin()){
+            // 활동을 승인 함
+            if (activity.getStatus().equals(Activity.Status.PENDING)) {
+                activity = new Activity(activity, Activity.Status.APPROVED);
+                try {
+                    Activity result = activityRepository.save(activity);
+                    return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result.getIdx());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
+            // 활동이 이미 처리 되어 있음
+            return new BaseResponse<>(BaseResponseMessage.MY_ACTIVITY_PROCESSED);
         }
-        return new BaseResponse<>(BaseResponseMessage.MY_ACTIVITY_PROCESSED);
+        // 활동 처리 권한이 없음
+        return new BaseResponse<>(BaseResponseMessage.ACTIVITY_APPROVAL_FALSE);
     }
 
     @Transactional
-    public BaseResponse<Long> ativityApprovalOppose(Long idx) {
+    public BaseResponse<Long> ativityApprovalOppose(Member member,Long idx) {
         Activity activity = activityRepository.findById(idx).get();
-        if (activity.getStatus().equals(Activity.Status.PENDING)) {
-            activity = new Activity(activity, Activity.Status.REJECTED);
-            try {
-                Activity result = activityRepository.save(activity);
-                return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result.getIdx());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+        if(member.getIsAdmin()){
+            // 활동을 반려함
+            if (activity.getStatus().equals(Activity.Status.PENDING)) {
+                activity = new Activity(activity, Activity.Status.REJECTED);
+                try {
+                    Activity result = activityRepository.save(activity);
+                    return new BaseResponse<>(BaseResponseMessage.ACTIVITY_APPROVAL_OPPOSE, result.getIdx());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            // 이미 활동 처리가 되었음.
+            else{
+                return new BaseResponse<>(BaseResponseMessage.MY_ACTIVITY_PROCESSED);
             }
         }
-        return new BaseResponse<>(BaseResponseMessage.MY_ACTIVITY_PROCESSED);
+        // 활동 처리 권한이 없음
+        else{
+            return new BaseResponse<>(BaseResponseMessage.ACTIVITY_APPROVAL_FALSE);
+        }
     }
 
 }
