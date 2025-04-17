@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,39 +35,44 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
     private final LocalImageService localImageService;
     private final FileService fileService;
+    private final MemberRepository memberRepository;
     @Value("${file.upload-path}")
     private String uploadPath;
 
-    public BaseResponse<List<ActivityDto.ActivityListResp>> getMyActivity(Member member, int page, int size) {
+    public BaseResponse<List<ActivityDto.ActivityListResp>> activityList(Member member, int page, int size) {
+        Member user = memberRepository.findById(member.getIdx()).get();
+
         List<ActivityDto.ActivityListResp> result = new ArrayList<>();
-//        if(member.getRole==Member.Role.MANAGER){
-//            List<ActivityDto.ActivityListResp> result = new ArrayList<>();
-//            List<Activity> list = activityRepository.findAllAndMember();
-//            for (Activity activity : list) {
-//
-//        ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity,activity.getMember());
-//        index = ActivityDto.ActivityListResp.findType(activity,index);
-//        index = ActivityDto.ActivityListResp.findStatus(activity,index);
-//        result.add(index);
-//            }
-//
-//
-//            return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
-//
-//        }else{
-//
-        Page<Activity> list = activityRepository.findAllByMember(member, PageRequest.of(page, size));
-        for (Activity activity : list) {
-            ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
-            index = ActivityDto.ActivityListResp.findType(activity, index);
-            index = ActivityDto.ActivityListResp.findStatus(activity, index);
 
-            result.add(index);
+        // 관리자가 활동 리스트 확인
+        if (user.getIsAdmin()) {
+            Pageable pageable=PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
+            Page<Activity> list = activityRepository.findAllAndMember(pageable);
+            for (Activity activity : list) {
+                ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, activity.getMember());
+                // 프론트에 출력되는 이름 변경
+                index = ActivityDto.ActivityListResp.findType(activity, index);
+                index = ActivityDto.ActivityListResp.findStatus(activity, index);
+
+                result.add(index);
+            }
+
+            return new BaseResponse<>(BaseResponseMessage.ADMIN_ACTIVITYLIST_FIND, result);
+
         }
+        // 개인 유저가 활동 리스트 확인
+        else {
+            Page<Activity> list = activityRepository.findAllByMember(user, PageRequest.of(page, size));
+            for (Activity activity : list) {
+                ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, user);
+                // 프론트에 출력되는 이름 변경
+                index = ActivityDto.ActivityListResp.findType(activity, index);
+                index = ActivityDto.ActivityListResp.findStatus(activity, index);
 
-
-//        }
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
+                result.add(index);
+            }
+        }
+        return new BaseResponse<>(BaseResponseMessage.USER_ACTIVITYLIST_FIND, result);
     }
 
     public BaseResponse<ActivityDto.ActivityItemResponse> getDetail(Long idx, Member member) {

@@ -3,6 +3,7 @@ package com.example.be12hrimimhrbe.domain.activity;
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,14 +20,16 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     List<Activity> findAllByMember(Member member);
 
-//    @EntityGraph(attributePaths = {"member"})
-//    @Query("SELECT a FROM Activity a " +
-//            "LEFT JOIN a.member m ")
-//    List<Activity> findAllAndMember();
+    @EntityGraph(attributePaths = {"member"})
+    @Query("SELECT a FROM Activity a " +
+            "LEFT JOIN a.member m ")
+    Page<Activity> findAllAndMember(Pageable pageable);
 
     @EntityGraph(attributePaths = {"member"})
     @Query("SELECT a FROM Activity a " +
             "LEFT JOIN a.member m " +
             "where a.idx= :idx")
     Activity findByIdAndMember(Long idx);
+
+
 }
