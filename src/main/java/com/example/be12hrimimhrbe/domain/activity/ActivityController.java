@@ -60,13 +60,17 @@ public class ActivityController {
 
     @GetMapping("/ativityApproval/agree/{idx}")
     @Operation(summary = "ESG활동 승인", description = "직원 ESG활동을 승인 합니다.")
-    public ResponseEntity<BaseResponse<Long>> ativityApprovalAgree(@PathVariable Long idx) {
-        return ResponseEntity.ok().body(activityService.ativityApprovalAgree(idx));
+    public ResponseEntity<BaseResponse<Long>> ativityApprovalAgree(
+            @PathVariable Long idx,@AuthenticationPrincipal CustomUserDetails member
+    ) {
+        return ResponseEntity.ok().body(activityService.ativityApprovalAgree(member.getMember(),idx));
     }
 
     @GetMapping("/ativityApproval/oppose/{idx}")
     @Operation(summary = "ESG활동 반려", description = "직원 ESG활동을 반려 합니다.")
-    public ResponseEntity<BaseResponse<Long>> ativityApprovalOppose(@PathVariable Long idx) {
-        return ResponseEntity.ok().body(activityService.ativityApprovalOppose(idx));
+    public ResponseEntity<BaseResponse<Long>> ativityApprovalOppose(
+            @PathVariable Long idx,@AuthenticationPrincipal CustomUserDetails member
+    ) {
+        return ResponseEntity.ok().body(activityService.ativityApprovalOppose(member.getMember(),idx));
     }
 }
