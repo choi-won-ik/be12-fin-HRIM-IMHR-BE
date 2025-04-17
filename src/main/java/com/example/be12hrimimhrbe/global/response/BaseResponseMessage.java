@@ -63,6 +63,8 @@ public enum BaseResponseMessage {
 
 
     // 활동 관리 7000
+    ADMIN_ACTIVITYLIST_FIND(true,7001,"관리자가 활동 리스트를 확인합니다."),
+    USER_ACTIVITYLIST_FIND(true,7002,"개인 유저가 활동 리스트를 확인합니다."),
     MY_ACTIVITY_PROCESSED(false,7004,"이미 처리된 활동입니다."),
 
     // 회사 점수 8000

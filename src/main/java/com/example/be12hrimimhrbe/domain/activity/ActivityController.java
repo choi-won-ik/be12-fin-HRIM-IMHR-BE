@@ -3,6 +3,7 @@ package com.example.be12hrimimhrbe.domain.activity;
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
+import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,37 +24,31 @@ import java.util.List;
 @Tag(name = "직원 활동내역 관리 기능")
 public class ActivityController {
     private final ActivityService activityService;
-    private final MemberRepository memberRepository;
 
-    @GetMapping("/myactivity")
+    @GetMapping("/activityList")
     @Operation(summary = "ESG활동 내역 조회", description = "ESG활동 내역을 조회하는 기능 입니다.")
-    public ResponseEntity<BaseResponse<List<ActivityDto.ActivityListResp>>> getMyActivity(
-//            , @AuthenticationPrincipal Member member
-            int page, int size
+    public ResponseEntity<BaseResponse<List<ActivityDto.ActivityListResp>>> activityList(
+            @AuthenticationPrincipal CustomUserDetails member, int page, int size
     ) {
-        Member member = memberRepository.findById(1L).get();
-        return ResponseEntity.ok().body(activityService.getMyActivity(member,page,size));
+        return ResponseEntity.ok().body(activityService.activityList(member.getMember(), page, size));
     }
 
     @GetMapping("/detail/{idx}")
     @Operation(summary = "ESG활동 상세 페이지 조회", description = "ESG활동 상세 조회 기능 입니다.")
-    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(@PathVariable Long idx
-//            , @AuthenticationPrincipal Member member
+    public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(
+            @PathVariable Long idx,@AuthenticationPrincipal CustomUserDetails member
     ) {
-        Member member = memberRepository.findById(1L).get();
         System.out.println("동작");
-        return ResponseEntity.ok().body(activityService.getDetail(idx, member));
+        return ResponseEntity.ok().body(activityService.getDetail(idx, member.getMember()));
     }
 
     @PostMapping("/regist")
     @Operation(summary = "ESG활동 등록", description = "ESG활동 등록 기능입니다.")
     public ResponseEntity<BaseResponse<Activity>> activityRegist(
             @RequestPart("dto") @Valid ActivityDto.ActivityRegistReq dto, @RequestPart(value = "file", required = false) MultipartFile imgFile
-//            ,@AuthenticationPrincipal Member member
+            ,@AuthenticationPrincipal CustomUserDetails member
     ) {
-        Member member = memberRepository.findById(1L).get();
-
-        return ResponseEntity.ok().body(activityService.Regist(dto, imgFile, member));
+        return ResponseEntity.ok().body(activityService.Regist(dto, imgFile, member.getMember()));
     }
 
 //    @GetMapping("/ativityApproval/{idx}")
