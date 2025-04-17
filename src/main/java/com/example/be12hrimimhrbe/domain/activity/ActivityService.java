@@ -133,7 +133,7 @@ public class ActivityService {
             activity = Activity.builder()
                     .member(member)
                     .type(activityType)
-                    .title(null)
+                    .title(dto.getTitle())
                     .description(dto.getDescription())
                     .fileUrl(uploadFilePath)
                     .performedAt(dto.getPerformance())
@@ -197,4 +197,19 @@ public class ActivityService {
         }
     }
 
+    @Transactional
+    public BaseResponse<Long> ativityDelete(Member member,Long idx) {
+        Activity activity = activityRepository.findByIdAndMember(idx);
+        if(member.getIdx()==activity.getMember().getIdx()){
+            try {
+                activityRepository.delete(activity);
+
+                return new BaseResponse<>(BaseResponseMessage.ACTIVITY_DELETE_SUCCESS);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            return new BaseResponse<>(BaseResponseMessage.ACTIVITY_DELETE_FALSE);
+        }
+    }
 }

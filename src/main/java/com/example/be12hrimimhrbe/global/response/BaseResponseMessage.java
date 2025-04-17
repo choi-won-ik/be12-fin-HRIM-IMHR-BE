@@ -70,11 +70,13 @@ public enum BaseResponseMessage {
     // 활동 관리 7000
     ADMIN_ACTIVITYLIST_FIND(true,7001,"관리자가 활동 리스트를 확인합니다."),
     USER_ACTIVITYLIST_FIND(true,7002,"개인 유저가 활동 리스트를 확인합니다."),
-    ACTIVITY_APPROVAL_AGREE(false,7003,"활동이 승인 되었습니다."),
-    ACTIVITY_APPROVAL_OPPOSE(false,7004,"활동이 반려 되었습니다."),
+    ACTIVITY_APPROVAL_AGREE(true,7003,"활동이 승인 되었습니다."),
+    ACTIVITY_APPROVAL_OPPOSE(true,7004,"활동이 반려 되었습니다."),
     MY_ACTIVITY_PROCESSED(false,7005,"이미 처리된 활동입니다."),
     ACTIVITY_APPROVAL_FALSE(false,7005,"활동 처리 권한이 없습니다."),
-    ACTIVITY_REGIST_SUCCESS(false,7006,"활동 등록이 완료 되었습니다."),
+    ACTIVITY_REGIST_SUCCESS(true,7006,"활동 등록이 완료 되었습니다."),
+    ACTIVITY_DELETE_SUCCESS(true,7007,"내 활동이 삭제 되었습니다."),
+    ACTIVITY_DELETE_FALSE(false,7008,"삭제를 실패 하였습니다."),
 
 
 
