@@ -31,6 +31,7 @@ public class CampaignController {
         return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_REGISTER_SUCCESS, failedList));
     }
 
+//  캠페인 상세 조회도 가능
     @GetMapping("/memberList/{eventIdx}")
     @Operation(summary = "캠페인 참가 인원 조회", description = "캠페인에 참가한 사원을 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> memberList(
@@ -41,21 +42,4 @@ public class CampaignController {
     }
 
 
-    @GetMapping("/campaignList/idx")
-    @Operation(summary = "내 캠페인 내역 조회", description = "내가 참여한 캠페인 내역을 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<CampaignDto.CampaignListResponse>> getCampaigns(@AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
-    }
-//    @GetMapping("/detail/{idx}")
-//    public ResponseEntity<BaseResponse<CampaignDto.CampaignItemResponse>> getCampaignItem(@PathVariable Long idx,
-//                                                                                          @AuthenticationPrincipal Member member) {
-//        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
-//    }
-
-    @GetMapping("/detail/{idx}")
-    @Operation(summary = "캠페인 상세", description = "캠페인 상세 페이지 입니다.")
-    public ResponseEntity<BaseResponse<CampaignDto.CampaignDetailResp>> campaignDetail(@PathVariable Long idx,
-                                                                                       @AuthenticationPrincipal Member member) {
-        return ResponseEntity.ok().body(new BaseResponse<>(null, null));
-    }
 }
