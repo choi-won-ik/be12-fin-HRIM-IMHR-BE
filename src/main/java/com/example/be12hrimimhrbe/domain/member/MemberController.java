@@ -165,8 +165,10 @@ public class MemberController {
 
     @PostMapping("/info")
     @Operation(summary = "내 정보 조회", description = "내 정보를 조회하는 기능입니다.")
-    public Member info(@AuthenticationPrincipal CustomUserDetails member) {
-        System.out.println(member.getMember().getName());
-        return member.getMember();
+    public ResponseEntity<BaseResponse<MemberDto.TokenInfoResponse>> info(@AuthenticationPrincipal CustomUserDetails member) {
+        MemberDto.TokenInfoResponse response = MemberDto.TokenInfoResponse
+                                                            .fromMember(member.getMember(),
+                                                                        member.getHrAuthoritySet().stream().toList());
+        return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.MYINFO_RETRIEVE_SUCCESS, response));
     }
 }
