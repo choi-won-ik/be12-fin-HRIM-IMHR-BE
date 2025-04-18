@@ -30,4 +30,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "LEFT JOIN m.company c " +
             "where c.idx=:companyIdx")
     List<Member> findAllByCompanyIdx(Long companyIdx);
+
+    List<Member> findAllByIdxInAndIsAdminFalse(List<Long> memberIds);
 }

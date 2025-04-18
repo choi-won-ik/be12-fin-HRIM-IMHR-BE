@@ -55,16 +55,15 @@ public class CampaignService {
     @Transactional
     public List<MemberDto.MemberShortResponse> memberList(Long eventIdx) {
         List<Campaign> memberList = campaignRepository.findByEventIdx(eventIdx);
-        List<MemberDto.MemberShortResponse> members = new ArrayList<>();
+        List<Long> memberIds = memberList.stream()
+                .map(c -> c.getMember().getIdx())
+                .collect(Collectors.toList());
 
-        for (Campaign campaign : memberList) {
-            Member campaginmember = memberRepository.findByIdx(campaign.getMember().getIdx());
-            if (campaginmember != null) {
-                members.add(MemberDto.MemberShortResponse.fromEntity(campaginmember));
+        List<Member> filteredMembers = memberRepository.findAllByIdxInAndIsAdminFalse(memberIds);
 
-            }
-        }
-        return members;
+        return filteredMembers.stream()
+                .map(MemberDto.MemberShortResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Transactional
