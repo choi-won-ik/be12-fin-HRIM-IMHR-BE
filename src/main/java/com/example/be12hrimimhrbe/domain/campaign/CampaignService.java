@@ -72,7 +72,6 @@ public class CampaignService {
         // 원래 캠페인 정보
         Event event = eventRepository.findById(dto.getEventIdx()).orElseThrow();
         List<Campaign> campaign = campaignRepository.findByEventIdx(eventIdx);
-        Long campaignIdx = campaign.get(0).getIdx();
 
         // 기존 참여자 목록 조회
         Set<Long> memberIds = campaign.stream()
@@ -104,13 +103,6 @@ public class CampaignService {
                         .build())
                 .collect(Collectors.toList());
         campaignRepository.saveAll(toSave);
-
-        System.out.println("===== 캠페인 수정 요청 =====");
-        System.out.println("eventIdx: " + eventIdx);
-        System.out.println("기존 참여자 목록: " + memberIds);
-        System.out.println("요청받은 새 참여자 목록: " + newMemberIdxs);
-        System.out.println("추가할 ID들: " + toAdd);
-        System.out.println("삭제할 ID들: " + toRemove);
 
         return membersToAdd.stream().map(MemberDto.MemberShortResponse::fromEntity)
                 .collect(Collectors.toList());

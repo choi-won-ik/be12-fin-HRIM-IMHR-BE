@@ -45,7 +45,6 @@ public class CampaignController {
             @PathVariable Long eventIdx,
             @RequestBody CampaignDto.CampaignRequest dto
     ) {
-        System.out.println("전달 받은 내용 -> " + dto);
         List<MemberDto.MemberShortResponse> responses = campaignService.update(eventIdx, dto);
         return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_UPDATE_SUCCESS, responses));
     }

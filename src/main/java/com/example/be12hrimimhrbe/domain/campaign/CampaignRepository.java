@@ -15,4 +15,6 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     List<Campaign> findByEventIdx(Long eventIdx);
 
     void deleteByEventIdxAndMember_IdxIn(Long eventIdx, Set<Long> memberIdxes);
+
+    void deleteByEventIdx(Long idx);
 }

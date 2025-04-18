@@ -96,7 +96,7 @@ public class EventController {
     }
 
     @DeleteMapping("/delete/{idx}")
-    @Operation(summary = "일정 제거", description = "선택 일정을 제거 합니다.")
+    @Operation(summary = "일정 제거", description = "선택 일정과 캠페인 그리고 캠페인에 참가한 사원 내역을 제거하는 기능입니다.")
     public ResponseEntity<BaseResponse<Boolean>> Delete(
             @AuthenticationPrincipal CustomUserDetails member,
             @PathVariable Long idx) {
