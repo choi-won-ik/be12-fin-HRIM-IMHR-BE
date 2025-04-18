@@ -32,22 +32,26 @@ public class NotificationController {
         notificationService.activityApprove(dto);
     }
 
+    @MessageMapping("/notification/activityReq/{companyIdx}")
+    @Operation(summary = "활동내역 승인", description = "활동내역 승인 알림 기능 입니다.")
+    public void activityApproveReq(@Payload NotificationDto.ActivityApproveRequest dto
+            , @DestinationVariable Long companyIdx) {
+        System.out.println("3번째 알림");
+        notificationService.activityApproveReq(dto,companyIdx);
+    }
+
     @MessageMapping("/notification/signup/{companyCode}")
     @Operation(summary = "활동내역 승인", description = "활동내역 승인 알림 기능 입니다.")
-    public void signupApprove(@Payload NotificationDto.SignupApproveReq dto,@DestinationVariable String companyCode) {
-        System.out.println(companyCode);
-        System.out.println("===========================");
-        System.out.println("===========================");
-        System.out.println("===========================");System.out.println("===========================");
+    public void signupApprove(@Payload NotificationDto.SignupApproveReq dto, @DestinationVariable String companyCode) {
 
-        notificationService.signupApprove(companyCode,dto);
+        notificationService.signupApprove(companyCode, dto);
     }
 
     @GetMapping("/list")
     @Operation(summary = "유저의 알림 리스트", description = "해당 유저의 아림 리스트 입니다.")
     public ResponseEntity<BaseResponse<List<NotificationDto.NotificationResp>>> getMyNotifications(
             @AuthenticationPrincipal CustomUserDetails Member, @RequestParam("page") int page
-    ){
-        return ResponseEntity.ok().body(notificationService.getMyNotifications(Member.getMember(),page,9));
+    ) {
+        return ResponseEntity.ok().body(notificationService.getMyNotifications(Member.getMember(), page, 9));
     }
 }

@@ -24,4 +24,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "LEFT JOIN m.company c " +
             "where c.code=:companyCode")
     List<Member> findAllByCompanyCode(String companyCode);
+
+    @EntityGraph(attributePaths = {"company"})
+    @Query("SELECT m from Member m " +
+            "LEFT JOIN m.company c " +
+            "where c.idx=:companyIdx")
+    List<Member> findAllByCompanyIdx(Long companyIdx);
 }

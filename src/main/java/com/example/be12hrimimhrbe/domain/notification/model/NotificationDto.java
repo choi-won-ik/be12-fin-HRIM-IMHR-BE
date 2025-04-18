@@ -42,11 +42,16 @@ public class NotificationDto {
 
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class SignupApproveReq {
-        private String memberIdx;
         private String title;
         private String content;
-        private boolean isRead;
-        private String createdAt;
         private String url;
+    }
+
+    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class ActivityApproveRequest{
+        private String title;
+        private String content;
+        private String url;
+        private Long activityIdx;
     }
 }

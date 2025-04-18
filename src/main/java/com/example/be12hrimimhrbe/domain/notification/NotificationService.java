@@ -86,4 +86,28 @@ public class NotificationService {
             }
         }
     }
+
+    public void activityApproveReq(NotificationDto.ActivityApproveRequest dto, Long companyIdx) {
+        List<Member> list = memberRepository.findAllByCompanyIdx(companyIdx);
+
+        for (Member member : list) {
+            if (member.getIsAdmin()) {
+                member.setNotificationCount(member.getNotificationCount() + 1);
+                memberRepository.save(member);
+                String url = "/activeDetails/" + dto.getActivityIdx();
+
+                Notification notification = Notification.builder()
+                        .isRead(false)
+                        .member(member)
+                        .content(dto.getContent())
+                        .title(dto.getTitle())
+                        .createdAt(LocalDateTime.now())
+                        .url(url)
+                        .build();
+                notificationRepository.save(notification);
+
+                simpMessagingTemplate.convertAndSend("/topic/notification/" + member.getIdx(), NotificationDto.NotificationResp.from(notification, member));
+            }
+        }
+    }
 }
