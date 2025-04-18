@@ -73,6 +73,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 (auth) -> auth
                         .requestMatchers(
+                                "/ws/**", "/app/**", "/topic/**",
                                 "/member/login", "/member/signup/*","/member/logout","/activity/detail/*","/img/**",
                                 "/member/find-id", "/member/find-pw", "/member/reset-pw",
                                 "/error", "/swagger-ui/**", "/v3/api-docs/**",
