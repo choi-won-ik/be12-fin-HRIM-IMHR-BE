@@ -59,6 +59,18 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.getStaffDetail(idx));
     }
 
+    @GetMapping("/detail/shortinfo/{idx}")
+    @Operation(summary = "회원 조회", description = "회원의 정보를 간단하게 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<MemberDto.MemberShortResponse>> detailShortInfo(@PathVariable Long idx,
+                                                                                 @AuthenticationPrincipal CustomUserDetails member
+    ) {
+        if(!memberService.isSameCompany(member.getMember().getIdx(), idx)) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(403))
+                    .body(new BaseResponse<>(BaseResponseMessage.FORBIDDEN, null));
+        }
+        return ResponseEntity.ok().body(memberService.getShortDetail(idx));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/detail/modify/{idx}")
     @Operation(summary = "회원정보 수정", description = "회원 정보를 수정합니다.")
@@ -136,6 +148,12 @@ public class MemberController {
     @Operation(summary = "회원 내역", description = "회원 리스트를 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> allList(@AuthenticationPrincipal CustomUserDetails member) {
         return ResponseEntity.ok().body(memberService.getMemberAll(member.getMember()));
+    }
+
+    @PostMapping("/list/partial")
+    @Operation(summary = "접근 가능한 회원 내역", description = "권한있는 회원 리스트를 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> partialList(@AuthenticationPrincipal CustomUserDetails member) {
+        return ResponseEntity.ok().body(memberService.getMemberPartial(member.getMember(), member.getHrAuthoritySet()));
     }
 
     @GetMapping("/reportDetail/{idx}")

@@ -143,6 +143,14 @@ public class MemberService implements UserDetailsService {
         return new BaseResponse<>(BaseResponseMessage.MEMBER_DETAIL_SUCCESS, infoDetailResponse);
     }
 
+    public BaseResponse<MemberDto.MemberShortResponse> getShortDetail(Long idx) {
+        Member member = memberRepository.findById(idx).orElse(null);
+        if(member == null)
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        MemberDto.MemberShortResponse response = MemberDto.MemberShortResponse.fromEntity(member);
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_DETAIL_SUCCESS, response);
+    }
+
     @Transactional
     public boolean deleteMember(Member member) {
         List<Campaign> campaigns = campaignRepository.findAllByMember(member);
@@ -336,5 +344,25 @@ public class MemberService implements UserDetailsService {
         Member newMember = member.updateMember(dto.toEntity(idx));
         memberRepository.save(newMember);
         return new BaseResponse<>(BaseResponseMessage.MEMBER_MODIFY_SUCCESS, "회원 정보 수정 성공");
+    }
+
+    public BaseResponse<List<MemberDto.MemberShortResponse>> getMemberPartial(Member customMember, Set<String> hrAuthoritySet) {
+        Member member = memberRepository.findById(customMember.getIdx()).orElse(null);
+        if(member==null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+        Department department = member.getDepartment();
+        List<Member> members = memberRepository.findAllByDepartmentAndIdxNotAndIsAdmin(department, member.getIdx(), Boolean.FALSE);
+        for(String hrAuthority : hrAuthoritySet ) {
+            if(department.getIdx().toString().equals(hrAuthority)) continue;
+            List<Member> newMemberList = memberRepository.findAllByDepartmentAndIsAdmin(
+                    Department.builder().idx(Long.parseLong(hrAuthority)).build(),
+                    Boolean.FALSE
+            );
+            members.addAll(newMemberList);
+        }
+        return new BaseResponse<>(BaseResponseMessage.MEMBER_LIST_SUCCESS,
+                members.stream().map(MemberDto.MemberShortResponse::fromEntity).toList()
+        );
     }
 }
