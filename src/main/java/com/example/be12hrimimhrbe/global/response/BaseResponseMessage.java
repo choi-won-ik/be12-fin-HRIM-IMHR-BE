@@ -51,6 +51,7 @@ public enum BaseResponseMessage {
     FEEDBACK_TEMPLATE_CREATE_SUCCESS(true, 4200, "피드백 양식 생성 성공"),
     FEEDBACK_TEMPLATE_RETRIEVE_SUCCESS(true, 4200, "피드백 양식 조회 성공"),
     FEEDBACK_TEMPLATE_NOT_FOUND(false, 4404, "피드백 존재하지 않음"),
+    FEEDBACK_SUBMIT_SUCCESS(true, 4200, "피드백 작성 성공"),
 
     // 캘린더 관리(이벤트 & 캠페인) 6000
     CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),

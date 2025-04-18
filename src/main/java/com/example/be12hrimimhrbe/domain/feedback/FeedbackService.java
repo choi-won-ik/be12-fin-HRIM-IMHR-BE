@@ -61,15 +61,18 @@ public class FeedbackService {
     @Transactional
     public BaseResponse<String> submitFeedback(Member from, Member to, FeedbackDto.FeedbackAnswerRequest dto) {
         FeedbackTemplate template = feedbackTemplateRepository.findById(dto.getAnswers().get(0).getTemplateIdx())
-                .orElseThrow(() -> new RuntimeException("Template not found"));
+                .orElse(null);
+        if(template == null) {
+            return new BaseResponse<>(BaseResponseMessage.FEEDBACK_TEMPLATE_NOT_FOUND, null);
+        }
 
         dto.getAnswers().forEach(answer -> {
             FeedbackResponse response = FeedbackResponse.builder()
                     .feedback(template)
                     .question(feedbackQuestionRepository.findById(answer.getQuestionIdx())
-                            .orElseThrow(() -> new RuntimeException("Question not found")))
+                            .orElseThrow(() -> new RuntimeException("Question 찾지 못함")))
                     .choice(answer.getChoiceIdx() != null ? feedbackChoiceRepository.findById(answer.getChoiceIdx())
-                            .orElseThrow(() -> new RuntimeException("Choice not found")) : null)
+                            .orElseThrow(() -> new RuntimeException("Choice 찾지 못함")) : null)
                     .answerText(answer.getAnswer())
                     .from(from)
                     .to(to)
@@ -77,7 +80,7 @@ public class FeedbackService {
             feedbackResponseRepository.save(response);
         });
 
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "Feedback submitted successfully");
+        return new BaseResponse<>(BaseResponseMessage.FEEDBACK_SUBMIT_SUCCESS, "피드백 작성에 성공했습니다.");
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.domain.member;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,6 +15,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmailAndIsAdmin(String email, Boolean isAdmin);
     Optional<Member> findByMemberIdAndIsAdmin(String memberId, Boolean isAdmin);
     List<Member> findAllByCompany(Company company);
+    List<Member> findAllByDepartmentAndIdxNotAndIsAdmin(Department department, Long idx, Boolean isAdmin);
+    List<Member> findAllByDepartmentAndIsAdmin(Department department, Boolean isAdmin);
 
     Member findByIdx(Long idx);
 }
