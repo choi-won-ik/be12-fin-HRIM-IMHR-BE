@@ -23,12 +23,14 @@ public class MemberDto {
         private Long idx;
         private Member.Status status;
         private String memberId;
+        private Boolean isAdmin;
         private String name;
         private LocalDateTime joinedAt;
         public static MemberShortResponse fromEntity(Member member) {
             return MemberShortResponse.builder()
                     .idx(member.getIdx())
                     .status(member.getStatus())
+                    .isAdmin(member.getIsAdmin())
                     .memberId(member.getMemberId())
                     .name(member.getName())
                     .joinedAt(member.getJoinedAt())
