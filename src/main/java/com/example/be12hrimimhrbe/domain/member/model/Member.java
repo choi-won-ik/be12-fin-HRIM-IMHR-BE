@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import jakarta.persistence.*;
@@ -7,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -63,6 +67,10 @@ public class Member {
     private String code;
 
     private int notificationCount;
+
+//    @OneToMany(mappedBy = "member")
+//    @BatchSize(size = 5)
+//    private List<Activity> activities=new ArrayList<>();
 
     public void approve() {
         this.status = Status.APPROVED;

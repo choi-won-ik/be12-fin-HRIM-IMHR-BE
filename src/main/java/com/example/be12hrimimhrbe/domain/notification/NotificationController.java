@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,11 +25,22 @@ import java.util.List;
 public class NotificationController {
     private final NotificationService notificationService;
 
-    @MessageMapping("/notification/approve/{memberIdx}")
+    @MessageMapping("/notification/activity/{memberIdx}")
     @Operation(summary = "활동내역 승인", description = "활동내역 승인 알림 기능 입니다.")
-    public void approveMsg(@Payload NotificationDto.ApproveMsgReq dto) {
+    public void activityApprove(@Payload NotificationDto.ActivityApproveReq dto) {
 
-        notificationService.approveMsg(dto);
+        notificationService.activityApprove(dto);
+    }
+
+    @MessageMapping("/notification/signup/{companyCode}")
+    @Operation(summary = "활동내역 승인", description = "활동내역 승인 알림 기능 입니다.")
+    public void signupApprove(@Payload NotificationDto.SignupApproveReq dto,@DestinationVariable String companyCode) {
+        System.out.println(companyCode);
+        System.out.println("===========================");
+        System.out.println("===========================");
+        System.out.println("===========================");System.out.println("===========================");
+
+        notificationService.signupApprove(companyCode,dto);
     }
 
     @GetMapping("/list")

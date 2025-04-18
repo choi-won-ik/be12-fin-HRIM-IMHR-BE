@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 public class NotificationDto {
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class ApproveMsgReq {
+    public static class ActivityApproveReq {
         private Member member;
         private String title;
         private String content;
@@ -38,5 +38,15 @@ public class NotificationDto {
                     .url(notification.getUrl())
                     .build();
         }
+    }
+
+    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class SignupApproveReq {
+        private String memberIdx;
+        private String title;
+        private String content;
+        private boolean isRead;
+        private String createdAt;
+        private String url;
     }
 }
