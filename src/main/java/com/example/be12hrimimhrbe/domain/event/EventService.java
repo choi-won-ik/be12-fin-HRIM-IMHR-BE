@@ -1,5 +1,7 @@
 package com.example.be12hrimimhrbe.domain.event;
 
+import com.example.be12hrimimhrbe.domain.campaign.CampaignRepository;
+import com.example.be12hrimimhrbe.domain.campaign.model.Campaign;
 import com.example.be12hrimimhrbe.domain.event.model.Event;
 import com.example.be12hrimimhrbe.domain.event.model.EventDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final MemberRepository memberRepository;
+    private final CampaignRepository campaignRepository;
 
 //  이벤트 생성
     @Transactional
@@ -74,10 +78,19 @@ public class EventService {
     }
 
 //  이벤트 삭제
+    @Transactional
     public boolean deleteEvent(Member member, Long idx) {
-        Member newm = memberRepository.findById(member.getIdx()).orElseThrow();
-        Event event = eventRepository.findByIdxAndCompanyIdx(idx, newm.getCompany().getIdx()).orElseThrow(() ->  new IllegalArgumentException("해당 일정이 존재하지 않거나 권한이 없습니다."));
-        eventRepository.delete(event);
+        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+        Event event = eventRepository.findByIdxAndCompanyIdx(idx, newMember.getCompany().getIdx()).orElseThrow();
+
+        List<Campaign> campaigns = campaignRepository.findByEventIdx(idx);
+        Set<Long> memberIdx = campaigns.stream().map(c -> c.getMember().getIdx()).collect(Collectors.toSet());
+        if (!memberIdx.isEmpty()) {
+            campaignRepository.deleteByEventIdxAndMember_IdxIn(idx, memberIdx);
+        }
+
+        campaignRepository.deleteByEventIdx(event.getIdx());
+        eventRepository.deleteById(event.getIdx());
         return true;
     }
 }

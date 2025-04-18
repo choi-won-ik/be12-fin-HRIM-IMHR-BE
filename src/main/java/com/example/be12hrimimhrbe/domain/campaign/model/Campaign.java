@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Builder
@@ -20,9 +22,11 @@ public class Campaign {
 
     @ManyToOne
     @JoinColumn(name = "member_idx")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "event_idx")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Event event;
 }
