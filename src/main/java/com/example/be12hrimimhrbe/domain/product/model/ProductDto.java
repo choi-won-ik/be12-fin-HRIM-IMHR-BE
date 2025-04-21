@@ -1,7 +1,8 @@
 package com.example.be12hrimimhrbe.domain.product.model;
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import com.example.be12hrimimhrbe.domain.product.model.Product;
 
 public class ProductDto {
 
@@ -13,20 +14,64 @@ public class ProductDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @Schema(description = "제품 등록 요청 DTO")
     public static class ProductRegistReq {
-        private Long idx;                     //제품 idx
-        private String productName;           // 제품명
-        private Boolean ecoCertified;         // 환경 인증 여부
-        private String certificationType;     // 인증 종류
-        private String energyGrade;           // 에너지 효율 등급
-        private Boolean recyclable;           // 재활용 가능 여부
-        private Boolean bioMaterial;          // 생분해성 소재 여부
-        private Boolean lowCarbonProcess;     // 탄소 저감형 공정 여부
-        private Integer unitPrice;            // 단가
-        private Integer salesQty;             // 판매 수량
-        private String imagePath;            //이미지 경로
-        private Long companyIdx;              // 소속 회사 ID
-        private String serialNumber;          //시리얼 넘버 추가
+
+        @Schema(description = "제품명", example = "에코 텀블러")
+        private String productName;
+
+        @Schema(description = "환경 인증 여부", example = "true")
+        private Boolean ecoCertified;
+
+        @Schema(description = "인증 종류", example = "GR 인증")
+        private String certificationType;
+
+        @Schema(description = "에너지 효율 등급", example = "1등급")
+        private String energyGrade;
+
+        @Schema(description = "재활용 가능 여부", example = "true")
+        private Boolean recyclable;
+
+        @Schema(description = "생분해성 소재 여부", example = "false")
+        private Boolean bioMaterial;
+
+        @Schema(description = "탄소 저감형 공정 여부", example = "true")
+        private Boolean lowCarbonProcess;
+
+        @Schema(description = "단가", example = "12000")
+        private Integer unitPrice;
+
+        @Schema(description = "판매 수량", example = "100")
+        private Integer salesQty;
+
+        @Schema(description = "회사 ID", example = "3")
+        private Long companyIdx;
+
+        @Schema(description = "시리얼 넘버", example = "EC-001")
+        private String serialNumber;
+
+        @Schema(description = "이미지 경로 (서버 저장 경로)", hidden = true)
+        private String imagePath;
+
+        /**
+         * 🛠 Entity로 변환
+         */
+        public Product toEntity(Company company, String imagePath) {
+            return Product.builder()
+                    .productName(productName)
+                    .ecoCertified(ecoCertified)
+                    .certificationType(certificationType)
+                    .energyGrade(energyGrade)
+                    .recyclable(recyclable)
+                    .bioMaterial(bioMaterial)
+                    .lowCarbonProcess(lowCarbonProcess)
+                    .unitPrice(unitPrice)
+                    .salesQty(salesQty)
+                    .serialNumber(serialNumber)
+                    .imagePath(imagePath)
+                    .company(company)
+                    .build();
+        }
     }
 
     /**
@@ -37,20 +82,38 @@ public class ProductDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @Schema(description = "제품 수정 요청 DTO")
     public static class ProductUpdateReq {
-        private Long idx;                     //제품 idx
-        private String productName;           // 제품명
-        private Boolean ecoCertified;         // 환경 인증 여부
-        private String certificationType;     // 인증 종류
-        private String energyGrade;           // 에너지 효율 등급
-        private Boolean recyclable;           // 재활용 가능 여부
-        private Boolean bioMaterial;          // 생분해성 소재 여부
-        private Boolean lowCarbonProcess;     // 탄소 저감형 공정 여부
-        private Integer unitPrice;            // 단가
-        private Integer salesQty;             // 판매 수량
-        private String imagePath;            //이미지 경로
-        private Long companyIdx;              // 소속 회사 ID
-        private String serialNumber;          //시리얼 넘버 추가
+
+        @Schema(description = "제품명", example = "수정된 텀블러")
+        private String productName;
+
+        @Schema(description = "환경 인증 여부", example = "false")
+        private Boolean ecoCertified;
+
+        @Schema(description = "인증 종류", example = "GRS")
+        private String certificationType;
+
+        @Schema(description = "에너지 효율 등급", example = "2등급")
+        private String energyGrade;
+
+        @Schema(description = "재활용 가능 여부", example = "false")
+        private Boolean recyclable;
+
+        @Schema(description = "생분해성 소재 여부", example = "true")
+        private Boolean bioMaterial;
+
+        @Schema(description = "탄소 저감형 공정 여부", example = "false")
+        private Boolean lowCarbonProcess;
+
+        @Schema(description = "단가", example = "9500")
+        private Integer unitPrice;
+
+        @Schema(description = "판매 수량", example = "200")
+        private Integer salesQty;
+
+        @Schema(description = "시리얼 넘버", example = "EC-987654")
+        private String serialNumber;
     }
 
     /**
@@ -61,24 +124,53 @@ public class ProductDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @Schema(description = "제품 상세 응답 DTO")
     public static class ProductDetailResp {
-        private Long idx;                     //제품 idx
-        private String productName;           // 제품명
-        private Boolean ecoCertified;         // 환경 인증 여부
-        private String certificationType;     // 인증 종류
-        private String energyGrade;           // 에너지 효율 등급
-        private Boolean recyclable;           // 재활용 가능 여부
-        private Boolean bioMaterial;          // 생분해성 소재 여부
-        private Boolean lowCarbonProcess;     // 탄소 저감형 공정 여부
-        private Integer unitPrice;            // 단가
-        private Integer salesQty;             // 판매 수량
-        private String imagePath;            //이미지 경로
-        private Long companyIdx;              // 소속 회사 ID
-        private String serialNumber;          //시리얼 넘버 추가
-        private String growthRate;	          //증가율
+
+        @Schema(description = "제품 ID", example = "1")
+        private Long idx;
+
+        @Schema(description = "제품명", example = "에코 텀블러")
+        private String productName;
+
+        @Schema(description = "환경 인증 여부", example = "true")
+        private Boolean ecoCertified;
+
+        @Schema(description = "인증 종류", example = "GR 인증")
+        private String certificationType;
+
+        @Schema(description = "에너지 효율 등급", example = "1등급")
+        private String energyGrade;
+
+        @Schema(description = "재활용 가능 여부", example = "true")
+        private Boolean recyclable;
+
+        @Schema(description = "생분해성 소재 여부", example = "false")
+        private Boolean bioMaterial;
+
+        @Schema(description = "탄소 저감형 공정 여부", example = "true")
+        private Boolean lowCarbonProcess;
+
+        @Schema(description = "단가", example = "12000")
+        private Integer unitPrice;
+
+        @Schema(description = "판매 수량", example = "100")
+        private Integer salesQty;
+
+        @Schema(description = "이미지 경로", example = "/img/eco-cup.png")
+        private String imagePath;
+
+        @Schema(description = "회사 ID", example = "3")
+        private Long companyIdx;
+
+        @Schema(description = "시리얼 넘버", example = "EC-123456")
+        private String serialNumber;
+
+        @Schema(description = "전월 대비 증가율", example = "12.5%")
+        private String growthRate;
 
         /**
-         * 🔁 Product 엔티티로부터 DTO 변환
+         * 🛠 Entity → DTO 변환
          */
         public static ProductDetailResp from(Product product) {
             return ProductDetailResp.builder()
@@ -94,7 +186,7 @@ public class ProductDto {
                     .salesQty(product.getSalesQty())
                     .imagePath(product.getImagePath())
                     .companyIdx(product.getCompany().getIdx())
-                    .serialNumber(product.getSerialNumber())//DTO로 변환
+                    .serialNumber(product.getSerialNumber())
                     .build();
         }
     }
