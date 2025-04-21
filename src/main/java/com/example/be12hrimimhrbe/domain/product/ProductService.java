@@ -24,26 +24,20 @@ public class ProductService {
      * ✅ 제품 등록
      */
     public Long registerProduct(ProductDto.ProductRegistReq dto, MultipartFile imageFile) {
+        // 회사 조회
+        System.out.println("🔥 받은 dto: " + dto);
+        System.out.println("🔥 받은 companyIdx: " + dto.getCompanyIdx());
         Company company = companyRepository.findById(dto.getCompanyIdx())
                 .orElseThrow(() -> new IllegalArgumentException("❗ 회사 정보를 찾을 수 없습니다."));
 
-        String imagePath = "http://localhost:8080/img/" + fileService.upload(imageFile);
+        // 이미지 저장 및 경로 생성
+        String fileName = fileService.upload(imageFile);
+        String imagePath = "http://localhost:8080/img/" + fileName;
 
-        Product product = Product.builder()
-                .productName(dto.getProductName())
-                .ecoCertified(dto.getEcoCertified())
-                .certificationType(dto.getCertificationType())
-                .energyGrade(dto.getEnergyGrade())
-                .recyclable(dto.getRecyclable())
-                .bioMaterial(dto.getBioMaterial())
-                .lowCarbonProcess(dto.getLowCarbonProcess())
-                .unitPrice(dto.getUnitPrice())
-                .salesQty(dto.getSalesQty())
-                .imagePath(imagePath)
-                .company(company)
-                .serialNumber(dto.getSerialNumber())
-                .build();
+        // DTO → Entity 변환
+        Product product = dto.toEntity(company, imagePath);
 
+        // 저장 및 ID 반환
         return productRepository.save(product).getIdx();
     }
 
@@ -53,6 +47,8 @@ public class ProductService {
     public ProductDto.ProductDetailResp getDetail(Long idx) {
         Product product = productRepository.findById(idx)
                 .orElseThrow(() -> new IllegalArgumentException("❗ 해당 제품이 존재하지 않습니다."));
+        System.out.println("🔥 받은 dto: " + product.getIdx());
+        System.out.println("🔥 받은 idx: " + idx);
         return ProductDto.ProductDetailResp.from(product);
     }
 
@@ -60,29 +56,24 @@ public class ProductService {
      * ✅ 제품 수정
      */
     public Long updateProduct(Long idx, ProductDto.ProductUpdateReq dto) {
-
         Product product = productRepository.findById(idx)
                 .orElseThrow(() -> new IllegalArgumentException("❗ 수정할 제품이 존재하지 않습니다."));
-
-        product.setProductName(dto.getProductName());
-        product.setEcoCertified(dto.getEcoCertified());
-        product.setCertificationType(dto.getCertificationType());
-        product.setEnergyGrade(dto.getEnergyGrade());
-        product.setRecyclable(dto.getRecyclable());
-        product.setBioMaterial(dto.getBioMaterial());
-        product.setLowCarbonProcess(dto.getLowCarbonProcess());
-        product.setUnitPrice(dto.getUnitPrice());
-        product.setSalesQty(dto.getSalesQty());
-        product.setSerialNumber(dto.getSerialNumber());
-
+        System.out.println("🔥 받은 product.idx: " + product.getIdx());
+        System.out.println("🔥 받은 idx: " + idx);
+        System.out.println("🔥 받은 dto: " + dto);
+        product.updateFrom(dto); // Entity 내부 updateFrom 사용
+        System.out.println("🔥 받은 product.idx: " + product.getIdx());
+        System.out.println("🔥 받은 idx: " + idx);
         return productRepository.save(product).getIdx();
-
     }
 
     /**
      * ✅ 제품 삭제
      */
     public void deleteProduct(Long idx) {
+        if (!productRepository.existsById(idx)) {
+            throw new IllegalArgumentException("❗ 삭제할 제품이 존재하지 않습니다.");
+        }
         productRepository.deleteById(idx);
     }
 

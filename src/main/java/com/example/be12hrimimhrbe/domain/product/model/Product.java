@@ -5,8 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "product")
 public class Product {
 
     @Id
@@ -36,10 +40,26 @@ public class Product {
 
     private String serialNumber; // 시리얼 넘버
 
-    //private String growthRate;	//증가율
-
     // 연관된 회사 정보
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_idx", nullable = false)
     private Company company;
+
+    /**
+     * 🛠 제품 정보 수정 (DTO -> Entity)
+     * - ProductUpdateReq를 받아 현재 엔티티 필드 업데이트
+     */
+    public void updateFrom(ProductDto.ProductUpdateReq dto) {
+        this.productName = dto.getProductName();
+        this.ecoCertified = dto.getEcoCertified();
+        this.certificationType = dto.getCertificationType();
+        this.energyGrade = dto.getEnergyGrade();
+        this.recyclable = dto.getRecyclable();
+        this.bioMaterial = dto.getBioMaterial();
+        this.lowCarbonProcess = dto.getLowCarbonProcess();
+        this.unitPrice = dto.getUnitPrice();
+        this.salesQty = dto.getSalesQty();
+        this.serialNumber = dto.getSerialNumber();
+        // ❗ imagePath, company 변경은 이 메서드에서 제외
+    }
 }
