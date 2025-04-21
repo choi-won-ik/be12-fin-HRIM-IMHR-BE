@@ -6,6 +6,8 @@ import com.example.be12hrimimhrbe.domain.event.model.Event;
 import com.example.be12hrimimhrbe.domain.event.model.EventDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
+import com.example.be12hrimimhrbe.global.response.BaseResponse;
+import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,20 +28,19 @@ public class EventService {
 
 //  이벤트 생성
     @Transactional
-    public EventDto.EventResponse eventRegister(Member member, EventDto.EventRequest dto) {
+    public BaseResponse<EventDto.EventResponse> eventRegister(Member member, EventDto.EventRequest dto) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         Event event = eventRepository.save(dto.toEntity(newMember.getCompany()));
-        return EventDto.EventResponse.of(event);
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_REGISTER_SUCCESS, EventDto.EventResponse.of(event));
     }
 
 //  이벤트 수정
-    public EventDto.EventResponse updateEvent(Member member, Long idx, EventDto.EventRequest dto) {
+    public BaseResponse<EventDto.EventResponse> updateEvent(Member member, Long idx, EventDto.EventRequest dto) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         Event event = eventRepository.findByCompanyIdxAndIdx(newMember.getCompany().getIdx(), idx);
         event.updateFromDto(dto);
-
         Event updated = eventRepository.save(event);
-        return EventDto.EventResponse.of(updated);
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_UPDATE_SUCCESS, EventDto.EventResponse.of(updated));
     }
 
 //  페이지별 이벤트 리스트

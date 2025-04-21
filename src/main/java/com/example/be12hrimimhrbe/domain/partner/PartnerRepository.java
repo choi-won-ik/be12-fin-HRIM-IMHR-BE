@@ -7,4 +7,6 @@ import com.example.be12hrimimhrbe.domain.partner.model.Partner;
 
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
     List<Partner> findAllByIdx(Long idx);
+
+    List<Partner> findByMainCompanyIdx(Long myCompanyIdx);
 }

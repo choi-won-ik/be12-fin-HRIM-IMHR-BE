@@ -22,5 +22,4 @@ public class PartnerService {
             partners.stream().map(PartnerDto.PartnerListResp::fromEntity).collect(Collectors.toList())
         );
     }
-
 }
