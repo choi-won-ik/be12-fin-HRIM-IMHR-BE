@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/company")
 @Tag(name = "회사 관리 기능")
 public class CompanyController {
+    private final CompanyService companyService;
+
+
 }
