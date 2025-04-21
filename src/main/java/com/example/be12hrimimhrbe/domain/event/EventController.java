@@ -32,8 +32,7 @@ public class EventController {
     @PostMapping("/register")
     @Operation(summary = "일정 등록", description = "새 일정을 등록하는 기능 입니다.")
     public ResponseEntity<BaseResponse<EventDto.EventResponse>> register(@AuthenticationPrincipal CustomUserDetails member, @RequestBody EventDto.EventRequest dto) {
-        EventDto.EventResponse response = eventService.eventRegister(member.getMember(), dto);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_REGISTER_SUCCESS, response));
+        return ResponseEntity.ok().body(eventService.eventRegister(member.getMember(), dto));
     }
 
     @PutMapping("/update/{eventIdx}")
@@ -43,8 +42,7 @@ public class EventController {
             @PathVariable Long eventIdx,
             @RequestBody EventDto.EventRequest dto
     ) {
-        EventDto.EventResponse response = eventService.updateEvent(member.getMember(), eventIdx, dto);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_UPDATE_SUCCESS, response));
+        return ResponseEntity.ok().body(eventService.updateEvent(member.getMember(), eventIdx, dto));
     }
 
     //  회사 페이지별 일정 리스트 - 캠페인 페이지
