@@ -1,11 +1,11 @@
 package com.example.be12hrimimhrbe.domain.company;
 
+import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.partner.model.PartnerDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,7 @@ public class CompanyController {
     // EsgCompany 와 Company 통합 조회 기능
     @PostMapping("/list")
     @Operation(summary = "전체 기업 리스트", description = "페이지별로 전체 기업을 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<Page<PartnerDto.AllCompanyListResponse>>> allList(
+    public ResponseEntity<BaseResponse<Page<CompanyDto.AllCompanyListResponse>>> allList(
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size

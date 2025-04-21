@@ -30,15 +30,4 @@ public class PartnerDto {
             .build();
         }
     }
-
-    // 모든 회사 조회 리스트
-    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class AllCompanyListResponse {
-        private Long idx;
-
-        private Long companyIdx;
-        private String companyName;
-        private String companyCode;
-
-    }
 }
