@@ -9,4 +9,6 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
     List<Partner> findAllByIdx(Long idx);
 
     List<Partner> findByMainCompanyIdx(Long myCompanyIdx);
+
+    boolean existsByMainCompanyIdxAndPartnerIdx(Long mainCompanyIdx, Long partnerIdx);
 }

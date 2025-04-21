@@ -43,24 +43,24 @@ public class EventService {
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_UPDATE_SUCCESS, EventDto.EventResponse.of(updated));
     }
 
-//  페이지별 이벤트 리스트
-    public Page<EventDto.EventResponse> pageList(Member member, Pageable pageable) {
+//  페이지별 이벤트 리스
+    public BaseResponse<Page<EventDto.EventResponse>> pageList(Member member, Pageable pageable) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         Page<Event> events = eventRepository.findByCompanyIdx(newMember.getCompany().getIdx(), pageable);
-        return events.map(EventDto.EventResponse::of);
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, events.map(EventDto.EventResponse::of));
     }
 
 //  월별 이벤트 리스트
-    public List<EventDto.EventResponse> eventList(Member member, int year, int month) {
+    public BaseResponse<List<EventDto.EventResponse>> eventList(Member member, int year, int month) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
         List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual
                 (newMember.getCompany().getIdx(), end, start);
-        return events.stream()
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, events.stream()
                 .map(EventDto.EventResponse::of)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
 //  일별 이벤트 리스트

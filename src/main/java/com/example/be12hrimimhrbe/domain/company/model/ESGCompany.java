@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ESG_Company {
+public class ESGCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;

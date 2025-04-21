@@ -26,7 +26,7 @@ public class CompanyController {
     // EsgCompany 와 Company 통합 조회 기능
     @PostMapping("/list")
     @Operation(summary = "전체 기업 리스트", description = "페이지별로 전체 기업을 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<Page<CompanyDto.AllCompanyListResponse>>> allList(
+    public ResponseEntity<BaseResponse<Page<PartnerDto.AllCompanyListResponse>>> allList(
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
