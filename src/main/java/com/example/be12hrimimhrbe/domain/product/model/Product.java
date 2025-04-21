@@ -62,4 +62,19 @@ public class Product {
         this.serialNumber = dto.getSerialNumber();
         // ❗ imagePath, company 변경은 이 메서드에서 제외
     }
+
+    /**
+     * 📸 이미지 경로 업데이트용 Setter
+     */
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    /**
+     * 🔄 회사 정보 설정용 Setter
+     * - 등록 시 사용
+     */
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 }

@@ -32,9 +32,7 @@ public class ProductController {
             @RequestPart("image") MultipartFile imageFile
     ) {
         Long savedId = productService.registerProduct(dto, imageFile);
-        return ResponseEntity.ok(
-                new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, savedId)
-        );
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, savedId));
     }
 
     /**
@@ -44,25 +42,23 @@ public class ProductController {
     @Operation(summary = "제품 상세 조회", description = "제품 ID로 상세 정보를 조회합니다.")
     public ResponseEntity<BaseResponse<ProductDto.ProductDetailResp>> getDetail(@PathVariable Long idx) {
         ProductDto.ProductDetailResp detail = productService.getDetail(idx);
-        return ResponseEntity.ok(
-                new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, detail)
-        );
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, detail));
     }
 
     /**
-     * ✅ 제품 정보 수정
-     * - JSON 본문 수정 (이미지는 제외)
+     * ✅ 제품 정보 수정 (이미지 포함)
+     * - JSON DTO (`ProductUpdateReq`)
+     * - 이미지 파일 (선택)
      */
-    @PutMapping("/edit/{idx}")
-    @Operation(summary = "제품 정보 수정", description = "제품 ID로 기존 정보를 수정합니다.")
+    @PutMapping("/update/{idx}")
+    @Operation(summary = "제품 정보 수정", description = "제품 ID로 기존 정보를 수정합니다. 이미지 포함 가능합니다.")
     public ResponseEntity<BaseResponse<String>> update(
             @PathVariable Long idx,
-            @RequestBody ProductDto.ProductUpdateReq dto
+            @RequestPart("dto") ProductDto.ProductUpdateReq dto,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile
     ) {
-        productService.updateProduct(idx, dto);
-        return ResponseEntity.ok(
-                new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "수정 완료")
-        );
+        productService.updateProduct(idx, dto, imageFile);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "수정 완료"));
     }
 
     /**
@@ -72,9 +68,7 @@ public class ProductController {
     @Operation(summary = "제품 삭제", description = "제품 ID로 삭제합니다.")
     public ResponseEntity<BaseResponse<String>> delete(@PathVariable Long idx) {
         productService.deleteProduct(idx);
-        return ResponseEntity.ok(
-                new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "삭제 완료")
-        );
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, "삭제 완료"));
     }
 
     /**
@@ -86,8 +80,6 @@ public class ProductController {
             @PathVariable Long companyIdx
     ) {
         List<ProductDto.ProductDetailResp> productList = productService.getProductsByCompany(companyIdx);
-        return ResponseEntity.ok(
-                new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, productList)
-        );
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, productList));
     }
 }
