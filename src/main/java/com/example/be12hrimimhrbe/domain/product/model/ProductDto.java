@@ -50,12 +50,9 @@ public class ProductDto {
         @Schema(description = "시리얼 넘버", example = "EC-001")
         private String serialNumber;
 
-        @Schema(description = "이미지 경로 (서버 저장 경로)", hidden = true)
+        @Schema(description = "이미지 경로", hidden = true)
         private String imagePath;
 
-        /**
-         * 🛠 Entity로 변환
-         */
         public Product toEntity(Company company, String imagePath) {
             return Product.builder()
                     .productName(productName)
@@ -114,6 +111,9 @@ public class ProductDto {
 
         @Schema(description = "시리얼 넘버", example = "EC-987654")
         private String serialNumber;
+
+        @Schema(description = "이미지 경로 (기존 이미지 유지 시 사용)", example = "/img/original.jpg", hidden = true)
+        private String imagePath; // 선택 사항
     }
 
     /**
@@ -169,9 +169,6 @@ public class ProductDto {
         @Schema(description = "전월 대비 증가율", example = "12.5%")
         private String growthRate;
 
-        /**
-         * 🛠 Entity → DTO 변환
-         */
         public static ProductDetailResp from(Product product) {
             return ProductDetailResp.builder()
                     .idx(product.getIdx())

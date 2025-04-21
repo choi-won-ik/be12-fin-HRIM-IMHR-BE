@@ -24,20 +24,16 @@ public class ProductService {
      * ✅ 제품 등록
      */
     public Long registerProduct(ProductDto.ProductRegistReq dto, MultipartFile imageFile) {
-        // 회사 조회
         System.out.println("🔥 받은 dto: " + dto);
         System.out.println("🔥 받은 companyIdx: " + dto.getCompanyIdx());
+
         Company company = companyRepository.findById(dto.getCompanyIdx())
                 .orElseThrow(() -> new IllegalArgumentException("❗ 회사 정보를 찾을 수 없습니다."));
 
-        // 이미지 저장 및 경로 생성
         String fileName = fileService.upload(imageFile);
         String imagePath = "http://localhost:8080/img/" + fileName;
 
-        // DTO → Entity 변환
         Product product = dto.toEntity(company, imagePath);
-
-        // 저장 및 ID 반환
         return productRepository.save(product).getIdx();
     }
 
@@ -47,23 +43,29 @@ public class ProductService {
     public ProductDto.ProductDetailResp getDetail(Long idx) {
         Product product = productRepository.findById(idx)
                 .orElseThrow(() -> new IllegalArgumentException("❗ 해당 제품이 존재하지 않습니다."));
-        System.out.println("🔥 받은 dto: " + product.getIdx());
-        System.out.println("🔥 받은 idx: " + idx);
         return ProductDto.ProductDetailResp.from(product);
     }
 
     /**
-     * ✅ 제품 수정
+     * ✅ 제품 수정 (이미지 포함)
      */
-    public Long updateProduct(Long idx, ProductDto.ProductUpdateReq dto) {
+    public Long updateProduct(Long idx, ProductDto.ProductUpdateReq dto, MultipartFile imageFile) {
         Product product = productRepository.findById(idx)
                 .orElseThrow(() -> new IllegalArgumentException("❗ 수정할 제품이 존재하지 않습니다."));
-        System.out.println("🔥 받은 product.idx: " + product.getIdx());
-        System.out.println("🔥 받은 idx: " + idx);
+
+        System.out.println("🔥 수정 대상 ID: " + idx);
         System.out.println("🔥 받은 dto: " + dto);
-        product.updateFrom(dto); // Entity 내부 updateFrom 사용
-        System.out.println("🔥 받은 product.idx: " + product.getIdx());
-        System.out.println("🔥 받은 idx: " + idx);
+
+        // 텍스트 정보 업데이트
+        product.updateFrom(dto);
+
+        // 이미지가 있을 경우에만 업데이트
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String fileName = fileService.upload(imageFile);
+            String imagePath = "http://localhost:8080/img/" + fileName;
+            product.setImagePath(imagePath);
+        }
+
         return productRepository.save(product).getIdx();
     }
 
@@ -81,7 +83,7 @@ public class ProductService {
      * ✅ 회사별 제품 리스트 조회
      */
     public List<ProductDto.ProductDetailResp> getProductsByCompany(Long companyIdx) {
-        List<Product> products = productRepository.findByCompany_Idx(companyIdx);
+        List<Product> products = productRepository.findAllByCompany_Idx(companyIdx);
         return products.stream()
                 .map(ProductDto.ProductDetailResp::from)
                 .collect(Collectors.toList());
