@@ -54,8 +54,7 @@ public class EventController {
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<EventDto.EventResponse> responses = eventService.pageList(member.getMember(), pageable);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, responses));
+        return ResponseEntity.ok().body(eventService.pageList(member.getMember(), pageable));
     }
 
     // 월별 일정 리스트
@@ -67,8 +66,7 @@ public class EventController {
             @RequestParam int month
     )
     {
-        List<EventDto.EventResponse> responses = eventService.eventList(member.getMember(), year, month);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, responses));
+        return ResponseEntity.ok().body(eventService.eventList(member.getMember(), year, month));
     }
 
 //  일별 일정 리스트 조회

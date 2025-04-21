@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.partner.model;
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +30,50 @@ public class PartnerDto {
             .totalScore(partner.getScore().getTotalScore())
             .build();
         }
+    }
+
+    @Getter @AllArgsConstructor @NoArgsConstructor @Builder
+    public static class PartnerResponse {
+        private Long partnerIdx;
+        private String partnerName;
+        private String type;
+
+        public static PartnerResponse fromEntity(Partner partner) {
+            return PartnerResponse.builder()
+                    .partnerIdx(partner.getIdx())
+                    .partnerName(partner.getName())
+                    .type(partner.getType())
+                    .build();
+        }
+    }
+
+    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class PartnerRequest {
+        private Long idx;
+        private String name;
+        private String type;
+        private String companyCode;
+        private Long partnerIdx;
+
+        public Partner toEntity(Company company) {
+            return Partner.builder()
+                    .idx(idx)
+                    .name(name)
+                    .type(type)
+                    .companyCode(companyCode)
+                    .partnerIdx(partnerIdx)
+                    .mainCompany(company)
+                    .build();
+        }
+    }
+
+
+    // 모든 회사 조회 리스트
+    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class AllCompanyListResponse {
+        private String type;
+        private Long companyIdx;
+        private String companyName;
+        private String companyCode;
     }
 }

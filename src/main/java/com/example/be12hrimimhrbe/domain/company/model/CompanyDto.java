@@ -17,21 +17,12 @@ public class CompanyDto {
         @Schema(description = "ESG_Company 고유 코드", example = "294ty8hfue")
         private String company_code;
 
-        public static ESG_CompanyResponse of(ESG_Company company) {
+        public static ESG_CompanyResponse of(ESGCompany company) {
             return builder()
                     .idx(company.getIdx())
                     .company_name(company.getCompany_name())
                     .company_code(company.getCompany_code())
                     .build();
         }
-    }
-
-    // 모든 회사 조회 리스트
-    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class AllCompanyListResponse {
-        private String type;
-        private Long companyIdx;
-        private String companyName;
-        private String companyCode;
     }
 }

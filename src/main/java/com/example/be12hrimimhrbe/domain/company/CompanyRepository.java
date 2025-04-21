@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByCode(String code);
+
+    Company findByIdx(Long idx);
 }
