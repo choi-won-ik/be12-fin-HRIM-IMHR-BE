@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.company;
 
+import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.company.model.ESG_Company;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
@@ -28,7 +29,7 @@ public class CompanyService {
     private final PartnerRepository partnerRepository;
     private final MemberRepository memberRepository;
 
-    public BaseResponse<Page<PartnerDto.AllCompanyListResponse>> allList(Pageable pageable, Member member) {
+    public BaseResponse<Page<CompanyDto.AllCompanyListResponse>> allList(Pageable pageable, Member member) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
         List<Partner> registerPartners = partnerRepository.findByMainCompanyIdx(myCompanyIdx);
 
@@ -41,33 +42,35 @@ public class CompanyService {
                 .collect(Collectors.toSet());
 
         // 테이블 필터링 조회
-        List<PartnerDto.AllCompanyListResponse> companies = companyRepository.findAll().stream()
+        List<CompanyDto.AllCompanyListResponse> companies = companyRepository.findAll().stream()
                 .filter(c -> !registerCompanyIds.contains(c.getIdx()) && !c.getIdx().equals(myCompanyIdx)) // 내 회사도 제외
-                .map(c -> PartnerDto.AllCompanyListResponse.builder()
+                .map(c -> CompanyDto.AllCompanyListResponse.builder()
                         .companyIdx(c.getIdx())
+                        .type("main")
                         .companyName(c.getName())
                         .companyCode(c.getCode())
                         .build()
                 ).collect(Collectors.toList());
 
-        List<PartnerDto.AllCompanyListResponse> esgCompanies = esgCompanyRepository.findAll().stream()
+        List<CompanyDto.AllCompanyListResponse> esgCompanies = esgCompanyRepository.findAll().stream()
                 .filter(e -> !registerESGCompanyIds.contains(e.getIdx()))
-                .map(e -> PartnerDto.AllCompanyListResponse.builder()
+                .map(e -> CompanyDto.AllCompanyListResponse.builder()
                         .companyIdx(e.getIdx())
+                        .type("esg")
                         .companyName(e.getCompany_name())
                         .companyCode(e.getCompany_code())
                         .build())
                 .collect(Collectors.toList());
 
-        List<PartnerDto.AllCompanyListResponse> mergedList = new ArrayList<>();
+        List<CompanyDto.AllCompanyListResponse> mergedList = new ArrayList<>();
         mergedList.addAll(companies);
         mergedList.addAll(esgCompanies);
 
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), mergedList.size());
-        List<PartnerDto.AllCompanyListResponse> pagedList = mergedList.subList(start, end);
+        List<CompanyDto.AllCompanyListResponse> pagedList = mergedList.subList(start, end);
 
-        Page<PartnerDto.AllCompanyListResponse> page = new PageImpl<>(pagedList, pageable, mergedList.size());
+        Page<CompanyDto.AllCompanyListResponse> page = new PageImpl<>(pagedList, pageable, mergedList.size());
 
         return new BaseResponse<>(BaseResponseMessage.COMPANY_ALL_LIST_SUCCESS, page);
     }
