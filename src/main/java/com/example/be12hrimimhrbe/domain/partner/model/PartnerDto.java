@@ -36,13 +36,13 @@ public class PartnerDto {
     public static class PartnerResponse {
         private Long partnerIdx;
         private String partnerName;
-        private String type;
+        private String companyCode;
 
         public static PartnerResponse fromEntity(Partner partner) {
             return PartnerResponse.builder()
                     .partnerIdx(partner.getIdx())
                     .partnerName(partner.getName())
-                    .type(partner.getType())
+                    .companyCode(partner.getCompanyCode())
                     .build();
         }
     }
@@ -65,15 +65,5 @@ public class PartnerDto {
                     .mainCompany(company)
                     .build();
         }
-    }
-
-
-    // 모든 회사 조회 리스트
-    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class AllCompanyListResponse {
-        private String type;
-        private Long companyIdx;
-        private String companyName;
-        private String companyCode;
     }
 }

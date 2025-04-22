@@ -1,28 +1,39 @@
 package com.example.be12hrimimhrbe.domain.company.model;
 
-
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 public class CompanyDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
-    public static class ESG_CompanyResponse {
-        @Schema(description = "ESG_Company 고유 식별 값", example = "1")
+    public static class CompanyListResponse {
         private Long idx;
-        @Schema(description = "ESG_Company 이름", example = "한화시스템")
-        private String company_name;
-        @Schema(description = "ESG_Company 고유 코드", example = "294ty8hfue")
-        private String company_code;
+        private String name;
+        private boolean isMember;
+        private boolean has_esg_data;
 
-        public static ESG_CompanyResponse of(ESGCompany company) {
+        public static CompanyListResponse of(Company company) {
             return builder()
                     .idx(company.getIdx())
-                    .company_name(company.getCompany_name())
-                    .company_code(company.getCompany_code())
+                    .name(company.getName())
+                    .isMember(company.isMember())
+                    .has_esg_data(company.isHas_esg_data())
                     .build();
         }
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class CompanyResponse {
+        private Long idx;
+        private String name;
+        private boolean isMember;
+        private boolean has_esg_data;
+        private String registrationNumber;
+        private String imgUrl;
+        private LocalDateTime createdAt;
+        private String code;
     }
 }

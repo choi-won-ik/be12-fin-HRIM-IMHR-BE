@@ -64,18 +64,18 @@ public class EventService {
     }
 
 //  일별 이벤트 리스트
-    public List<EventDto.EventResponse> readEventByDate(Member member, LocalDate date) {
+    public BaseResponse<List<EventDto.EventResponse>> readEventByDate(Member member, LocalDate date) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual
                 (newMember.getCompany().getIdx(), date, date);
-        return events.stream().map(EventDto.EventResponse::of).toList();
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS, events.stream().map(EventDto.EventResponse::of).toList());
     }
 
 //  이벤트 상세 조회
-    public EventDto.EventResponse readEventDetail(Member member, Long idx) {
+    public BaseResponse<EventDto.EventResponse> readEventDetail(Member member, Long idx) {
         Member nm = memberRepository.findById(member.getIdx()).orElseThrow();
         Event event = eventRepository.findByCompanyIdxAndIdx(nm.getCompany().getIdx(), idx);
-        return EventDto.EventResponse.of(event);
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS, EventDto.EventResponse.of(event));
     }
 
 //  이벤트 삭제
