@@ -2,6 +2,7 @@ package com.example.be12hrimimhrbe.domain.partner;
 
 import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.score.ScoreRepository;
@@ -18,9 +19,7 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +38,7 @@ public class PartnerService {
             return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_FAILS, null);
         }
 
-        Page<Partner> partners = partnerRepository.findAllByMainCompanyId(companyIdx, pageable);
+        Page<Partner> partners = partnerRepository.findAllByMainCompanyIdx(companyIdx, pageable);
 
         Page<PartnerDto.PartnerListResp> result = partners.map(partner -> {
             Company partnerCompany = partner.getPartnerCompany();
@@ -55,63 +54,49 @@ public class PartnerService {
     }
 
 
-    public BaseResponse<List<PartnerDto.PartnerRequest>> addPartner(Member member, Long companyIdx, List<PartnerDto.PartnerRequest> dtoList) {
+    public BaseResponse<List<Partner>> addPartner(Member member, Long companyIdx, List<CompanyDto.CompanyListResponse> dtoList) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        boolean admin = memberRepository.findByIdx(member.getIdx()).getIsAdmin();
 
-        if (!myCompanyIdx.equals(companyIdx)) {
+        if (!myCompanyIdx.equals(companyIdx) && !admin) {
             return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_FAILS, null);
         }
 
         Company myCompany = companyRepository.findByIdx(myCompanyIdx);
-
-        List<Partner> partners = new ArrayList<>();
-        List<PartnerDto.PartnerRequest> successList = new ArrayList<>();
-
-        for (PartnerDto.PartnerRequest dto : dtoList) {
-            boolean isExist = partnerRepository.existsByMainCompanyIdxAndPartnerIdx(
-                    myCompanyIdx, dto.getPartnerIdx());
-            if (isExist) continue;
-
-            if (dto.getType().equals("company")) {
-                Partner partner = Partner.builder()
-                        .partnerIdx(dto.getPartnerIdx())
-                        .name(dto.getName())
-                        .companyCode(dto.getCompanyCode())
-                        .mainCompany(myCompany)
-                        .type(dto.getType())
-                        .build();
-
-                partners.add(partner);
-                successList.add(dto);
-            } else if (dto.getType().equals("esg")) {
-                ESGCompany esgCompany = esgCompanyRepository.findByIdx(dto.getPartnerIdx());
-                Partner partner = Partner.builder()
-                        .partnerIdx(dto.getPartnerIdx())
-                        .name(dto.getName())
-                        .companyCode(dto.getCompanyCode())
-                        .type(dto.getType())
-                        .mainCompany(myCompany)
-                        .esgCompany(esgCompany)
-                        .build();
-                partners.add(partner);
-                successList.add(dto);
-            }
-        }
-        partnerRepository.saveAll(partners);
-        return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_SUCCESS, successList);
-    }
-
-    @Transactional
-    public boolean deletePartner(Member member, Long partnerIdx) {
-        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
-        Long mainCompanyIdx = partnerRepository.findMainCompanyIdxByPartnerIdx(partnerIdx);
-
-        if (!myCompanyIdx.equals(mainCompanyIdx)) {
-            return false;
+        if (myCompany == null) {
+            return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_FAILS, null);
         }
 
-        partnerRepository.deletePartnerByIdx(partnerIdx);
-        partnerRepository.deleteById(partnerIdx);
-        return true;
+        List<Long> partnerIds = dtoList.stream().map(CompanyDto.CompanyListResponse::getIdx).toList();
+
+        List<Company> partners = partnerIds.stream().map(companyRepository::findByIdx).filter(Objects::nonNull).toList();
+
+        // 중복 파트너 방지 (선택사항)
+        Set<Long> existing = partnerRepository.findAllByMainCompany_Idx(myCompanyIdx)
+                .stream().map(p -> p.getPartnerCompany().getIdx()).collect(Collectors.toSet());
+
+        List<Partner> toSave = partners.stream()
+                .filter(p -> !existing.contains(p.getIdx()))
+                        .map(partner -> Partner.builder()
+                                .mainCompany(myCompany)
+                                .partnerCompany(partner)
+                                .build())
+                .collect(Collectors.toList());
+
+        partnerRepository.saveAll(toSave);
+        return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_SUCCESS, toSave);
     }
+
+//    @Transactional
+//    public boolean deletePartner(Member member, Long partnerIdx) {
+//        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+//        Long mainCompanyIdx = partnerRepository.findMainCompanyIdxByPartnerIdx(partnerIdx);
+//
+//        if (!myCompanyIdx.equals(mainCompanyIdx)) {
+//            return false;
+//        }
+//
+//        partnerRepository.deletePartnerAndMainCompanyByIdx(partnerIdx);
+//        return true;
+//    }
 }
