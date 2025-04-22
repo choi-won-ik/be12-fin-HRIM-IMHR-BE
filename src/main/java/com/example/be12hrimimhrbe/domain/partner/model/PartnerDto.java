@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.domain.partner.model;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.score.model.Score;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class PartnerDto {
-
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class PartnerListResp {
         @Schema(description = "회사명", example = "한화시스템")
@@ -21,13 +21,13 @@ public class PartnerDto {
         private Integer governanceScore;
         @Schema(description = "esg 총 점수", example = "74")
         private Integer totalScore;
-        public static PartnerListResp fromEntity(Partner partner) {
+        public static PartnerListResp fromEntity(Company company, Score score) {
             return PartnerListResp.builder()
-            .companyName(partner.getName())
-            .environmentScore(partner.getScore().getEnvironmentScore())
-            .socialScore(partner.getScore().getSocialScore())
-            .governanceScore(partner.getScore().getGovernanceScore())
-            .totalScore(partner.getScore().getTotalScore())
+            .companyName(company.getName())
+            .environmentScore(score.getEnvironmentScore())
+            .socialScore(score.getSocialScore())
+            .governanceScore(score.getGovernanceScore())
+            .totalScore(score.getTotalScore())
             .build();
         }
     }

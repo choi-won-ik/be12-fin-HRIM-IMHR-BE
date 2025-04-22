@@ -7,6 +7,9 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +24,25 @@ import lombok.RequiredArgsConstructor;
 public class PartnerController {
     private final PartnerService partnerService;
 
-    @GetMapping("/{idx}")
+//    @GetMapping("/{idx}")
+//    @Operation(summary = "협럭사 리스트", description = "협력사 리스트를 확인합니다.")
+//    public ResponseEntity<BaseResponse<List<PartnerDto.PartnerListResp>>> List(
+//            @Parameter(description = "협력사 IDX", example = "1")
+//            @PathVariable Long idx) {
+//        return ResponseEntity.ok().body(partnerService.getPartnerList(idx));
+//    }
+
+    @GetMapping("/{companyIdx}")
     @Operation(summary = "협럭사 리스트", description = "협력사 리스트를 확인합니다.")
-    public ResponseEntity<BaseResponse<List<PartnerDto.PartnerListResp>>> List(
+    public ResponseEntity<BaseResponse<Page<PartnerDto.PartnerListResp>>> partnerList(
             @Parameter(description = "협력사 IDX", example = "1")
-            @PathVariable Long idx) {
-        return ResponseEntity.ok().body(partnerService.getPartnerList(idx));
+            @PathVariable Long companyIdx,
+            @AuthenticationPrincipal CustomUserDetails member,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok().body(eventService.pageList(member.getMember(), companyIdx, pageable));
     }
 
     @GetMapping("/add/{companyIdx}")
