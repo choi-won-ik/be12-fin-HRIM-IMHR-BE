@@ -42,7 +42,7 @@ public class PartnerController {
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(eventService.pageList(member.getMember(), companyIdx, pageable));
+        return ResponseEntity.ok().body(partnerService.pageList(member.getMember(), companyIdx, pageable));
     }
 
     @GetMapping("/add/{companyIdx}")

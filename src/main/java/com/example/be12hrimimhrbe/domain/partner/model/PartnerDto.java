@@ -41,8 +41,8 @@ public class PartnerDto {
         public static PartnerResponse fromEntity(Partner partner) {
             return PartnerResponse.builder()
                     .partnerIdx(partner.getIdx())
-                    .partnerName(partner.getName())
-                    .companyCode(partner.getCompanyCode())
+                    .partnerName(partner.getPartnerCompany().getName())
+                    .companyCode(partner.getPartnerCompany().getCode())
                     .build();
         }
     }
@@ -50,19 +50,12 @@ public class PartnerDto {
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class PartnerRequest {
         private Long idx;
-        private String name;
-        private String type;
-        private String companyCode;
-        private Long partnerIdx;
 
-        public Partner toEntity(Company company) {
+        public Partner toEntity(Company mainCompany, Company partnerCompany) {
             return Partner.builder()
                     .idx(idx)
-                    .name(name)
-                    .type(type)
-                    .companyCode(companyCode)
-                    .partnerIdx(partnerIdx)
-                    .mainCompany(company)
+                    .mainCompany(mainCompany)
+                    .partnerCompany(partnerCompany)
                     .build();
         }
     }

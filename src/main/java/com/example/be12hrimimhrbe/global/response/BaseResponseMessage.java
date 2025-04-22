@@ -49,6 +49,7 @@ public enum BaseResponseMessage {
     PARTNER_ADD_SUCCESS(true, 3200, "협력사 등록 성공"),
     PARTNER_DELETE_SUCCESS(true, 3200, "협력사 삭제 성공"),
     PARTNER_ADD_FAILS(false, 3202,"협력사 등록에 실패했습니다."),
+    PARTNER_LIST_FAILS(false, 3203, "협력사들 조회에 실패했습니다. 부적절한 접근입니다."),
 
     // 피드백 기능(4000)
     FEEDBACK_TEMPLATE_CREATE_SUCCESS(true, 4200, "피드백 양식 생성 성공"),

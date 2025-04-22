@@ -4,6 +4,10 @@ import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
+import com.example.be12hrimimhrbe.domain.score.ScoreRepository;
+import com.example.be12hrimimhrbe.domain.score.model.Score;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.be12hrimimhrbe.domain.partner.model.Partner;
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,14 +29,31 @@ public class PartnerService {
     private final PartnerRepository partnerRepository;
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
-    private final ESG_CompanyRepository esgCompanyRepository;
+    private final ScoreRepository scoreRepository;
 
-    public BaseResponse<List<PartnerDto.PartnerListResp>> getPartnerList(Long idx) {
-        List<Partner> partners = partnerRepository.findAllByIdx(idx);
-        return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_SUCCESS, 
-            partners.stream().map(PartnerDto.PartnerListResp::fromEntity).collect(Collectors.toList())
-        );
+    public BaseResponse<Page<PartnerDto.PartnerListResp>> pageList(Member member, Long companyIdx, Pageable pageable) {
+        String companyCode = companyRepository.findByIdx(companyIdx).getRegistrationNumber();
+        String myCompanyCode = memberRepository.findByIdx(member.getIdx()).getCompany().getRegistrationNumber();
+
+        if (!myCompanyCode.equals(companyCode)) {
+            return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_FAILS, null);
+        }
+
+        Page<Partner> partners = partnerRepository.findAllByMainCompanyId(companyIdx, pageable);
+
+        Page<PartnerDto.PartnerListResp> result = partners.map(partner -> {
+            Company partnerCompany = partner.getPartnerCompany();
+            Score score = scoreRepository.findByCompanyIdx(partnerCompany.getIdx()).stream()
+                    .sorted(Comparator.comparing(Score::getYear).reversed()) // 최신 점수
+                    .findFirst()
+                    .orElse(new Score()); // 없으면 빈 Score 리턴
+
+            return PartnerDto.PartnerListResp.fromEntity(partnerCompany, score);
+        });
+
+        return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_SUCCESS, result);
     }
+
 
     public BaseResponse<List<PartnerDto.PartnerRequest>> addPartner(Member member, Long companyIdx, List<PartnerDto.PartnerRequest> dtoList) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
@@ -88,6 +110,7 @@ public class PartnerService {
             return false;
         }
 
+        partnerRepository.deletePartnerByIdx(partnerIdx);
         partnerRepository.deleteById(partnerIdx);
         return true;
     }
