@@ -1,6 +1,8 @@
 package com.example.be12hrimimhrbe.domain.partner;
 
+import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
+import com.example.be12hrimimhrbe.domain.partner.model.Partner;
 import com.example.be12hrimimhrbe.domain.partner.model.PartnerDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
@@ -24,14 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class PartnerController {
     private final PartnerService partnerService;
 
-//    @GetMapping("/{idx}")
-//    @Operation(summary = "협럭사 리스트", description = "협력사 리스트를 확인합니다.")
-//    public ResponseEntity<BaseResponse<List<PartnerDto.PartnerListResp>>> List(
-//            @Parameter(description = "협력사 IDX", example = "1")
-//            @PathVariable Long idx) {
-//        return ResponseEntity.ok().body(partnerService.getPartnerList(idx));
-//    }
-
     @GetMapping("/{companyIdx}")
     @Operation(summary = "협럭사 리스트", description = "협력사 리스트를 확인합니다.")
     public ResponseEntity<BaseResponse<Page<PartnerDto.PartnerListResp>>> partnerList(
@@ -47,10 +41,10 @@ public class PartnerController {
 
     @GetMapping("/add/{companyIdx}")
     @Operation(summary = "협력사 추가", description = "협력사를 추가하는 기능입니다.")
-    public ResponseEntity<BaseResponse<List<PartnerDto.PartnerRequest>>> addPartner (
+    public ResponseEntity<BaseResponse<List<Partner>>> addPartner (
             @AuthenticationPrincipal CustomUserDetails member,
             @PathVariable Long companyIdx,
-            @RequestBody List<PartnerDto.PartnerRequest> dto
+            @RequestParam List<CompanyDto.CompanyListResponse> dto
             ) {
         return ResponseEntity.ok().body(partnerService.addPartner(member.getMember(), companyIdx, dto));
     }
