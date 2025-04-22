@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 public class PartnerDto {
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -58,5 +59,12 @@ public class PartnerDto {
                     .partnerCompany(partnerCompany)
                     .build();
         }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PartnerPageResponse {
+        private Page<PartnerDto.PartnerListResp> partners;
+        private Long companyIdx;
     }
 }

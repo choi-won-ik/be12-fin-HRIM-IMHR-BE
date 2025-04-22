@@ -30,15 +30,10 @@ public class PartnerService {
     private final CompanyRepository companyRepository;
     private final ScoreRepository scoreRepository;
 
-    public BaseResponse<Page<PartnerDto.PartnerListResp>> pageList(Member member, Long companyIdx, Pageable pageable) {
-        String companyCode = companyRepository.findByIdx(companyIdx).getRegistrationNumber();
-        String myCompanyCode = memberRepository.findByIdx(member.getIdx()).getCompany().getRegistrationNumber();
+    public BaseResponse<PartnerDto.PartnerPageResponse> pageList(Member member, Pageable pageable) {
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
 
-        if (!myCompanyCode.equals(companyCode)) {
-            return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_FAILS, null);
-        }
-
-        Page<Partner> partners = partnerRepository.findAllByMainCompanyIdx(companyIdx, pageable);
+        Page<Partner> partners = partnerRepository.findAllByMainCompanyIdx(myCompanyIdx, pageable);
 
         Page<PartnerDto.PartnerListResp> result = partners.map(partner -> {
             Company partnerCompany = partner.getPartnerCompany();
@@ -50,7 +45,8 @@ public class PartnerService {
             return PartnerDto.PartnerListResp.fromEntity(partnerCompany, score);
         });
 
-        return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_SUCCESS, result);
+        PartnerDto.PartnerPageResponse response = new PartnerDto.PartnerPageResponse(result, myCompanyIdx);
+        return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_SUCCESS, response);
     }
 
 
