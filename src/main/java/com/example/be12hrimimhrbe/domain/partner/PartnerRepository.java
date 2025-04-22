@@ -1,8 +1,6 @@
 package com.example.be12hrimimhrbe.domain.partner;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

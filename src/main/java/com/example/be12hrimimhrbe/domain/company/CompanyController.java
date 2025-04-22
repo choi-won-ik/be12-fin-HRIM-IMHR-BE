@@ -22,7 +22,7 @@ public class CompanyController {
     private final CompanyService companyService;
 
     // EsgCompany 와 Company 통합 조회 기능
-    @PostMapping("/list")
+    @GetMapping("/list")
     @Operation(summary = "전체 기업 리스트", description = "페이지별로 전체 기업을 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<Page<CompanyDto.CompanyListResponse>>> allList(
             @AuthenticationPrincipal CustomUserDetails member,
