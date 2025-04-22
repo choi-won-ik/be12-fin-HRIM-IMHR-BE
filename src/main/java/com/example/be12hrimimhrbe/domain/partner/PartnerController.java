@@ -26,17 +26,16 @@ import lombok.RequiredArgsConstructor;
 public class PartnerController {
     private final PartnerService partnerService;
 
-    @GetMapping("/{companyIdx}")
+    @GetMapping("/pageList")
     @Operation(summary = "협럭사 리스트", description = "협력사 리스트를 확인합니다.")
-    public ResponseEntity<BaseResponse<Page<PartnerDto.PartnerListResp>>> partnerList(
+    public ResponseEntity<BaseResponse<PartnerDto.PartnerPageResponse>> partnerList(
             @Parameter(description = "협력사 IDX", example = "1")
-            @PathVariable Long companyIdx,
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(partnerService.pageList(member.getMember(), companyIdx, pageable));
+        return ResponseEntity.ok().body(partnerService.pageList(member.getMember(), pageable));
     }
 
     @GetMapping("/add/{companyIdx}")
