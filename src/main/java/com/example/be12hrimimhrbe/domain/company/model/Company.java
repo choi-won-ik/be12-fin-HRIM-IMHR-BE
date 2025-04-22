@@ -18,16 +18,22 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @Column(nullable = false, unique = true)
-    private String registrationNumber;
-
     @Column(nullable = false)
     private String name;
 
+    private boolean isMember;
+
+    private boolean has_esg_data;
+
+    @Column(nullable = false, unique = true)
+    private String registrationNumber;
+
     private String imgUrl;
-    @Column(length = 20)
-    private String code;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(length = 20)
+    private String code;
+
 }

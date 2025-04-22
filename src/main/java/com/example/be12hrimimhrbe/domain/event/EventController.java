@@ -77,8 +77,7 @@ public class EventController {
             @RequestParam("date") @Parameter(description = "조회할 날짜 (yyyy-MM-dd)") String date
     ) {
         LocalDate localDate = LocalDate.parse(date);
-        List<EventDto.EventResponse> responses = eventService.readEventByDate(member.getMember(), localDate);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS, responses));
+        return ResponseEntity.ok().body(eventService.readEventByDate(member.getMember(), localDate));
     }
 
     @GetMapping("/eventDetail/{idx}")
@@ -87,8 +86,7 @@ public class EventController {
             @AuthenticationPrincipal CustomUserDetails member,
             @PathVariable Long idx
     ) {
-        EventDto.EventResponse response = eventService.readEventDetail(member.getMember(), idx);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS, response));
+        return ResponseEntity.ok(eventService.readEventDetail(member.getMember(), idx));
     }
 
     @DeleteMapping("/delete/{idx}")

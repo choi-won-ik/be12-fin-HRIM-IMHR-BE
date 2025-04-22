@@ -1,9 +1,7 @@
 package com.example.be12hrimimhrbe.domain.partner;
 
 import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
-import com.example.be12hrimimhrbe.domain.company.ESG_CompanyRepository;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
-import com.example.be12hrimimhrbe.domain.company.model.ESGCompany;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import org.springframework.stereotype.Service;
@@ -14,6 +12,7 @@ import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +77,18 @@ public class PartnerService {
         }
         partnerRepository.saveAll(partners);
         return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_SUCCESS, successList);
+    }
+
+    @Transactional
+    public boolean deletePartner(Member member, Long partnerIdx) {
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Long mainCompanyIdx = partnerRepository.findMainCompanyIdxByPartnerIdx(partnerIdx);
+
+        if (!myCompanyIdx.equals(mainCompanyIdx)) {
+            return false;
+        }
+
+        partnerRepository.deleteById(partnerIdx);
+        return true;
     }
 }
