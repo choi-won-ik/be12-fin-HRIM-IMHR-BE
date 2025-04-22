@@ -47,6 +47,13 @@ public class NotificationController {
         notificationService.signupApprove(companyCode, dto);
     }
 
+    @MessageMapping("/notification/eventRegist/{companyIdx}")
+    @Operation(summary = "회사 캠패인 추가", description = "회사 캠패인 추가 시 알림 기능 입니다.")
+    public void EventRegist(@Payload NotificationDto.SignupApproveReq dto, @DestinationVariable Long companyIdx) {
+
+        notificationService.EventRegist(companyIdx, dto);
+    }
+
     @GetMapping("/list")
     @Operation(summary = "유저의 알림 리스트", description = "해당 유저의 아림 리스트 입니다.")
     public ResponseEntity<BaseResponse<List<NotificationDto.NotificationResp>>> getMyNotifications(
