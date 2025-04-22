@@ -110,4 +110,30 @@ public class NotificationService {
             }
         }
     }
+
+    public void EventRegist(Long companyIdx, NotificationDto.SignupApproveReq dto) {
+        List<Member> members = memberRepository.findAllByCompanyIdx(companyIdx);
+
+        for (Member member : members) {
+            if (!member.getIsAdmin()) {
+                member.setNotificationCount(member.getNotificationCount() + 1);
+                memberRepository.save(member);
+
+                String url = "/calendar";
+
+                Notification notification = Notification.builder()
+                        .isRead(false)
+                        .member(member)
+                        .content(dto.getTitle())
+                        .title("새로운 회사 일정이 있습니다.")
+                        .createdAt(LocalDateTime.now())
+                        .url(url)
+                        .build();
+                notificationRepository.save(notification);
+
+                simpMessagingTemplate.convertAndSend("/topic/notification/" + member.getIdx(), NotificationDto.NotificationResp.from(notification, member));
+                System.out.println("됐음");
+            }
+        }
+    }
 }

@@ -13,6 +13,7 @@ public class ActivityDto {
     @Data @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ActivityListResp{
         private Long activityIdx;
+        private Long memberIdx;
         private String title;
         private String startDate;
         private String memberId;
@@ -27,6 +28,7 @@ public class ActivityDto {
             return ActivityListResp.builder()
                     .memberId(member.getMemberId())
                     .memberName(member.getName())
+                    .memberIdx(member.getIdx())
                     .activityIdx(activity.getIdx())
                     .startDate(formattedDate)
                     .title(activity.getTitle())
