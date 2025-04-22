@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.score.model;
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +29,9 @@ public class Score {
     private Integer totalScore;
 
     private Integer year;
+
+    @OneToOne
+    @JoinColumn(name = "company_idx")
+    private Company company;
+
 }
