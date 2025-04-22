@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class NotificationDto {
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -53,5 +54,12 @@ public class NotificationDto {
         private String content;
         private String url;
         private Long activityIdx;
+    }
+
+    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
+    public static class eventcampaignMemberAddReq{
+        private String title;
+        private String content;
+        private List<Long> memberIdx;
     }
 }

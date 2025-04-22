@@ -1,6 +1,8 @@
 package com.example.be12hrimimhrbe.domain.notification;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
+import com.example.be12hrimimhrbe.domain.campaign.CampaignRepository;
+import com.example.be12hrimimhrbe.domain.campaign.model.Campaign;
 import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
@@ -27,7 +29,7 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final MemberRepository memberRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final CompanyRepository companyRepository;
+    private final CampaignRepository campaignRepository;
 
     @Transactional
     public void activityApprove(NotificationDto.ActivityApproveReq dto) {
@@ -132,8 +134,33 @@ public class NotificationService {
                 notificationRepository.save(notification);
 
                 simpMessagingTemplate.convertAndSend("/topic/notification/" + member.getIdx(), NotificationDto.NotificationResp.from(notification, member));
-                System.out.println("됐음");
             }
+        }
+    }
+
+    public void eventcampaignMemberAddRegist(Long eventIdx, NotificationDto.eventcampaignMemberAddReq dto) {
+        List<Campaign> campaigns=campaignRepository.findAllByEventIdx(eventIdx);
+        System.out.println("서비스 실행");
+        System.out.println(campaigns.size());
+        for (Campaign campaign : campaigns) {
+            Member member = campaign.getMember();
+            System.out.println(member.getIdx());
+            member.setNotificationCount(member.getNotificationCount() + 1);
+            memberRepository.save(member);
+
+            String url = "/calendar";
+
+            Notification notification = Notification.builder()
+                    .isRead(false)
+                    .member(member)
+                    .content(dto.getTitle())
+                    .title("회사 캠패인 활동이 승인 되었습니다.")
+                    .createdAt(LocalDateTime.now())
+                    .url(url)
+                    .build();
+            notificationRepository.save(notification);
+
+            simpMessagingTemplate.convertAndSend("/topic/notification/" + member.getIdx(), NotificationDto.NotificationResp.from(notification, member));
         }
     }
 }
