@@ -40,15 +40,9 @@ public class CompanyService {
                 .collect(Collectors.toSet());
 
         registerCompanyIds.add(myCompanyIdx);
+        List<Long> excludedIds = new ArrayList<>(registerCompanyIds);
 
-        List<Company> filteredCompanies = companyRepository.findAll().stream()
-                .filter(company -> !registerCompanyIds.contains(company.getIdx()))
-                .collect(Collectors.toList());
-
-        // 페이징 수동 처리
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), filteredCompanies.size());
-        Page<Company> pagedResult = new PageImpl<>(filteredCompanies.subList(start, end), pageable, filteredCompanies.size());
+        Page<Company> pagedResult = companyRepository.findAllExcludingIds(excludedIds, pageable);
 
         // DTO 변환
         Page<CompanyDto.CompanyListResponse> resultPage = pagedResult.map(CompanyDto.CompanyListResponse::of);
