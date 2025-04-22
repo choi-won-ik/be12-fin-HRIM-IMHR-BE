@@ -2,9 +2,7 @@ package com.example.be12hrimimhrbe.domain.company;
 
 import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
-import com.example.be12hrimimhrbe.domain.partner.model.PartnerDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
-import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -38,7 +38,7 @@ public class PartnerService {
             return new BaseResponse<>(BaseResponseMessage.PARTNER_LIST_FAILS, null);
         }
 
-        Page<Partner> partners = partnerRepository.findAllByMainCompanyId(companyIdx, pageable);
+        Page<Partner> partners = partnerRepository.findAllByMainCompanyIdx(companyIdx, pageable);
 
         Page<PartnerDto.PartnerListResp> result = partners.map(partner -> {
             Company partnerCompany = partner.getPartnerCompany();
@@ -87,16 +87,16 @@ public class PartnerService {
         return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_SUCCESS, toSave);
     }
 
-    @Transactional
-    public boolean deletePartner(Member member, Long partnerIdx) {
-        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
-        Long mainCompanyIdx = partnerRepository.findMainCompanyIdxByPartnerIdx(partnerIdx);
-
-        if (!myCompanyIdx.equals(mainCompanyIdx)) {
-            return false;
-        }
-
-        partnerRepository.deletePartnerAndMainCompanyByIdx(partnerIdx);
-        return true;
-    }
+//    @Transactional
+//    public boolean deletePartner(Member member, Long partnerIdx) {
+//        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+//        Long mainCompanyIdx = partnerRepository.findMainCompanyIdxByPartnerIdx(partnerIdx);
+//
+//        if (!myCompanyIdx.equals(mainCompanyIdx)) {
+//            return false;
+//        }
+//
+//        partnerRepository.deletePartnerAndMainCompanyByIdx(partnerIdx);
+//        return true;
+//    }
 }

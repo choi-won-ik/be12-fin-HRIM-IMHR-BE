@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class CompanyService {
     private final PartnerRepository partnerRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public BaseResponse<Page<CompanyDto.CompanyListResponse>> allList(Pageable pageable, Member member) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
 
