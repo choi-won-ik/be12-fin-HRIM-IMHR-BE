@@ -14,5 +14,7 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
     Page<Partner> findAllByMainCompanyIdx(Long mainCompanyIdx, Pageable pageable);
 
-    void deletePartnerAndMainCompanyByIdx(Long idx);
+    void deleteByPartnerCompanyIdxAndMainCompanyIdx(Long partnerCompanyIdx, Long mainCompanyIdx);
+
+    Partner findByPartnerCompanyIdx(Long partnerCompanyIdx);
 }

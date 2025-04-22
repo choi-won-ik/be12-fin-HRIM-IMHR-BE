@@ -87,16 +87,17 @@ public class PartnerService {
         return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_SUCCESS, toSave);
     }
 
-//    @Transactional
-//    public boolean deletePartner(Member member, Long partnerIdx) {
-//        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
-//        Long mainCompanyIdx = partnerRepository.findMainCompanyIdxByPartnerIdx(partnerIdx);
-//
-//        if (!myCompanyIdx.equals(mainCompanyIdx)) {
-//            return false;
-//        }
-//
-//        partnerRepository.deletePartnerAndMainCompanyByIdx(partnerIdx);
-//        return true;
-//    }
+    @Transactional
+    public boolean deletePartner(Member member, Long partnerIdx) {
+        boolean admin = memberRepository.findByIdx(member.getIdx()).getIsAdmin();
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Long mainCompanyIdx = partnerRepository.findByPartnerCompanyIdx(partnerIdx).getMainCompany().getIdx();
+
+        if (!myCompanyIdx.equals(mainCompanyIdx) && !admin) {
+            return false;
+        }
+
+        partnerRepository.deleteByPartnerCompanyIdxAndMainCompanyIdx(partnerIdx, myCompanyIdx);
+        return true;
+    }
 }

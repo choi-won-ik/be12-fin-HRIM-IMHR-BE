@@ -49,13 +49,13 @@ public class PartnerController {
         return ResponseEntity.ok().body(partnerService.addPartner(member.getMember(), companyIdx, dto));
     }
 
-//    @DeleteMapping("/delete/{partnerIdx}")
-//    @Operation(summary = "협력사 제거", description = "협력사를 삭제하는 기능입니다.")
-//    public ResponseEntity<BaseResponse<Boolean>> deletePartner (
-//            @AuthenticationPrincipal CustomUserDetails member,
-//            @PathVariable Long partnerIdx
-//    ) {
-//        boolean isDeleted = partnerService.deletePartner(member.getMember(), partnerIdx);
-//        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.PARTNER_DELETE_SUCCESS, isDeleted));
-//    }
+    @DeleteMapping("/delete/{partnerIdx}")
+    @Operation(summary = "협력사 제거", description = "협력사를 삭제하는 기능입니다.")
+    public ResponseEntity<BaseResponse<Boolean>> deletePartner (
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable Long partnerIdx
+    ) {
+        boolean isDeleted = partnerService.deletePartner(member.getMember(), partnerIdx);
+        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.PARTNER_DELETE_SUCCESS, isDeleted));
+    }
 }
