@@ -19,10 +19,6 @@ public class Partner {
     private Long idx;
 
     @ManyToOne
-    @JoinColumn(name = "company_idx")
-    private Score score;
-
-    @ManyToOne
     @JoinColumn(name = "main_company_idx")
     private Company mainCompany;
 
