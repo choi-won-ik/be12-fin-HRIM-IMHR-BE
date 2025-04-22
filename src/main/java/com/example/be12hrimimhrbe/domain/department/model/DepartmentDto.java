@@ -52,4 +52,20 @@ public class DepartmentDto {
     public static class DeleteRequest{
         private Long idx;
     }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class DepartmentInfoResponse {
+        private Long idx;
+        private String name;
+        private Long companyIdx;
+        private String companyName;
+        public static DepartmentInfoResponse fromEntity(Department department) {
+            return DepartmentInfoResponse.builder()
+                    .idx(department.getIdx())
+                    .name(department.getName())
+                    .companyIdx(department.getCompany().getIdx())
+                    .companyName(department.getCompany().getName())
+                    .build();
+        }
+    }
 }
