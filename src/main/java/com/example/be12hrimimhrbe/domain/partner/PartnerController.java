@@ -1,6 +1,5 @@
 package com.example.be12hrimimhrbe.domain.partner;
 
-import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.partner.model.Partner;
 import com.example.be12hrimimhrbe.domain.partner.model.PartnerDto;
@@ -9,7 +8,6 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
