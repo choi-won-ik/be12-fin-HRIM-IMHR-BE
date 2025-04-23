@@ -15,13 +15,13 @@ public class PartnerDto {
         @Schema(description = "회사명", example = "한화시스템")
         private String companyName;
         @Schema(description = "esg 환경 점수", example = "55")
-        private int environmentScore;
+        private String environmentScore;
         @Schema(description = "esg 사회 점수", example = "73")
-        private Integer socialScore;
+        private String socialScore;
         @Schema(description = "esg 지배구조 점수", example = "80")
-        private Integer governanceScore;
+        private String governanceScore;
         @Schema(description = "esg 총 점수", example = "74")
-        private Integer totalScore;
+        private String totalScore;
         public static PartnerListResp fromEntity(Company company, Score score) {
             return PartnerListResp.builder()
             .companyName(company.getName())
