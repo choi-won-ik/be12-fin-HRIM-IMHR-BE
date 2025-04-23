@@ -77,6 +77,18 @@ spring:
 #    init:
 #      mode: always
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+  health:
+    db:
+      enabled: true
+
 logging:
   level:
     org.hibernate.SQL: debug
