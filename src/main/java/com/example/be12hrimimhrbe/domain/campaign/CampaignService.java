@@ -7,6 +7,9 @@ import com.example.be12hrimimhrbe.domain.event.model.Event;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
+import com.example.be12hrimimhrbe.global.response.BaseResponse;
+import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +28,7 @@ public class CampaignService {
     private final EventRepository eventRepository;
 
     @Transactional
-    public List<Long> register(CampaignDto.CampaignRequest req) {
+    public BaseResponse<List<Long>> register(CampaignDto.CampaignRequest req) {
         Event event = eventRepository.findById(req.getEventIdx()).orElseThrow();
 
         List<Member> members = memberRepository.findAllById(req.getMemberIdxList());
@@ -48,12 +51,12 @@ public class CampaignService {
         }
 
         campaignRepository.saveAll(toSave);
-        return failed;
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_REGISTER_SUCCESS, failed);
     }
 
 
     @Transactional
-    public List<MemberDto.MemberShortResponse> memberList(Long eventIdx) {
+    public BaseResponse<List<MemberDto.MemberShortResponse>> memberList(Long eventIdx) {
         List<Campaign> memberList = campaignRepository.findByEventIdx(eventIdx);
         List<Long> memberIds = memberList.stream()
                 .map(c -> c.getMember().getIdx())
@@ -61,13 +64,14 @@ public class CampaignService {
 
         List<Member> filteredMembers = memberRepository.findAllByIdxInAndIsAdminFalse(memberIds);
 
-        return filteredMembers.stream()
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS,
+                filteredMembers.stream()
                 .map(MemberDto.MemberShortResponse::fromEntity)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @Transactional
-    public List<MemberDto.MemberShortResponse> update(Long eventIdx, CampaignDto.CampaignRequest dto) {
+    public BaseResponse<List<MemberDto.MemberShortResponse>> update(Long eventIdx, CampaignDto.CampaignRequest dto) {
         // 원래 캠페인 정보
         Event event = eventRepository.findById(dto.getEventIdx()).orElseThrow();
         List<Campaign> campaign = campaignRepository.findByEventIdx(eventIdx);
@@ -103,7 +107,9 @@ public class CampaignService {
                 .collect(Collectors.toList());
         campaignRepository.saveAll(toSave);
 
-        return membersToAdd.stream().map(MemberDto.MemberShortResponse::fromEntity)
-                .collect(Collectors.toList());
+        return new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_UPDATE_SUCCESS,
+                membersToAdd.stream()
+                .map(MemberDto.MemberShortResponse::fromEntity)
+                .collect(Collectors.toList()));
     }
 }

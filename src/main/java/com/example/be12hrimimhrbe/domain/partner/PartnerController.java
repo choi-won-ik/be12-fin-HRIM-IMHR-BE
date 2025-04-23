@@ -38,14 +38,13 @@ public class PartnerController {
         return ResponseEntity.ok().body(partnerService.pageList(member.getMember(), pageable));
     }
 
-    @GetMapping("/add/{companyIdx}")
+    @PostMapping("/add")
     @Operation(summary = "협력사 추가", description = "협력사를 추가하는 기능입니다.")
     public ResponseEntity<BaseResponse<List<Partner>>> addPartner (
             @AuthenticationPrincipal CustomUserDetails member,
-            @PathVariable Long companyIdx,
-            @RequestParam List<CompanyDto.CompanyListResponse> dto
+            @RequestBody PartnerDto.PartnerListResponse response
             ) {
-        return ResponseEntity.ok().body(partnerService.addPartner(member.getMember(), companyIdx, dto));
+        return ResponseEntity.ok().body(partnerService.addPartner(member.getMember(), response.getCompanyIdx(), response.getPartnerList()));
     }
 
     @DeleteMapping("/delete/{partnerIdx}")

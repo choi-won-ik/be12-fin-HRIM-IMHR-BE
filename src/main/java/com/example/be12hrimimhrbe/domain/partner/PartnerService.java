@@ -50,7 +50,7 @@ public class PartnerService {
     }
 
 
-    public BaseResponse<List<Partner>> addPartner(Member member, Long companyIdx, List<CompanyDto.CompanyListResponse> dtoList) {
+    public BaseResponse<List<Partner>> addPartner(Member member, Long companyIdx, List<CompanyDto.CompanyListResponse> dto) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
         boolean admin = memberRepository.findByIdx(member.getIdx()).getIsAdmin();
 
@@ -63,11 +63,11 @@ public class PartnerService {
             return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_FAILS, null);
         }
 
-        List<Long> partnerIds = dtoList.stream().map(CompanyDto.CompanyListResponse::getIdx).toList();
+        List<Long> partnerIds = dto.stream().map(CompanyDto.CompanyListResponse::getIdx).toList();
 
         List<Company> partners = partnerIds.stream().map(companyRepository::findByIdx).filter(Objects::nonNull).toList();
 
-        // 중복 파트너 방지 (선택사항)
+        // 중복 파트너 방지
         Set<Long> existing = partnerRepository.findAllByMainCompany_Idx(myCompanyIdx)
                 .stream().map(p -> p.getPartnerCompany().getIdx()).collect(Collectors.toSet());
 

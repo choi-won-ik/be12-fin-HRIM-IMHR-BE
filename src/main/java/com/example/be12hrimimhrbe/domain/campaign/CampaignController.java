@@ -24,8 +24,7 @@ public class CampaignController {
     public ResponseEntity<BaseResponse<List<Long>>> register(
             @RequestBody CampaignDto.CampaignRequest request
     ) {
-        List<Long> failedList = campaignService.register(request);
-        return ResponseEntity.ok(new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_REGISTER_SUCCESS, failedList));
+        return ResponseEntity.ok().body(campaignService.register(request));
     }
 
 //  캠페인 상세 조회도 가능
@@ -34,8 +33,7 @@ public class CampaignController {
     public ResponseEntity<BaseResponse<List<MemberDto.MemberShortResponse>>> memberList(
             @PathVariable Long eventIdx
     ) {
-        List<MemberDto.MemberShortResponse> responses = campaignService.memberList(eventIdx);
-        return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_DETAIL_SUCCESS, responses));
+        return ResponseEntity.ok().body(campaignService.memberList(eventIdx));
     }
 
 //  캠페인 수정
@@ -45,7 +43,6 @@ public class CampaignController {
             @PathVariable Long eventIdx,
             @RequestBody CampaignDto.CampaignRequest dto
     ) {
-        List<MemberDto.MemberShortResponse> responses = campaignService.update(eventIdx, dto);
-        return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_UPDATE_SUCCESS, responses));
+        return ResponseEntity.ok().body(campaignService.update(eventIdx, dto));
     }
 }
