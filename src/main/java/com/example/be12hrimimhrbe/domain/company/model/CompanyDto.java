@@ -24,16 +24,4 @@ public class CompanyDto {
                     .build();
         }
     }
-
-    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
-    public static class CompanyResponse {
-        private Long idx;
-        private String name;
-        private boolean isMember;
-        private boolean has_esg_data;
-        private String registrationNumber;
-        private String imgUrl;
-        private LocalDateTime createdAt;
-        private String code;
-    }
 }
