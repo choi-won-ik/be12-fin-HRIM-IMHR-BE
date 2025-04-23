@@ -36,34 +36,6 @@ public class PartnerDto {
         }
     }
 
-    @Getter @AllArgsConstructor @NoArgsConstructor @Builder
-    public static class PartnerResponse {
-        private Long partnerIdx;
-        private String partnerName;
-        private String companyCode;
-
-        public static PartnerResponse fromEntity(Partner partner) {
-            return PartnerResponse.builder()
-                    .partnerIdx(partner.getIdx())
-                    .partnerName(partner.getPartnerCompany().getName())
-                    .companyCode(partner.getPartnerCompany().getCode())
-                    .build();
-        }
-    }
-
-    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-    public static class PartnerRequest {
-        private Long idx;
-
-        public Partner toEntity(Company mainCompany, Company partnerCompany) {
-            return Partner.builder()
-                    .idx(idx)
-                    .mainCompany(mainCompany)
-                    .partnerCompany(partnerCompany)
-                    .build();
-        }
-    }
-
     @Getter
     @AllArgsConstructor
     public static class PartnerPageResponse {

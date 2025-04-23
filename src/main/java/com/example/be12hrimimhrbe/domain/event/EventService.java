@@ -44,20 +44,27 @@ public class EventService {
     }
 
 //  페이지별 이벤트 리스
-    public BaseResponse<Page<EventDto.EventResponse>> pageList(Member member, Pageable pageable) {
-        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
-        Page<Event> events = eventRepository.findByCompanyIdx(newMember.getCompany().getIdx(), pageable);
+    public BaseResponse<Page<EventDto.EventResponse>> pageList(Member member, Pageable pageable, String keyword) {
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Page<Event> events;
+
+        if (keyword != null && !keyword.isBlank() ) {
+            events = eventRepository.findByTitleContainingIgnoreCaseAndCompanyIdx(keyword, myCompanyIdx, pageable);
+        } else {
+            events = eventRepository.findByCompanyIdx(myCompanyIdx, pageable);
+        }
+
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, events.map(EventDto.EventResponse::of));
     }
 
 //  월별 이벤트 리스트
     public BaseResponse<List<EventDto.EventResponse>> eventList(Member member, int year, int month) {
-        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
         List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual
-                (newMember.getCompany().getIdx(), end, start);
+                (myCompanyIdx, end, start);
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_LIST_SUCCESS, events.stream()
                 .map(EventDto.EventResponse::of)
                 .collect(Collectors.toList()));
@@ -65,24 +72,24 @@ public class EventService {
 
 //  일별 이벤트 리스트
     public BaseResponse<List<EventDto.EventResponse>> readEventByDate(Member member, LocalDate date) {
-        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
         List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual
-                (newMember.getCompany().getIdx(), date, date);
+                (myCompanyIdx, date, date);
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS, events.stream().map(EventDto.EventResponse::of).toList());
     }
 
 //  이벤트 상세 조회
     public BaseResponse<EventDto.EventResponse> readEventDetail(Member member, Long idx) {
-        Member nm = memberRepository.findById(member.getIdx()).orElseThrow();
-        Event event = eventRepository.findByCompanyIdxAndIdx(nm.getCompany().getIdx(), idx);
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Event event = eventRepository.findByCompanyIdxAndIdx(myCompanyIdx, idx);
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS, EventDto.EventResponse.of(event));
     }
 
 //  이벤트 삭제
     @Transactional
     public boolean deleteEvent(Member member, Long idx) {
-        Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
-        Event event = eventRepository.findByIdxAndCompanyIdx(idx, newMember.getCompany().getIdx()).orElseThrow();
+        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Long eventIdx = eventRepository.findByIdxAndCompanyIdx(idx, myCompanyIdx).getIdx();
 
         List<Campaign> campaigns = campaignRepository.findByEventIdx(idx);
         Set<Long> memberIdx = campaigns.stream().map(c -> c.getMember().getIdx()).collect(Collectors.toSet());
@@ -90,8 +97,8 @@ public class EventService {
             campaignRepository.deleteByEventIdxAndMember_IdxIn(idx, memberIdx);
         }
 
-        campaignRepository.deleteByEventIdx(event.getIdx());
-        eventRepository.deleteById(event.getIdx());
+        campaignRepository.deleteByEventIdx(eventIdx);
+        eventRepository.deleteById(eventIdx);
         return true;
     }
 }

@@ -1,10 +1,7 @@
 package com.example.be12hrimimhrbe.domain.event;
 
-import com.example.be12hrimimhrbe.domain.company.model.Company;
-import com.example.be12hrimimhrbe.domain.event.model.Event;
 import com.example.be12hrimimhrbe.domain.event.model.EventDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
-import com.example.be12hrimimhrbe.domain.product.model.ProductDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,10 +48,11 @@ public class EventController {
     public ResponseEntity<BaseResponse<Page<EventDto.EventResponse>>> pageList(
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(eventService.pageList(member.getMember(), pageable));
+        return ResponseEntity.ok().body(eventService.pageList(member.getMember(), pageable, keyword));
     }
 
     // 월별 일정 리스트
