@@ -32,10 +32,11 @@ public class PartnerController {
             @Parameter(description = "협력사 IDX", example = "1")
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(partnerService.pageList(member.getMember(), pageable));
+        return ResponseEntity.ok().body(partnerService.pageList(member.getMember(), pageable, keyword));
     }
 
     @PostMapping("/add")
