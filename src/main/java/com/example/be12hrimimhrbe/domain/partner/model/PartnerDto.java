@@ -12,6 +12,8 @@ import java.util.List;
 public class PartnerDto {
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class PartnerListResp {
+        @Schema(description = "회사 고유 번호", example = "1")
+        private Long idx;
         @Schema(description = "회사명", example = "한화시스템")
         private String companyName;
         @Schema(description = "esg 환경 점수", example = "55")
@@ -24,6 +26,7 @@ public class PartnerDto {
         private String totalScore;
         public static PartnerListResp fromEntity(Company company, Score score) {
             return PartnerListResp.builder()
+            .idx(company.getIdx())
             .companyName(company.getName())
             .environmentScore(score.getEnvironmentScore())
             .socialScore(score.getSocialScore())
