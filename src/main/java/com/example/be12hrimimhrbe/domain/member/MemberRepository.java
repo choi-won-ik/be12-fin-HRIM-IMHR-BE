@@ -3,6 +3,7 @@ package com.example.be12hrimimhrbe.domain.member;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
+import com.example.be12hrimimhrbe.domain.score.model.Score;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +36,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findAllByCompanyIdx(Long companyIdx);
 
     List<Member> findAllByIdxInAndIsAdminFalse(List<Long> memberIds);
+
 }
