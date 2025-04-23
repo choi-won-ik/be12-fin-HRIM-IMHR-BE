@@ -17,17 +17,16 @@ public class Score {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @Column(nullable = false)
-    private String companyName;
+    @Column(nullable = false, length = 3)
+    private String environmentScore;
+    @Column(nullable = false, length = 3)
+    private String socialScore;
+    @Column(nullable = false, length = 3)
+    private String governanceScore;
+    @Column(nullable = false, length = 3)
+    private String totalScore;
 
-    @Column(nullable = false, unique = true)
-    private String companyCode;
-
-    private Integer environmentScore;
-    private Integer socialScore;
-    private Integer governanceScore;
-    private Integer totalScore;
-
+    @Column(nullable = false, length = 4)
     private Integer year;
 
     @OneToOne
