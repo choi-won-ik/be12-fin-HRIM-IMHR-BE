@@ -1,13 +1,13 @@
 package com.example.be12hrimimhrbe.domain.partner.model;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.score.model.Score;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public class PartnerDto {
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -66,5 +66,11 @@ public class PartnerDto {
     public static class PartnerPageResponse {
         private Page<PartnerDto.PartnerListResp> partners;
         private Long companyIdx;
+    }
+
+    @Data
+    public static class PartnerListResponse {
+        private Long companyIdx;
+        private List<CompanyDto.CompanyListResponse> partnerList;
     }
 }
