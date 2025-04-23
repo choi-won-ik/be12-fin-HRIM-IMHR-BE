@@ -30,10 +30,16 @@ public class PartnerService {
     private final CompanyRepository companyRepository;
     private final ScoreRepository scoreRepository;
 
-    public BaseResponse<PartnerDto.PartnerPageResponse> pageList(Member member, Pageable pageable) {
+    public BaseResponse<PartnerDto.PartnerPageResponse> pageList(Member member, Pageable pageable, String keyword) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
 
-        Page<Partner> partners = partnerRepository.findAllByMainCompanyIdx(myCompanyIdx, pageable);
+        Page<Partner> partners;
+
+        if (keyword != null && !keyword.isBlank()) {
+            partners = partnerRepository.findByPartnerCompanyNameContainingIgnoreCase(keyword, pageable);
+        } else {
+            partners = partnerRepository.findAllByMainCompanyIdx(myCompanyIdx, pageable);
+        }
 
         Page<PartnerDto.PartnerListResp> result = partners.map(partner -> {
             Company partnerCompany = partner.getPartnerCompany();

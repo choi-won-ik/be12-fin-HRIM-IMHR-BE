@@ -15,4 +15,6 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
     void deleteByPartnerCompanyIdxAndMainCompanyIdx(Long partnerCompanyIdx, Long mainCompanyIdx);
 
     Partner findByPartnerCompanyIdx(Long partnerCompanyIdx);
+
+    Page<Partner> findByPartnerCompanyNameContainingIgnoreCase(String partnerCompanyName, Pageable pageable);
 }
