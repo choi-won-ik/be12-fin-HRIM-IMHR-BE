@@ -1,12 +1,16 @@
 package com.example.be12hrimimhrbe.domain.company.model;
 
+import com.example.be12hrimimhrbe.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -33,7 +37,10 @@ public class Company {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(length = 20)
+    @Column(length = 10)
     private String code;
+
+    @OneToMany(mappedBy = "company")
+    private List<Member> members=new ArrayList<>();
 
 }
