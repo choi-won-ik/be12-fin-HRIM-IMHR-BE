@@ -29,7 +29,7 @@ public class Score {
     @Column(nullable = false, length = 4)
     private Integer year;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "company_idx")
     private Company company;
 
