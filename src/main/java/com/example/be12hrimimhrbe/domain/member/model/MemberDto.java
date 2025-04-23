@@ -34,7 +34,7 @@ public class MemberDto {
                     .isAdmin(member.getIsAdmin())
                     .memberId(member.getMemberId())
                     .name(member.getName())
-                    .department(DepartmentDto.DepartmentInfoResponse.fromEntity(member.getDepartment()))
+                    .department(member.getDepartment() == null ? null : DepartmentDto.DepartmentInfoResponse.fromEntity(member.getDepartment()))
                     .joinedAt(member.getJoinedAt())
                     .build();
         }
