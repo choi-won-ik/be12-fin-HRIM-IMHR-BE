@@ -11,7 +11,6 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ public class CompanyService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public BaseResponse<Page<CompanyDto.CompanyListResponse>> allList(Pageable pageable, Member member) {
+    public BaseResponse<Page<CompanyDto.CompanyListResponse>> allList(Pageable pageable, Member member, String keyword) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
 
         // 등록한 협력사들
@@ -42,7 +41,13 @@ public class CompanyService {
         registerCompanyIds.add(myCompanyIdx);
         List<Long> excludedIds = new ArrayList<>(registerCompanyIds);
 
-        Page<Company> pagedResult = companyRepository.findAllExcludingIds(excludedIds, pageable);
+        Page<Company> pagedResult;
+
+        if (keyword != null && !keyword.isBlank()) {
+            pagedResult = companyRepository.findByNameContainingIgnoreCaseAndIdxNotIn(keyword, excludedIds, pageable);
+        } else {
+            pagedResult = companyRepository.findAllExcludingIds(excludedIds, pageable);
+        }
 
         // DTO 변환
         Page<CompanyDto.CompanyListResponse> resultPage = pagedResult.map(CompanyDto.CompanyListResponse::of);

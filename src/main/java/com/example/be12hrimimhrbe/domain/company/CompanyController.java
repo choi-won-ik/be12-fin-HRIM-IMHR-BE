@@ -27,10 +27,11 @@ public class CompanyController {
     public ResponseEntity<BaseResponse<Page<CompanyDto.CompanyListResponse>>> allList(
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String keyword
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(companyService.allList(pageable, member.getMember()));
+        return ResponseEntity.ok().body(companyService.allList(pageable, member.getMember(), keyword));
     }
 
 }
