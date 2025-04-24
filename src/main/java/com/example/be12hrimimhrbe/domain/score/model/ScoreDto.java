@@ -15,10 +15,10 @@ public class ScoreDto {
 
         @Schema(description = "연도별 esg 점수 변화",
         example = "[{\"year\":2021,\"score\":70},{\"year\":2022,\"score\":71}]")
-        private List<ChageScoreRsp> chageScoreRsp;
+        private List<ChangeScoreRsp> changeScoreRsp;
     }
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
-    public static class ChageScoreRsp {
+    public static class ChangeScoreRsp {
 
         @Schema(description = "년도", example = "2021")
         private Integer year;
@@ -30,7 +30,7 @@ public class ScoreDto {
         private String governanceScore;
         @Schema(description = "해당 연도 ESG 점수", example = "70")
         private Integer score;
-        public ChageScoreRsp(Score score) {
+        public ChangeScoreRsp(Score score) {
             this.year = score.getYear();
             this.environmentScore = score.getEnvironmentScore();
             this.socialScore = score.getSocialScore();

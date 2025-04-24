@@ -4,6 +4,7 @@ import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.score.model.Score;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -36,5 +37,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findAllByCompanyIdx(Long companyIdx);
 
     List<Member> findAllByIdxInAndIsAdminFalse(List<Long> memberIds);
+
+    // 1, 2, 3 등 맴버 조회
+    @Query("SELECT m FROM Member m WHERE m.company.idx = :companyIdx " +
+            "AND m.status = 'APPROVED'" +
+            "ORDER BY (m.eScore + m.sScore + m.gScore) DESC")
+    List<Member> findTop3ByCompanyOrderByTotalScore(Long companyIdx, Pageable pageable);
+
 
 }

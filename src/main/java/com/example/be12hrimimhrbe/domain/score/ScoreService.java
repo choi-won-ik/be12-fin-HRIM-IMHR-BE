@@ -20,21 +20,21 @@ public class ScoreService {
 
     public BaseResponse<ScoreDto.DashBoardRsp> dashboard(Member member) {
         List<Score> scores=scoreRepository.findByMemberIdx(member.getIdx());
-        List<ScoreDto.ChageScoreRsp> list = new ArrayList<>();
+        List<ScoreDto.ChangeScoreRsp> list = new ArrayList<>();
         String companyName = null;
         for (Score score : scores) {
             if (companyName==null) {
                 companyName= score.getCompany().getName();
             }
-            ScoreDto.ChageScoreRsp dto= new ScoreDto.ChageScoreRsp(score);
+            ScoreDto.ChangeScoreRsp dto= new ScoreDto.ChangeScoreRsp(score);
             list.add(dto);
         }
 
-        list.sort(Comparator.comparingInt(ScoreDto.ChageScoreRsp::getYear));
+        list.sort(Comparator.comparingInt(ScoreDto.ChangeScoreRsp::getYear));
 
         ScoreDto.DashBoardRsp result=ScoreDto.DashBoardRsp.builder()
                 .companyName(companyName)
-                .chageScoreRsp(list)
+                .changeScoreRsp(list)
                 .build();
         System.out.println("실행");
         return new BaseResponse<>(BaseResponseMessage.COMPANY_ALL_LIST_SUCCESS, result);
