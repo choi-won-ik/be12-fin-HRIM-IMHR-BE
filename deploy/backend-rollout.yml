@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: imhr-back
-          image: imhrkr/imhr-backend:LATEST
+          image: imhrkr/imhr-backend:1.18
           #image: simkids/dealivery-backend:v2 <- 새로운 버전 배포 할 때
           imagePullPolicy: Always
           ports:
