@@ -22,10 +22,9 @@ import java.util.List;
 public class ScoreController {
     private final ScoreService scoreService;
 
-    @PostMapping("/dashboard")
+    @PostMapping("/dashboard/{companyIdx}")
     @Operation(summary = "회사 대쉬보드", description = "대쉬보드 실행 기능입니다.")
-    public ResponseEntity<BaseResponse<ScoreDto.DashBoardRsp>> dashboard(@AuthenticationPrincipal CustomUserDetails member) {
-        scoreService.dashboard(member.getMember());
-        return ResponseEntity.ok().body(scoreService.dashboard(member.getMember()));
+    public ResponseEntity<BaseResponse<ScoreDto.DashBoardRsp>> dashboard(@PathVariable Long companyIdx) {
+        return ResponseEntity.ok().body(scoreService.dashboard(companyIdx));
     }
 }

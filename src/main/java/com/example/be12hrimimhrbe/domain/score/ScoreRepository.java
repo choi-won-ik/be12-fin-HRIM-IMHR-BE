@@ -11,10 +11,9 @@ import java.util.List;
 public interface ScoreRepository extends JpaRepository<Score, Long> {
     Collection<Score> findByCompanyIdx(Long partnerIdx);
 
-    @EntityGraph(attributePaths = {"company","company.members"})
+    @EntityGraph(attributePaths = {"company"})
     @Query("SELECT s from Score s " +
             "LEFT JOIN s.company c " +
-            "LEFT JOIN c.members m " +
-            "where m.idx=:idx")
-    List<Score> findByMemberIdx(Long idx);
+            "where c.idx=:idx")
+    List<Score> findByCompany(Long idx);
 }
