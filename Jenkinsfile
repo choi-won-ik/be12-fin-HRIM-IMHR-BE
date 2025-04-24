@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'imhrkr/imhr-backend:1.'
-        IMAGE_TAG  = "${BUILD_NUMBER}"
+        IMAGE_NAME = 'imhrkr/imhr-backend'
+        IMAGE_TAG  = "1.${BUILD_NUMBER}"
     }
 
     stages {
@@ -34,7 +34,7 @@ pipeline {
 
                     sh """
                     cd deploy
-                    sed -i 's/:LATEST/:1.${BUILD_NUMBER}/g' backend-rollout.yml
+                    sed -i 's/:LATEST/:${BUILD_NUMBER}/g' backend-rollout.yml
                     """
                 }
             }
