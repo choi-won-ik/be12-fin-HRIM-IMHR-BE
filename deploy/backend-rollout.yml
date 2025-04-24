@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: backend-rollout
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: back-bluegreen
+  template:
+    metadata:
+      labels:
+        app: back-bluegreen
+    spec:
+      containers:
+        - name: imhr-back
+          image: imhrkr/imhr-backend:LATEST
+          #image: simkids/dealivery-backend:v2 <- 새로운 버전 배포 할 때
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: back-cm
+  strategy:
+    blueGreen:
+      #activeService는 현재 운영중인 Blue 서비스
+      activeService: rollout-bluegreen-active
+
+      #previewService는 새롭게 배포될 Green 서비스
+      previewService: rollout-bluegreen-preview
