@@ -34,7 +34,7 @@ pipeline {
 
                     sh """
                     cd deploy
-                    sed -i 's/:LATEST/:${BUILD_NUMBER}/g' backend-rollout.yml
+                    sed -i 's/:LATEST/:${IMAGE_TAG}/g' backend-rollout.yml
                     """
                 }
             }
