@@ -45,4 +45,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findTop3ByCompanyOrderByTotalScore(Long companyIdx, Pageable pageable);
 
 
+    List<Member> findAllByDepartmentIdx(Long departmentIdx);
 }

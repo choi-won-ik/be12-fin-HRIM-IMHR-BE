@@ -40,6 +40,6 @@ public class DepartmentController {
             @Parameter int year,
             @Parameter int month
     ) {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok(departmentService.monthDepartment(member.getMember(), departmentIdx, year, month));
     }
 }
