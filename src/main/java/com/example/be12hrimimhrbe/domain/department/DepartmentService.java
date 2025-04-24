@@ -1,5 +1,8 @@
 package com.example.be12hrimimhrbe.domain.department;
 
+import com.example.be12hrimimhrbe.domain.activity.ActivityRepository;
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
@@ -12,12 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final MemberRepository memberRepository;
+    private final ActivityRepository activityRepository;
 
     @Transactional
     public BaseResponse<String> updateElements(DepartmentDto.CDRequest dto, CustomUserDetails customMember) {
@@ -41,4 +47,59 @@ public class DepartmentService {
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_RETRIEVE_SUCCESS,
                 DepartmentDto.DepartmentListResponse.fromDepartments(departments));
     }
+
+
+    @Transactional
+    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Member member, Long departmentIdx, int year, int month) {
+        Company mycompany = member.getCompany();
+        Company departmentCompany = departmentRepository.findByIdx(departmentIdx).getCompany();
+        Department department = departmentRepository.findByIdx(departmentIdx);
+
+        // 타회사 접근 방지
+        if (!mycompany.equals(departmentCompany)) {
+            return null;
+        }
+
+        // 1. 해당 부서 소속 사원 목록 조회
+        List<Member> dMembers = memberRepository.findAllByDepartmentIdx(departmentIdx);
+
+        //부서 소속 총 사원 수
+        int memberCount = dMembers.size();
+
+        // E, S, G 점수 총 합
+        int totalE = 0;
+        int totalS = 0;
+        int totalG = 0;
+
+        // 사원별 모든 활동들의 점수들 계산
+        for (Member m : dMembers) {
+            // 각 사원의 활동 총조회
+            List<Activity> activities = activityRepository.findAllByMember(m).stream()
+                    .filter(a -> a.getCreatedAt().getYear() == year
+                    && a.getCreatedAt().getMonthValue() == month)
+                    .collect(Collectors.toList());
+
+            // 활동 점수 계산
+            for (Activity a : activities) {
+                switch (a.getType()) {
+                    case VOLUNTEER, DONATION -> totalE += a.getScore();
+                }
+
+                switch (a.getEducationType()) {
+                    case ENVIRONMENTAL_EDUCATION -> totalE += a.getScore();
+                    case SOCIAL_EDUCATION -> totalS += a.getScore();
+                    case GOVERNANCE_EDUCATION -> totalG += a.getScore();
+                }
+            }
+        }
+
+        double avgE = memberCount > 0 ? (double) totalE / memberCount : 0.0;
+        double avgS = memberCount > 0 ? (double) totalS / memberCount : 0.0;
+        double avgG = memberCount > 0 ? (double) totalG / memberCount : 0.0;
+
+        DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.fromEntity(department, avgE, avgS, avgG);
+        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
+    }
+
+
 }

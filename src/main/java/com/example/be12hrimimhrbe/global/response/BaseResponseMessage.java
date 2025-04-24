@@ -19,6 +19,7 @@ public enum BaseResponseMessage {
     //부서 기능(1000)
     DEPARTMENT_UPDATE_SUCCESS(true, 2200, "부서 설정에 성공했습니다."),
     DEPARTMENT_RETRIEVE_SUCCESS(true, 2200, "부서 조회에 성공했습니다."),
+    DEPARTMENT_MONTH_SCORE_SUCCESS(true, 2200, "부서의 월별 ESG 조회에 성공했습니다."),
 
     // 회원 기능(2000)
     // 회원가입 2000

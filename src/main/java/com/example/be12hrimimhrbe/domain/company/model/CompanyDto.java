@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.company.model;
 
+import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import lombok.AllArgsConstructor;
@@ -35,14 +36,15 @@ public class CompanyDto {
 
         // 사원 1, 2, 3 등을 담는 리스트
         private List<MemberDto.MemberScoreResponse> memberScores;
-        // 각 부서의 월별 score을 담을 리스트
-//        private List<DepartmentDto.DepartmentScoreResponse> departmentScores;
+        // 소속회사의 부서들
+        private List<Department> departments;
 
-        public static CompanyYearResponse of (Company company, List<MemberDto.MemberScoreResponse> member) {
+        public static CompanyYearResponse of (Company company, List<MemberDto.MemberScoreResponse> member, List<Department> departmentList) {
             return CompanyYearResponse.builder()
                     .idx(company.getIdx())
                     .companyName(company.getName())
                     .memberScores(member.stream().toList())
+                    .departments(departmentList.stream().toList())
                     .build();
         }
     }
