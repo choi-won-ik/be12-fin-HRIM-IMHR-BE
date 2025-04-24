@@ -52,7 +52,7 @@ pipeline {
                        ]) {
                           sh """
                           git add .
-                          git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
+                          git commit -m "\"[Deploy] v1.${BUILD_NUMBER} 배포\""
                           git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
                           # 변경 사항을 원격 저장소의 cicd 브랜치로 푸시
                           git push origin deploy/argo/cd
