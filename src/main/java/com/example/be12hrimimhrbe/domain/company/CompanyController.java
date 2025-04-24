@@ -38,13 +38,13 @@ public class CompanyController {
         return ResponseEntity.ok().body(companyService.allList(pageable, member.getMember(), keyword));
     }
 
-    @GetMapping("/yearDashboard")
+    @GetMapping("/monthDashboard")
     @Operation(summary = "내 회사의 연도별 대시보드 조회", description = "연도별 내 회사의 대시보드를 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<CompanyDto.CompanyYearResponse>> yearDashboard (
+    public ResponseEntity<BaseResponse<CompanyDto.CompanyYearResponse>> monthDashboard (
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam int month,
             @RequestParam int year
     ) {
-        return ResponseEntity.ok(companyService.yearDashboard(member.getMember(), year, month));
+        return ResponseEntity.ok(companyService.monthDashboard(member.getMember(), year, month));
     }
 }
