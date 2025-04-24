@@ -333,4 +333,24 @@ public class MemberDto {
         }
     }
 
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class MemberScoreResponse {
+        private Long memberIdx;
+        private String memberName;
+        private int memberSScore;
+        private int memberEScore;
+        private int memberGScore;
+        private int averageScore;
+
+        public static MemberScoreResponse from(Member member, int e, int s, int g) {
+            return MemberScoreResponse.builder()
+                    .memberIdx(member.getIdx())
+                    .memberName(member.getName())
+                    .memberEScore(e)
+                    .memberSScore(s)
+                    .memberGScore(g)
+                    .averageScore((e+s+g)/3)
+                    .build();
+        }
+    }
 }

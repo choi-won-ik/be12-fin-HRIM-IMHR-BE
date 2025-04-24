@@ -28,6 +28,4 @@ public class ScoreController {
         scoreService.dashboard(member.getMember());
         return ResponseEntity.ok().body(scoreService.dashboard(member.getMember()));
     }
-
-
 }

@@ -32,4 +32,5 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
             "where a.idx= :idx")
     Activity findByIdAndMember(Long idx);
 
+    List<Activity> findAllByMemberIdx(Long memberIdx);
 }

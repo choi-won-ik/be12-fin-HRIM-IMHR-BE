@@ -2,6 +2,7 @@ package com.example.be12hrimimhrbe.domain.company;
 
 import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
+import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,4 +38,13 @@ public class CompanyController {
         return ResponseEntity.ok().body(companyService.allList(pageable, member.getMember(), keyword));
     }
 
+    @GetMapping("/yearDashboard")
+    @Operation(summary = "내 회사의 연도별 대시보드 조회", description = "연도별 내 회사의 대시보드를 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<CompanyDto.CompanyYearResponse>> yearDashboard (
+            @AuthenticationPrincipal CustomUserDetails member,
+            @RequestParam int month,
+            @RequestParam int year
+    ) {
+        return ResponseEntity.ok(companyService.yearDashboard(member.getMember(), year, month));
+    }
 }
