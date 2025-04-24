@@ -46,14 +46,15 @@ pipeline {
                 script{
                     echo "Deploying Components..."
                     withCredentials([
-                           string(credentialsId: 'github_username', variable: 'GITHUB_USERNAME'),
-                           string(credentialsId: 'github_token', variable: 'GITHUB_TOKEN'),
-                           string(credentialsId: 'repository', variable: 'GITHUB_URL')
+                           usernamePassword(credentialsId: 'IUCH_GIT', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD'),
+//                            string(credentialsId: 'github_username', variable: 'GITHUB_USERNAME'),
+//                            string(credentialsId: 'github_token', variable: 'GITHUB_TOKEN'),
+                           string(credentialsId: 'IMHR_GIT_URL', variable: 'GITHUB_URL')
                        ]) {
                           sh """
                           git add .
                           git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
-                          git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@${GITHUB_URL}
+                          git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
                           # 변경 사항을 원격 저장소의 cicd 브랜치로 푸시
                           git push origin deploy/argo/cd
                           """
