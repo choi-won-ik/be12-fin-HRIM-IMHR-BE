@@ -10,9 +10,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                    sh 'chmod +x gradlew'
-                    sh './gradlew bootJar'
-                }
+                sh 'chmod +x gradlew'
+                sh './gradlew bootJar'
             }
         }
 
