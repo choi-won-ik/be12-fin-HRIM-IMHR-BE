@@ -18,8 +18,8 @@ import java.util.List;
 public class ScoreService {
     private final ScoreRepository scoreRepository;
 
-    public BaseResponse<ScoreDto.DashBoardRsp> dashboard(Member member) {
-        List<Score> scores=scoreRepository.findByMemberIdx(member.getIdx());
+    public BaseResponse<ScoreDto.DashBoardRsp> dashboard(Long companyIdx) {
+        List<Score> scores=scoreRepository.findByCompany(companyIdx);
         List<ScoreDto.ChangeScoreRsp> list = new ArrayList<>();
         String companyName = null;
         for (Score score : scores) {
