@@ -30,7 +30,7 @@ pipeline {
                 script{
                     echo "Editing Manifest..."
                     sh 'cd ..'
-                    sh 'git checkout deploy/argo/cd'
+                    sh 'git checkout -f deploy/argo/cd'
 
                     sh """
                     cd deploy
