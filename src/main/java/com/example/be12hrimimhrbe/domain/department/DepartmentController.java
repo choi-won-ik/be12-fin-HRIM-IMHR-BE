@@ -3,6 +3,8 @@ package com.example.be12hrimimhrbe.domain.department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,5 +30,16 @@ public class DepartmentController {
     @GetMapping("/list")
     public ResponseEntity<BaseResponse<DepartmentDto.DepartmentListResponse>> list(@AuthenticationPrincipal CustomUserDetails member) {
         return ResponseEntity.ok().body(departmentService.getList(member.getMember()));
+    }
+
+    @GetMapping("/month/{departmentIdx}")
+    @Operation(summary = "각 부서의 월별 대시보드 조회", description = "각 부서의 월별 대시보드를 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<DepartmentDto.DepartmentScoreResponse>> monthDepartme (
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable Long departmentIdx,
+            @Parameter int year,
+            @Parameter int month
+    ) {
+        return ResponseEntity.ok().body(null);
     }
 }

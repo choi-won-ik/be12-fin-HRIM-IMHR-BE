@@ -36,14 +36,13 @@ public class CompanyDto {
         // 사원 1, 2, 3 등을 담는 리스트
         private List<MemberDto.MemberScoreResponse> memberScores;
         // 각 부서의 월별 score을 담을 리스트
-        private List<DepartmentDto.DepartmentScoreResponse> departmentScores;
+//        private List<DepartmentDto.DepartmentScoreResponse> departmentScores;
 
-        public static CompanyYearResponse of (Company company, List<MemberDto.MemberScoreResponse> member, List<DepartmentDto.DepartmentScoreResponse> department) {
+        public static CompanyYearResponse of (Company company, List<MemberDto.MemberScoreResponse> member) {
             return CompanyYearResponse.builder()
                     .idx(company.getIdx())
                     .companyName(company.getName())
                     .memberScores(member.stream().toList())
-                    .departmentScores(department.stream().toList())
                     .build();
         }
     }

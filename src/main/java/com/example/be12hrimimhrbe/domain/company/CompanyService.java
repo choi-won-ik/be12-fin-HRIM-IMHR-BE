@@ -64,7 +64,7 @@ public class CompanyService {
 
     // 내 회사의 월별 부서들의 esg 현황 조회 기능
     @Transactional
-    public BaseResponse<CompanyDto.CompanyYearResponse> yearDashboard(Member member, int year, int month) {
+    public BaseResponse<CompanyDto.CompanyYearResponse> monthDashboard(Member member, int year, int month) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
         Company company = companyRepository.findByIdx(myCompanyIdx);
 
@@ -124,64 +124,64 @@ public class CompanyService {
                 })
                 .collect(Collectors.toList());
 
-        // 5. 회사에 속한 부서들 조회 및 부서 Idx -> 부서 객체 Map
-        Map<Long, Department> departmentMap = departmentRepository.findAllByCompany(company)
-                .stream().collect(Collectors.toMap(Department::getIdx, d -> d));
-
-
-        // 7. 각 부서의 사원 별 각 점수를  계산
-        List<DepartmentDto.DepartmentScoreResponse> departments = departmentMap.entrySet().stream()
-                .map(entry -> {
-                    Long deptIdx = entry.getKey();
-                    Department d = entry.getValue();
-
-
-                    // 7 - 1 해당 부서 소속 사원 목록 조회
-                    List<Member> dMembers = memberMap.values().stream()
-                            .filter(m -> m.getDepartment() != null && m.getDepartment().getIdx().equals(deptIdx))
-                            .collect(Collectors.toList());
-
-                    // 사원수
-                    int memberCount = dMembers.size();
-
-                    // E, S, G 점수 총합
-                    int totalE = 0;
-                    int totalS = 0;
-                    int totalG = 0;
-
-                    for (Member m : dMembers) {
-                        List<Activity> activities = activityRepository.findAllByMember(m).stream()
-                                .filter(a -> a.getCreatedAt().getYear() == year &&
-                                        a.getCreatedAt().getMonthValue() == month)
-                                .collect(Collectors.toList());
-
-                        // 활동 점수 계산
-                        for (Activity a : activities) {
-                            switch (a.getType()) {
-                                case VOLUNTEER, DONATION -> totalE += a.getScore();
-                            }
-
-                            switch (a.getEducationType()) {
-                                case ENVIRONMENTAL_EDUCATION -> totalE += a.getScore();
-                                case SOCIAL_EDUCATION -> totalS += a.getScore();
-                                case GOVERNANCE_EDUCATION -> totalG += a.getScore();
-                            }
-                        }
-                    }
-
-                    // 평균 계산 (0으로 나눔 방지)
-                    double avgE = memberCount > 0 ? (double) totalE / memberCount : 0.0;
-                    double avgS = memberCount > 0 ? (double) totalS / memberCount : 0.0;
-                    double avgG = memberCount > 0 ? (double) totalG / memberCount : 0.0;
-
-                    // 반환
-                    return DepartmentDto.DepartmentScoreResponse.fromEntity(d, avgE, avgS, avgG);
-                })
-                .collect(Collectors.toList());
+//        // 5. 회사에 속한 부서들 조회 및 부서 Idx -> 부서 객체 Map
+//        Map<Long, Department> departmentMap = departmentRepository.findAllByCompany(company)
+//                .stream().collect(Collectors.toMap(Department::getIdx, d -> d));
+//
+//
+//        // 7. 각 부서의 사원 별 각 점수를  계산
+//        List<DepartmentDto.DepartmentScoreResponse> departments = departmentMap.entrySet().stream()
+//                .map(entry -> {
+//                    Long deptIdx = entry.getKey();
+//                    Department d = entry.getValue();
+//
+//
+//                    // 7 - 1 해당 부서 소속 사원 목록 조회
+//                    List<Member> dMembers = memberMap.values().stream()
+//                            .filter(m -> m.getDepartment() != null && m.getDepartment().getIdx().equals(deptIdx))
+//                            .collect(Collectors.toList());
+//
+//                    // 사원수
+//                    int memberCount = dMembers.size();
+//
+//                    // E, S, G 점수 총합
+//                    int totalE = 0;
+//                    int totalS = 0;
+//                    int totalG = 0;
+//
+//                    for (Member m : dMembers) {
+//                        List<Activity> activities = activityRepository.findAllByMember(m).stream()
+//                                .filter(a -> a.getCreatedAt().getYear() == year &&
+//                                        a.getCreatedAt().getMonthValue() == month)
+//                                .collect(Collectors.toList());
+//
+//                        // 활동 점수 계산
+//                        for (Activity a : activities) {
+//                            switch (a.getType()) {
+//                                case VOLUNTEER, DONATION -> totalE += a.getScore();
+//                            }
+//
+//                            switch (a.getEducationType()) {
+//                                case ENVIRONMENTAL_EDUCATION -> totalE += a.getScore();
+//                                case SOCIAL_EDUCATION -> totalS += a.getScore();
+//                                case GOVERNANCE_EDUCATION -> totalG += a.getScore();
+//                            }
+//                        }
+//                    }
+//
+//                    // 평균 계산 (0으로 나눔 방지)
+//                    double avgE = memberCount > 0 ? (double) totalE / memberCount : 0.0;
+//                    double avgS = memberCount > 0 ? (double) totalS / memberCount : 0.0;
+//                    double avgG = memberCount > 0 ? (double) totalG / memberCount : 0.0;
+//
+//                    // 반환
+//                    return DepartmentDto.DepartmentScoreResponse.fromEntity(d, avgE, avgS, avgG);
+//                })
+//                .collect(Collectors.toList());
 
 
         // Dto 변환
-        CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.of(company, top3, departments);
+        CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.of(company, top3);
         return new BaseResponse<>(BaseResponseMessage.COMPANY_DEPARTMENT_MONTH_SUCCESS, response);
     }
 }
