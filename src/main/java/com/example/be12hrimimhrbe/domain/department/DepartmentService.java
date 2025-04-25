@@ -86,14 +86,20 @@ public class DepartmentService {
 
             // 활동 점수 계산
             for (Activity a : activities) {
-                switch (a.getType()) {
-                    case VOLUNTEER, DONATION -> totalE += a.getScore();
+                if (a.getType() != null) {
+                    switch (a.getType()) {
+                        case VOLUNTEER -> totalE += a.getScore(); // 환경
+                        case DONATION -> totalE += a.getScore();
+                    }
                 }
 
-                switch (a.getEducationType()) {
-                    case ENVIRONMENTAL_EDUCATION -> totalE += a.getScore();
-                    case SOCIAL_EDUCATION -> totalS += a.getScore();
-                    case GOVERNANCE_EDUCATION -> totalG += a.getScore();
+                // EducationType이 null이 아닌 경우에만 switch
+                if (a.getEducationType() != null) {
+                    switch (a.getEducationType()) {
+                        case ENVIRONMENTAL_EDUCATION -> totalE += a.getScore();
+                        case SOCIAL_EDUCATION -> totalS += a.getScore();
+                        case GOVERNANCE_EDUCATION -> totalG += a.getScore();
+                    }
                 }
             }
         }
@@ -101,8 +107,9 @@ public class DepartmentService {
         double avgE = memberCount > 0 ? (double) totalE / memberCount : 0.0;
         double avgS = memberCount > 0 ? (double) totalS / memberCount : 0.0;
         double avgG = memberCount > 0 ? (double) totalG / memberCount : 0.0;
+        double avgtotal = avgG + avgE + avgS;
 
-        DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.fromEntity(department, avgE, avgS, avgG);
+        DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.fromEntity(department, avgE, avgS, avgG, avgtotal);
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
     }
 

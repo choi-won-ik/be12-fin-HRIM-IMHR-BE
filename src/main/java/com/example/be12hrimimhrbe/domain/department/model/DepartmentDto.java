@@ -81,15 +81,17 @@ public class DepartmentDto {
         private double departmentEScore;
         private double departmentGScore;
         private double departmentSScore;
+        private double departmentTotalScore;
 
 
-        public static DepartmentScoreResponse fromEntity(Department department, double EScore, double GScore, double SScore) {
+        public static DepartmentScoreResponse fromEntity(Department department, double EScore, double GScore, double SScore, double totalScore) {
             return DepartmentScoreResponse.builder()
                     .idx(department.getIdx())
                     .departmentName(department.getName())
                     .departmentEScore(EScore)
                     .departmentSScore(SScore)
                     .departmentGScore(GScore)
+                    .departmentTotalScore(totalScore)
                     .build();
         }
     }

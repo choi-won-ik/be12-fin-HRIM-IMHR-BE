@@ -35,8 +35,8 @@ public class DepartmentController {
     public ResponseEntity<BaseResponse<DepartmentDto.DepartmentScoreResponse>> monthDepartment (
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam(required = false) Long departmentIdx,
-            @Parameter int year,
-            @Parameter int month
+            @RequestParam int year,
+            @RequestParam int month
     ) {
         return ResponseEntity.ok(departmentService.monthDepartment(member.getMember(), departmentIdx, year, month));
     }
