@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.notification.model;
 
+import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.util.List;
 public class NotificationDto {
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class ActivityApproveReq {
-        private Member member;
+        private ActivityDto.ActivityMember member;
         private String title;
         private String content;
         public String url;

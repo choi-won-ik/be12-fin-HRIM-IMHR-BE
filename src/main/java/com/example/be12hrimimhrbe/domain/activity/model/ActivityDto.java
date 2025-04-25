@@ -1,6 +1,9 @@
 package com.example.be12hrimimhrbe.domain.activity.model;
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -66,10 +69,7 @@ public class ActivityDto {
         private String title;
         private String startDate;
 
-//        private String memberId;
-//        private String memberName;
-//        private String memberRole;
-        private Member member;
+        private ActivityMember member;
 
         private Activity.Status status;
         private Activity.Type type;
@@ -79,6 +79,39 @@ public class ActivityDto {
             this.activityIdx=activity.getIdx();
             this.title = activity.getTitle();
             this.startDate = activity.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ActivityMember{
+        private Long idx;
+        private String name;
+        private String memberId;
+        private Boolean isAdmin;
+        private Boolean hasProdAuth;
+        private Boolean hasPartnerAuth;
+        private Long companyIdx;
+        private Department department;
+        private int eScore;
+        private int sScore;
+        private int gScore;
+        private String code;
+        public ActivityMember(Member member) {
+            this.idx=member.getIdx();
+            this.name=member.getName();
+            this.memberId=member.getMemberId();
+            this.isAdmin=member.getIsAdmin();
+            this.hasProdAuth=member.getHasProdAuth();
+            this.hasPartnerAuth=member.getHasPartnerAuth();
+            this.companyIdx=member.getCompany().getIdx();
+            this.department=member.getDepartment();
+            this.eScore=member.getEScore();
+            this.sScore=member.getSScore();
+            this.gScore=member.getGScore();
+            this.code=member.getCode();
         }
     }
 
