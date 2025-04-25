@@ -28,7 +28,10 @@ public class EventController {
 
     @PostMapping("/register")
     @Operation(summary = "일정 등록", description = "새 일정을 등록하는 기능 입니다.")
-    public ResponseEntity<BaseResponse<EventDto.EventResponse>> register(@AuthenticationPrincipal CustomUserDetails member, @RequestBody EventDto.EventRequest dto) {
+    public ResponseEntity<BaseResponse<EventDto.EventResponse>> register(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @RequestBody EventDto.EventRequest dto
+    ) {
         return ResponseEntity.ok().body(eventService.eventRegister(member.getMember(), dto));
     }
 
