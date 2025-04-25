@@ -27,4 +27,10 @@ public class ScoreController {
     public ResponseEntity<BaseResponse<ScoreDto.DashBoardRsp>> dashboard(@PathVariable Long companyIdx) {
         return ResponseEntity.ok().body(scoreService.dashboard(companyIdx));
     }
+
+    @PostMapping("/eScore/{companyIdx}")
+    @Operation(summary = "회사 대쉬보드", description = "대쉬보드 실행 기능입니다.")
+    public ResponseEntity<BaseResponse<String>> eScore(@PathVariable Long companyIdx) {
+        return ResponseEntity.ok().body(scoreService.eScore(companyIdx));
+    }
 }
