@@ -8,6 +8,22 @@ pipeline {
 
     stages {
 
+         stage('Clean up directory') {
+            steps {
+                script {
+                    sh 'rm -rf ./* ./.git'
+                }
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                // Git 리포지토리 클론
+                echo "Cloning Repository..."
+                git branch: 'main', url: 'https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'chmod +x gradlew'
@@ -34,7 +50,7 @@ pipeline {
 
                     sh """
                     cd deploy
-                    sed -i 's/:LATEST/:${IMAGE_TAG}/g' backend-rollout.yml
+                    sed -i 's/:1\\.[0-9]\\+/:${IMAGE_TAG}/g' backend-rollout.yml
                     """
                 }
             }
