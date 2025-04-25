@@ -19,7 +19,7 @@
         <td align="center"><img src="https://github.com/user-attachments/assets/83abbd5a-6d3a-43a4-8d74-ead06057cf56" width="180px"/></td>
       </tr>
       <tr>
-        <td align="center">팀원: <a href="https://github.com/wkdlrn">김기성</a></td>
+        <td align="center">팀원: <a href="https://github.com/saway126">김기성</a></td>
         <td align="center">팀원: <a href="https://github.com/ChangeunLim" >임찬근</a></td>
         <td align="center"><strong>팀장</strong>: <a href="https://github.com/InukChoi">최인욱</a></td>
 	<td align="center">팀원: <a href="https://github.com/choi-won-ik" >최원익</a></td>
