@@ -39,4 +39,18 @@ public class ScoreService {
         System.out.println("실행");
         return new BaseResponse<>(BaseResponseMessage.COMPANY_ALL_LIST_SUCCESS, result);
     }
+
+    public BaseResponse<String> eScore(Long companyIdx) {
+        List<Score> scores=scoreRepository.findByCompany(companyIdx);
+        Score lastScore = new Score();
+        if (scores != null && !scores.isEmpty()) {
+            lastScore = scores.get(scores.size() - 1);
+            // 이제 lastScore를 사용할 수 있음
+        } else {
+            // 리스트가 비어있을 경우 처리
+            System.out.println("점수 리스트가 비어 있습니다.");
+        }
+
+        return new BaseResponse<>(BaseResponseMessage.COMPANY_ALL_LIST_SUCCESS, lastScore.getEnvironmentScore());
+    }
 }
