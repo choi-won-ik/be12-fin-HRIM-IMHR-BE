@@ -33,6 +33,7 @@ pipeline {
                     sh 'git checkout -f deploy/argo/cd'
 
                     sh """
+                    git pull origin deploy/argo/cd
                     cd deploy
                     sed -i 's/:1\\.[0-9]\\+/:${IMAGE_TAG}/g' backend-rollout.yml
                     """
