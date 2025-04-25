@@ -34,7 +34,7 @@ pipeline {
 
                     sh """
                     cd deploy
-                    sed -i 's/:LATEST/:${IMAGE_TAG}/g' backend-rollout.yml
+                    sed -i 's/:1\\.[0-9]\\+/:${IMAGE_TAG}/g' backend-rollout.yml
                     """
                 }
             }
