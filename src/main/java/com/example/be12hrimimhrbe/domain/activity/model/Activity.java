@@ -54,7 +54,7 @@ public class Activity {
 
     public enum Type { VOLUNTEER, DONATION, EDUCATION }
 
-    // 임시 환경 교육(E), 다양성 교육(사회 S), 윤리경영 교육(지배구조 C)
+    // 임시 환경 교육(E), 다양성 교육(사회 S), 윤리경영   교육(지배구조 C)
     public enum EducationType { ENVIRONMENTAL_EDUCATION, SOCIAL_EDUCATION, GOVERNANCE_EDUCATION}
     // 임시 부서도 추가해주면좋겠다 ㅠㅠㅠㅠ
     public int score;

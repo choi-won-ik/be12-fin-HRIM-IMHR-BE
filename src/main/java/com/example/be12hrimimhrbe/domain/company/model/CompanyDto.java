@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class CompanyDto {
@@ -37,9 +36,9 @@ public class CompanyDto {
         // 사원 1, 2, 3 등을 담는 리스트
         private List<MemberDto.MemberScoreResponse> memberScores;
         // 소속회사의 부서들
-        private List<Department> departments;
+        private List<DepartmentDto.SimpleDepartmentDto> departments;
 
-        public static CompanyYearResponse of (Company company, List<MemberDto.MemberScoreResponse> member, List<Department> departmentList) {
+        public static CompanyYearResponse of (Company company, List<MemberDto.MemberScoreResponse> member, List<DepartmentDto.SimpleDepartmentDto> departmentList) {
             return CompanyYearResponse.builder()
                     .idx(company.getIdx())
                     .companyName(company.getName())
