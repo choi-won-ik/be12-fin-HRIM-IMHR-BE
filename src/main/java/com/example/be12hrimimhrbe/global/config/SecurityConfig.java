@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://www.imhr.kro.kr"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://www.imhr.kro.kr", "https://www.imhr.p-e.kr"));
 //        configuration.setAllowedMethod(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 //        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
