@@ -107,7 +107,7 @@ public class DepartmentService {
         double avgE = memberCount > 0 ? (double) totalE / memberCount : 0.0;
         double avgS = memberCount > 0 ? (double) totalS / memberCount : 0.0;
         double avgG = memberCount > 0 ? (double) totalG / memberCount : 0.0;
-        double avgtotal = avgG + avgE + avgS;
+        double avgtotal = (avgG + avgE + avgS) /3;
 
         DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.fromEntity(department, avgE, avgS, avgG, avgtotal);
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
