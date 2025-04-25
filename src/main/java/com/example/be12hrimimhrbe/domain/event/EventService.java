@@ -30,7 +30,12 @@ public class EventService {
     @Transactional
     public BaseResponse<EventDto.EventResponse> eventRegister(Member member, EventDto.EventRequest dto) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
-        Event event = eventRepository.save(dto.toEntity(newMember.getCompany()));
+        Event event;
+        if (dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
+            throw new IllegalArgumentException("끝나는 날짜는 시작 날짜보다 빠를 수 없습니다.");
+        } else  {
+            event = eventRepository.save(dto.toEntity(newMember.getCompany()));
+        }
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_REGISTER_SUCCESS, EventDto.EventResponse.of(event));
     }
 
