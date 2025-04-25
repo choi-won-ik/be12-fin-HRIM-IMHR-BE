@@ -11,8 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/department")
 @RequiredArgsConstructor
@@ -32,11 +30,11 @@ public class DepartmentController {
         return ResponseEntity.ok().body(departmentService.getList(member.getMember()));
     }
 
-    @GetMapping("/month/{departmentIdx}")
+    @GetMapping("/month")
     @Operation(summary = "각 부서의 월별 대시보드 조회", description = "각 부서의 월별 대시보드를 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<DepartmentDto.DepartmentScoreResponse>> monthDepartme (
+    public ResponseEntity<BaseResponse<DepartmentDto.DepartmentScoreResponse>> monthDepartment (
             @AuthenticationPrincipal CustomUserDetails member,
-            @PathVariable Long departmentIdx,
+            @RequestParam(required = false) Long departmentIdx,
             @Parameter int year,
             @Parameter int month
     ) {

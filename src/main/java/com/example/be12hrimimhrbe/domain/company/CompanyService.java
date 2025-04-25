@@ -125,7 +125,9 @@ public class CompanyService {
                 .collect(Collectors.toList());
 
         // 회사에 소속되어 있는 부서 조회
-        List<Department> departments = departmentRepository.findAllByCompany(company);
+        List<DepartmentDto.SimpleDepartmentDto> departments = departmentRepository.findAllByCompany(company).stream()
+                .map(d -> DepartmentDto.SimpleDepartmentDto.fromEntity(d))
+                .collect(Collectors.toList());
         // Dto 변환
         CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.of(company, top3, departments);
         return new BaseResponse<>(BaseResponseMessage.COMPANY_DEPARTMENT_MONTH_SUCCESS, response);

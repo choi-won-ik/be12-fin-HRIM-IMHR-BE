@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -52,16 +53,20 @@ public class DepartmentService {
     @Transactional
     public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Member member, Long departmentIdx, int year, int month) {
         Company mycompany = member.getCompany();
-        Company departmentCompany = departmentRepository.findByIdx(departmentIdx).getCompany();
-        Department department = departmentRepository.findByIdx(departmentIdx);
 
-        // 타회사 접근 방지
-        if (!mycompany.equals(departmentCompany)) {
-            return null;
-        }
+        List<Member> dMembers = new ArrayList<>();
+        Department department;
 
         // 1. 해당 부서 소속 사원 목록 조회
-        List<Member> dMembers = memberRepository.findAllByDepartmentIdx(departmentIdx);
+        if (departmentIdx == null) {
+            // 회사의 제일 작은 idx를 가진 부서 조회
+            Long departId = departmentRepository.findFirstByCompanyOrderByIdxAsc(mycompany).getIdx();
+            dMembers = memberRepository.findAllByDepartmentIdx(departId);
+            department = departmentRepository.findByIdx(departId);
+        } else {
+            dMembers = memberRepository.findAllByDepartmentIdx(departmentIdx);
+            department = departmentRepository.findByIdx(departmentIdx);
+        }
 
         //부서 소속 총 사원 수
         int memberCount = dMembers.size();

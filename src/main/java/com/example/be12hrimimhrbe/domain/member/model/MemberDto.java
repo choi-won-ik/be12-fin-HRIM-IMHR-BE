@@ -316,6 +316,7 @@ public class MemberDto {
         private Long companyIdx;
         private Long departmentIdx;
         private List<String> hrAuthorities;
+
         public static TokenInfoResponse fromMember(Member member, List<String> hrAuthorities) {
             return TokenInfoResponse.builder()
                     .idx(member.getIdx())
