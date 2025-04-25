@@ -18,9 +18,9 @@ public class DepartmentDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class DepartmentListResponse{
-        private List<Department> departments;
+        private List<DepartmentInfoResponse> departments;
         public static DepartmentListResponse fromDepartments(List<Department> departments){
-            return new DepartmentListResponse(departments);
+            return new DepartmentListResponse(departments.stream().map(DepartmentInfoResponse::fromEntity).toList());
         }
     }
 
