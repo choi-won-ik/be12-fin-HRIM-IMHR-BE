@@ -90,7 +90,7 @@ public class ActivityService {
                 .type(activity.getType())
                 .content(activity.getDescription())
                 .fileUrl(servedUrl)
-                .member(activity.getMember())
+                .member(new ActivityDto.ActivityMember(activity.getMember()))
 //                .memberRole(activity.getMember().getRole)
                 .build();
 

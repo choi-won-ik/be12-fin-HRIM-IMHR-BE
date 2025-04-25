@@ -33,10 +33,9 @@ public class NotificationController {
     }
 
     @MessageMapping("/notification/activityReq/{companyIdx}")
-    @Operation(summary = "활동내역 승인", description = "활동내역 승인 알림 기능 입니다.")
+    @Operation(summary = "활동내역 승인 요청", description = "활동내역 승인 요청 알림 기능 입니다.")
     public void activityApproveReq(@Payload NotificationDto.ActivityApproveRequest dto
             , @DestinationVariable Long companyIdx) {
-        System.out.println("3번째 알림");
         notificationService.activityApproveReq(dto,companyIdx);
     }
 

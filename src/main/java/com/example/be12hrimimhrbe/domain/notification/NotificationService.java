@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,8 @@ public class NotificationService {
 
     @Transactional
     public void activityApprove(NotificationDto.ActivityApproveReq dto) {
-        Member member = dto.getMember();
+        Member member = memberRepository.findById(dto.getMember().getIdx())
+                .orElseThrow(() -> new NoSuchElementException("해당 ID의 멤버를 찾을 수 없습니다."));
 
         member.setNotificationCount(member.getNotificationCount() + 1);
         memberRepository.save(member);
