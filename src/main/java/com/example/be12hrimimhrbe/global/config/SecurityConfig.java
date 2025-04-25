@@ -75,7 +75,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/ws/**", "/app/**", "/topic/**",
                                 "/member/login", "/member/signup/*","/member/logout","/activity/detail/*","/img/**",
-                                "/member/find-id", "/member/find-pw", "/member/reset-pw",
+                                "/member/find-id", "/member/find-pw", "/member/reset-pw", "/actuator/health",
                                 "/error", "/swagger-ui/**", "/v3/api-docs/**",
                                 "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated()
