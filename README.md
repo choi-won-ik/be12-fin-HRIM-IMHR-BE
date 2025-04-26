@@ -1,4 +1,4 @@
-# IMHR 🌏🙋‍♂️ !
+# 🌏IMHR 🙋‍♂️ !
 <p align="middle" style="margin: 0; padding: 0;">
   <img width="250px" src="https://github.com/user-attachments/assets/7cb81506-35bb-4770-99ee-d2dc8821f443">
 </p>
