@@ -8,7 +8,6 @@ import com.example.be12hrimimhrbe.global.LocalImageService;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import com.example.be12hrimimhrbe.global.utils.FileService;
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -19,15 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,14 +33,12 @@ public class ActivityService {
     @Value("${file.upload-path}")
     private String uploadPath;
 
-    public BaseResponse<List<ActivityDto.ActivityListResp>> activityList(Member member, int page, int size) {
-        Member user = memberRepository.findById(member.getIdx()).get();
-
+    public BaseResponse<ActivityDto.PageActivityListResp> activityList(Member member, int page, int size) {
         List<ActivityDto.ActivityListResp> result = new ArrayList<>();
 
         // 관리자가 활동 리스트 확인
-        if (user.getIsAdmin()) {
-            Pageable pageable=PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
+        if (member.getIsAdmin()) {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
             Page<Activity> list = activityRepository.findAllAndMember(pageable);
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, activity.getMember());
@@ -57,22 +49,29 @@ public class ActivityService {
                 result.add(index);
             }
 
-            return new BaseResponse<>(BaseResponseMessage.ADMIN_ACTIVITYLIST_FIND, result);
+            return new BaseResponse<>(BaseResponseMessage.ADMIN_ACTIVITYLIST_FIND, ActivityDto.PageActivityListResp.builder()
+                    .total(list.getTotalPages())
+                    .activityList(result)
+                    .build());
 
         }
         // 개인 유저가 활동 리스트 확인
         else {
-            Page<Activity> list = activityRepository.findAllByMember(user, PageRequest.of(page, size));
+            Page<Activity> list = activityRepository.findAllByMember(member, PageRequest.of(page, size));
             for (Activity activity : list) {
-                ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, user);
+                ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
                 // 프론트에 출력되는 이름 변경
                 index = ActivityDto.ActivityListResp.findType(activity, index);
                 index = ActivityDto.ActivityListResp.findStatus(activity, index);
 
                 result.add(index);
             }
+
+            return new BaseResponse<>(BaseResponseMessage.USER_ACTIVITYLIST_FIND, ActivityDto.PageActivityListResp.builder()
+                    .total(list.getTotalPages())
+                    .activityList(result)
+                    .build());
         }
-        return new BaseResponse<>(BaseResponseMessage.USER_ACTIVITYLIST_FIND, result);
     }
 
     public BaseResponse<ActivityDto.ActivityItemResponse> getDetail(Long idx, Member member) {
@@ -141,8 +140,8 @@ public class ActivityService {
                     .status(Activity.Status.PENDING)
                     .build();
         }
-        try{
-            Activity result=activityRepository.save(activity);
+        try {
+            Activity result = activityRepository.save(activity);
             return new BaseResponse<>(BaseResponseMessage.ACTIVITY_REGIST_SUCCESS, result);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -151,10 +150,10 @@ public class ActivityService {
     }
 
     @Transactional
-    public BaseResponse<Long> ativityApprovalAgree(Member member,Long idx) {
+    public BaseResponse<Long> ativityApprovalAgree(Member member, Long idx) {
         Activity activity = activityRepository.findById(idx).get();
-        
-        if(member.getIsAdmin()){
+
+        if (member.getIsAdmin()) {
             // 활동을 승인 함
             if (activity.getStatus().equals(Activity.Status.PENDING)) {
                 activity = new Activity(activity, Activity.Status.APPROVED);
@@ -173,9 +172,9 @@ public class ActivityService {
     }
 
     @Transactional
-    public BaseResponse<Long> ativityApprovalOppose(Member member,Long idx) {
+    public BaseResponse<Long> ativityApprovalOppose(Member member, Long idx) {
         Activity activity = activityRepository.findById(idx).get();
-        if(member.getIsAdmin()){
+        if (member.getIsAdmin()) {
             // 활동을 반려함
             if (activity.getStatus().equals(Activity.Status.PENDING)) {
                 activity = new Activity(activity, Activity.Status.REJECTED);
@@ -187,20 +186,20 @@ public class ActivityService {
                 }
             }
             // 이미 활동 처리가 되었음.
-            else{
+            else {
                 return new BaseResponse<>(BaseResponseMessage.MY_ACTIVITY_PROCESSED);
             }
         }
         // 활동 처리 권한이 없음
-        else{
+        else {
             return new BaseResponse<>(BaseResponseMessage.ACTIVITY_APPROVAL_FALSE);
         }
     }
 
     @Transactional
-    public BaseResponse<Long> ativityDelete(Member member,Long idx) {
+    public BaseResponse<Long> ativityDelete(Member member, Long idx) {
         Activity activity = activityRepository.findByIdAndMember(idx);
-        if(member.getIdx()==activity.getMember().getIdx()){
+        if (member.getIdx() == activity.getMember().getIdx()) {
             try {
                 activityRepository.delete(activity);
 
@@ -208,7 +207,7 @@ public class ActivityService {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }else{
+        } else {
             return new BaseResponse<>(BaseResponseMessage.ACTIVITY_DELETE_FALSE);
         }
     }

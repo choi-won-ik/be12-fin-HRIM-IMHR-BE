@@ -2,9 +2,7 @@ package com.example.be12hrimimhrbe.domain.activity;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
-import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
-import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,9 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
-
 @RestController
 @RequestMapping("/activity")
 @RequiredArgsConstructor
@@ -27,10 +22,10 @@ public class ActivityController {
 
     @GetMapping("/activityList")
     @Operation(summary = "ESG활동 내역 조회", description = "ESG활동 내역을 조회하는 기능 입니다.")
-    public ResponseEntity<BaseResponse<List<ActivityDto.ActivityListResp>>> activityList(
-            @AuthenticationPrincipal CustomUserDetails member, int page, int size
+    public ResponseEntity<BaseResponse<ActivityDto.PageActivityListResp>> activityList(
+            @AuthenticationPrincipal CustomUserDetails member, int page
     ) {
-        return ResponseEntity.ok().body(activityService.activityList(member.getMember(), page, size));
+        return ResponseEntity.ok().body(activityService.activityList(member.getMember(), page, 5));
     }
 
     @GetMapping("/detail/{idx}")
