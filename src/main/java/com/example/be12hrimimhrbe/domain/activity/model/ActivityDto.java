@@ -1,17 +1,19 @@
 package com.example.be12hrimimhrbe.domain.activity.model;
 
-import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
-import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityDto {
+
+    @Data @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class PageActivityListResp{
+        private List<ActivityListResp> activityList;
+        private int total;
+    }
 
     @Data @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ActivityListResp{
