@@ -8,6 +8,7 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -110,14 +111,16 @@ public class MemberController {
 
     @PostMapping("/signup/personal")
     @Operation(summary = "개인 회원 가입", description = "임직원 가입용 회원 가입 기능입니다.")
-    public ResponseEntity<BaseResponse<MemberDto.PersonalSignupResponse>> personalSignup(@RequestBody MemberDto.PersonalSignupRequest dto) {
+    public ResponseEntity<BaseResponse<MemberDto.PersonalSignupResponse>> personalSignup(@Valid @RequestBody MemberDto.PersonalSignupRequest dto) {
         return ResponseEntity.ok().body(memberService.personalSignup(dto));
     }
 
     @PostMapping("/signup/company")
     @Operation(summary = "기업 회원 가입", description = "기업 가입용 회원 가입 기능입니다.")
-    public ResponseEntity<BaseResponse<MemberDto.CompanySignupResponse>> companySignup(@RequestPart MemberDto.CompanySignupRequest dto,
-                                                                                       @RequestPart MultipartFile file) {
+    public ResponseEntity<BaseResponse<MemberDto.CompanySignupResponse>> companySignup(@Valid @RequestPart MemberDto.CompanySignupRequest dto,
+                                                                                       @RequestPart(required = false) MultipartFile file) {
+//        if(file.isEmpty())
+//            return ResponseEntity.badRequest().body(new BaseResponse<>(BaseResponseMessage.Fa))
         return ResponseEntity.ok().body(memberService.companySignup(dto, file));
     }
 

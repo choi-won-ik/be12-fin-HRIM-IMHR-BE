@@ -7,6 +7,9 @@ import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.event.model.Event;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -158,10 +161,18 @@ public class MemberDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class PersonalSignupRequest {
+        @NotBlank(message = "이름은 필수값입니다.")
         private String name;
+        @NotBlank(message = "ID는 필수값입니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$", message = "ID는 영어 대소문자, 숫자 혼합하여 6~20글자 사이")
         private String memberId;
+        @NotBlank(message = "이메일은 필수값입니다.")
+        @Email(message = "이메일이 양식에 맞지 않습니다.")
         private String email;
+        @NotBlank(message = "비밀번호는 필수값입니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$", message = "비밀번호는 영어 대소문자, 숫자 혼합하여 8~20글자 사이")
         private String password;
+        @NotBlank(message = "회사코드는 필수값입니다.")
         private String companyCode;
         private String employeeCode;
         public Member toMember(String encryptedPassword, Company company) {
@@ -202,11 +213,20 @@ public class MemberDto {
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class CompanySignupRequest {
+        @NotBlank(message = "이름은 필수값입니다.")
         private String name;
+        @NotBlank(message = "ID는 필수값입니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$", message = "ID는 영어 대소문자, 숫자 혼합하여 6~20글자 사이")
         private String memberId;
+        @NotBlank(message = "비밀번호는 필수값입니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$", message = "비밀번호는 영어 대소문자, 숫자 혼합하여 8~20글자 사이")
         private String password;
+        @NotBlank(message = "이메일은 필수값입니다.")
+        @Email(message = "이메일이 양식에 맞지 않습니다.")
         private String email;
+        @NotBlank(message = "회사명은 필수값입니다.")
         private String companyName;
+        @NotBlank(message = "사업자등록번호는 필수값입니다.")
         private String registrationNumber;
         public Member toMember(String encryptedPassword, Company company) {
             return Member.builder().memberId(this.memberId)

@@ -221,6 +221,14 @@ public class MemberService implements UserDetailsService {
         if(result.isPresent()) {
             return new BaseResponse<>(BaseResponseMessage.SIGNUP_DUPLICATE_EMAIL, null);
         }
+        Optional<Company> companyResult = companyRepository.findByName(dto.getCompanyName());
+        if(companyResult.isPresent()) {
+            return new BaseResponse<>(BaseResponseMessage.SIGNUP_DUPLICATE_COMPANY_NAME, null);
+        }
+        companyResult = companyRepository.findByCode(dto.getRegistrationNumber());
+        if(companyResult.isPresent()) {
+            return new BaseResponse<>(BaseResponseMessage.SIGNUP_DUPLICATE_REGISTRATION_NUMBER, null);
+        }
         if(file!=null && !file.isEmpty()) {
             String originalFilename = file.getOriginalFilename();
 
