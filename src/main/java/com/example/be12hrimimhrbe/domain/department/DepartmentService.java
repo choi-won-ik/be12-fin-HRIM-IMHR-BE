@@ -52,6 +52,7 @@ public class DepartmentService {
 
     @Transactional
     public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Member member, Long departmentIdx, int year, int month) {
+
         Company mycompany = member.getCompany();
 
         List<Member> dMembers = new ArrayList<>();

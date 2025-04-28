@@ -31,9 +31,12 @@ public class EventService {
     public BaseResponse<EventDto.EventResponse> eventRegister(Member member, EventDto.EventRequest dto) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
         Event event;
+
         if (dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
             throw new IllegalArgumentException("끝나는 날짜는 시작 날짜보다 빠를 수 없습니다.");
-        } else  {
+        } else if (!newMember.getIsAdmin()) {
+            return null;
+        }else  {
             event = eventRepository.save(dto.toEntity(newMember.getCompany()));
         }
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_REGISTER_SUCCESS, EventDto.EventResponse.of(event));
@@ -42,6 +45,10 @@ public class EventService {
 //  이벤트 수정
     public BaseResponse<EventDto.EventResponse> updateEvent(Member member, Long idx, EventDto.EventRequest dto) {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
+
+        if (!newMember.getIsAdmin()) {
+            return null;
+        }
         Event event = eventRepository.findByCompanyIdxAndIdx(newMember.getCompany().getIdx(), idx);
         event.updateFromDto(dto);
         Event updated = eventRepository.save(event);
@@ -93,9 +100,14 @@ public class EventService {
 //  이벤트 삭제
     @Transactional
     public boolean deleteEvent(Member member, Long idx) {
+        Member newMember = memberRepository.findByIdx(member.getIdx());
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
         Long eventIdx = eventRepository.findByIdxAndCompanyIdx(idx, myCompanyIdx).getIdx();
 
+        if (!newMember.getIsAdmin()) {
+            return false;
+        }
+        
         List<Campaign> campaigns = campaignRepository.findByEventIdx(idx);
         Set<Long> memberIdx = campaigns.stream().map(c -> c.getMember().getIdx()).collect(Collectors.toSet());
         if (!memberIdx.isEmpty()) {
