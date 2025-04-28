@@ -58,7 +58,7 @@ public class PartnerService {
 
     public BaseResponse<List<Partner>> addPartner(Member member, Long companyIdx, List<CompanyDto.CompanyListResponse> dto) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
-        boolean admin = memberRepository.findByIdx(member.getIdx()).getIsAdmin();
+        boolean admin = member.getIsAdmin();
 
         if (!myCompanyIdx.equals(companyIdx) && !admin) {
             return new BaseResponse<>(BaseResponseMessage.PARTNER_ADD_FAILS, null);
@@ -91,7 +91,7 @@ public class PartnerService {
 
     @Transactional
     public boolean deletePartner(Member member, Long partnerIdx) {
-        boolean admin = memberRepository.findByIdx(member.getIdx()).getIsAdmin();
+        boolean admin = member.getIsAdmin();
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
         Long mainCompanyIdx = partnerRepository.findByPartnerCompanyIdx(partnerIdx).getMainCompany().getIdx();
 

@@ -9,7 +9,6 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +27,13 @@ public class CampaignService {
     private final EventRepository eventRepository;
 
     @Transactional
-    public BaseResponse<List<Long>> register(CampaignDto.CampaignRequest req) {
+    public BaseResponse<List<Long>> register(Member nowmember, CampaignDto.CampaignRequest req) {
+        Boolean isAdmin = nowmember.getIsAdmin();
         Event event = eventRepository.findById(req.getEventIdx()).orElseThrow();
 
+        if (!isAdmin) {
+            return null;
+        }
         List<Member> members = memberRepository.findAllById(req.getMemberIdxList());
         List<Campaign> toSave = new ArrayList<>();
         List<Long> failed = new ArrayList<>();
@@ -56,7 +59,13 @@ public class CampaignService {
 
 
     @Transactional
-    public BaseResponse<List<MemberDto.MemberShortResponse>> memberList(Long eventIdx) {
+    public BaseResponse<List<MemberDto.MemberShortResponse>> memberList(Member member, Long eventIdx) {
+        Boolean isAdmin = member.getIsAdmin();
+
+        if (!isAdmin) {
+            return null;
+        }
+
         List<Campaign> memberList = campaignRepository.findByEventIdx(eventIdx);
         List<Long> memberIds = memberList.stream()
                 .map(c -> c.getMember().getIdx())
@@ -71,7 +80,13 @@ public class CampaignService {
     }
 
     @Transactional
-    public BaseResponse<List<MemberDto.MemberShortResponse>> update(Long eventIdx, CampaignDto.CampaignRequest dto) {
+    public BaseResponse<List<MemberDto.MemberShortResponse>> update(Member nowmember, Long eventIdx, CampaignDto.CampaignRequest dto) {
+        Boolean isAdmin = nowmember.getIsAdmin();
+
+        if (!isAdmin) {
+            return null;
+        }
+
         // 원래 캠페인 정보
         Event event = eventRepository.findById(dto.getEventIdx()).orElseThrow();
         List<Campaign> campaign = campaignRepository.findByEventIdx(eventIdx);

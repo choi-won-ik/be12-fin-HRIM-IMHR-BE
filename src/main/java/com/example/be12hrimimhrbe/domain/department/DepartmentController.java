@@ -19,14 +19,18 @@ public class DepartmentController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/update")
-    public ResponseEntity<BaseResponse<String>> update(@RequestBody DepartmentDto.CDRequest dto,
-                                                       @AuthenticationPrincipal CustomUserDetails member) {
+    public ResponseEntity<BaseResponse<String>> update(
+            @RequestBody DepartmentDto.CDRequest dto,
+            @AuthenticationPrincipal CustomUserDetails member
+    ) {
         return ResponseEntity.ok().body(departmentService.updateElements(dto, member));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")
-    public ResponseEntity<BaseResponse<DepartmentDto.DepartmentListResponse>> list(@AuthenticationPrincipal CustomUserDetails member) {
+    public ResponseEntity<BaseResponse<DepartmentDto.DepartmentListResponse>> list(
+            @AuthenticationPrincipal CustomUserDetails member
+    ) {
         return ResponseEntity.ok().body(departmentService.getList(member.getMember()));
     }
 
