@@ -102,43 +102,27 @@ public class ActivityService {
             ActivityDto.ActivityRegistReq dto, MultipartFile imgFile, Member member) {
         Activity activity = null;
 
-        Activity.Type activityType = null;
         // 파일 업로드
         String uploadFilePath = localImageService.upload(imgFile);
 
         // 기부 시
         if (dto.getType().equals("기부")) {
-            activityType = Activity.Type.DONATION;
-
-            activity = Activity.builder()
-                    .member(member)
-                    .type(activityType)
-                    .title(dto.getTitle())
-                    .description(dto.getDescription())
-                    .fileUrl(uploadFilePath)
-                    .donation(dto.getPerformance())
-                    .createdAt(LocalDateTime.now())
-                    .status(Activity.Status.PENDING)
-                    .build();
+            activity = ActivityDto.ActivityRegistReq.toEntity(member, dto, Activity.Type.DONATION,uploadFilePath);
         }
         // 봉사 시
-        else {
-            if (dto.getType().equals("봉사")) {
-                activityType = Activity.Type.VOLUNTEER;
-            } else if (dto.getType().equals("교육")) {
-                activityType = Activity.Type.EDUCATION;
+        else if(dto.getType().equals("봉사")){
+            activity = ActivityDto.ActivityRegistReq.toEntity(member, dto, Activity.Type.VOLUNTEER,uploadFilePath);
+        }
+        // 교육
+        else{
+            if(dto.getType().equals("환경")){
+                activity = ActivityDto.ActivityRegistReq.toEntityEdu(member, dto, Activity.Type.EDUCATION,uploadFilePath,Activity.EducationType.ENVIRONMENTAL_EDUCATION);
+            }else if(dto.getType().equals("사회")){
+                activity = ActivityDto.ActivityRegistReq.toEntityEdu(member, dto, Activity.Type.EDUCATION,uploadFilePath,Activity.EducationType.SOCIAL_EDUCATION);
+            }else if(dto.getType().equals("지배구조")){
+                activity = ActivityDto.ActivityRegistReq.toEntityEdu(member, dto, Activity.Type.EDUCATION,uploadFilePath,Activity.EducationType.GOVERNANCE_EDUCATION);
             }
 
-            activity = Activity.builder()
-                    .member(member)
-                    .type(activityType)
-                    .title(dto.getTitle())
-                    .description(dto.getDescription())
-                    .fileUrl(uploadFilePath)
-                    .performedAt(dto.getPerformance())
-                    .createdAt(LocalDateTime.now())
-                    .status(Activity.Status.PENDING)
-                    .build();
         }
         try {
             Activity result = activityRepository.save(activity);

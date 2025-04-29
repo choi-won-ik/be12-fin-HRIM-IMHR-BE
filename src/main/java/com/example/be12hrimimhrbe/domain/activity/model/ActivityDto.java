@@ -4,6 +4,7 @@ import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -137,8 +138,36 @@ public class ActivityDto {
         private String type;
         private String title;
         private String description;
-        //        private String startDate;
+//        private String educationType;
+//        private Activity.EducationType educationType;
         private int performance;
+
+        public static Activity toEntity(Member member,ActivityRegistReq dto,Activity.Type activityType,String uploadFilePath) {
+            return Activity.builder()
+                    .member(member)
+                    .type(activityType)
+                    .title(dto.getTitle())
+                    .description(dto.getDescription())
+                    .fileUrl(uploadFilePath)
+                    .donation(dto.getPerformance())
+                    .createdAt(LocalDateTime.now())
+                    .status(Activity.Status.PENDING)
+                    .build();
+        }
+
+        public static Activity toEntityEdu(Member member,ActivityRegistReq dto,Activity.Type activityType,String uploadFilePath,Activity.EducationType educationType) {
+            return Activity.builder()
+                    .member(member)
+                    .type(activityType)
+                    .title(dto.getTitle())
+                    .description(dto.getDescription())
+                    .fileUrl(uploadFilePath)
+                    .donation(dto.getPerformance())
+                    .createdAt(LocalDateTime.now())
+                    .status(Activity.Status.PENDING)
+                    .educationType(educationType)
+                    .build();
+        }
     }
 
     @Getter
