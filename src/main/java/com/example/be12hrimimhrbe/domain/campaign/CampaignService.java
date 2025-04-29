@@ -36,6 +36,10 @@ public class CampaignService {
         }
 
         List<Member> members = memberRepository.findAllById(req.getMemberIdxList());
+
+        if (members.isEmpty()) {
+            return new BaseResponse<>(BaseResponseMessage.CALENDAR_CAMPAIGN_REGISTER_LIST_NULL, null);
+        }
         List<Campaign> toSave = new ArrayList<>();
         List<Long> failed = new ArrayList<>();
         for (Member member : members) {

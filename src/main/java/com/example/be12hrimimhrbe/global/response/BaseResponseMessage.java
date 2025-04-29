@@ -76,7 +76,7 @@ public enum BaseResponseMessage {
     // 캘린더 - 캠페인 관리
     CALENDAR_CAMPAIGN_REGISTER_SUCCESS(true, 6400, "캠페인 참가 사원 등록을 성공했습니다."),
     CALENDAR_CAMPAIGN_UPDATE_SUCCESS(true, 6400, "캠페인 참가 사원 수정을 성공했습니다."),
-    CALENDAR_CAMPAIGN_DETAIL_SUCCESS(true, 6400, "캠페인 상세 조회를 성공했습니다."),
+    CALENDAR_CAMPAIGN_REGISTER_LIST_NULL(false, 6404, "선택된 사원들이 없습니다."),
 
 
 
