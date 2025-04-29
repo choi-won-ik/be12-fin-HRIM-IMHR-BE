@@ -2,6 +2,7 @@ package com.example.be12hrimimhrbe.domain.activity;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.education.model.EducationDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.LocalImageService;
@@ -39,7 +40,7 @@ public class ActivityService {
         // 관리자가 활동 리스트 확인
         if (member.getIsAdmin()) {
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
-            Page<Activity> list = activityRepository.findAllAndMember(pageable);
+            Page<Activity> list = activityRepository.findAllAndMemberNotEducation(pageable);
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, activity.getMember());
                 // 프론트에 출력되는 이름 변경
@@ -57,7 +58,7 @@ public class ActivityService {
         }
         // 개인 유저가 활동 리스트 확인
         else {
-            Page<Activity> list = activityRepository.findAllByMember(member, PageRequest.of(page, size));
+            Page<Activity> list = activityRepository.findAllByMembernotEducation(member, PageRequest.of(page, size));
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
                 // 프론트에 출력되는 이름 변경

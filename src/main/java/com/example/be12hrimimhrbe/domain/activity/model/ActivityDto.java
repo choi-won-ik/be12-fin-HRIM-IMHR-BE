@@ -47,8 +47,6 @@ public class ActivityDto {
                 index.setType("봉사");
             } else if (activity.getType()==Activity.Type.DONATION) {
                 index.setType("기부");
-            } else if(activity.getType()==Activity.Type.EDUCATION){
-                index.setType("교육");
             }
             return index;
         }
