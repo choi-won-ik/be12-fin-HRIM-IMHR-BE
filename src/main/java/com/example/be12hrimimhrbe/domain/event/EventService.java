@@ -35,7 +35,7 @@ public class EventService {
         if (dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
             throw new IllegalArgumentException("끝나는 날짜는 시작 날짜보다 빠를 수 없습니다.");
         } else if (!newMember.getIsAdmin()) {
-            return null;
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
         }else  {
             event = eventRepository.save(dto.toEntity(newMember.getCompany()));
         }
@@ -47,7 +47,7 @@ public class EventService {
         Member newMember = memberRepository.findById(member.getIdx()).orElseThrow();
 
         if (!newMember.getIsAdmin()) {
-            return null;
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
         }
         Event event = eventRepository.findByCompanyIdxAndIdx(newMember.getCompany().getIdx(), idx);
         event.updateFromDto(dto);
