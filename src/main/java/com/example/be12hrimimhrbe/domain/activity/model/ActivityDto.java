@@ -94,11 +94,6 @@ public class ActivityDto {
         private Boolean isAdmin;
         private Boolean hasProdAuth;
         private Boolean hasPartnerAuth;
-        private Long companyIdx;
-        private Department department;
-        private int eScore;
-        private int sScore;
-        private int gScore;
         private String code;
         public ActivityMember(Member member) {
             this.idx=member.getIdx();
@@ -107,11 +102,6 @@ public class ActivityDto {
             this.isAdmin=member.getIsAdmin();
             this.hasProdAuth=member.getHasProdAuth();
             this.hasPartnerAuth=member.getHasPartnerAuth();
-            this.companyIdx=member.getCompany().getIdx();
-            this.department=member.getDepartment();
-            this.eScore=member.getEScore();
-            this.sScore=member.getSScore();
-            this.gScore=member.getGScore();
             this.code=member.getCode();
         }
     }

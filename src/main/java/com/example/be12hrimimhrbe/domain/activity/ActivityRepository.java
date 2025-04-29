@@ -32,10 +32,11 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
             "AND a.type!= 'EDUCATION' ")
     Page<Activity> findAllByMembernotEducation(Member member, PageRequest of);
 
-    @EntityGraph(attributePaths = {"member","member.company"})
+    @EntityGraph(attributePaths = {"member", "member.department"})
     @Query("SELECT a FROM Activity a " +
             "LEFT JOIN a.member m " +
             "LEFT JOIN m.company c " +
+            "LEFT JOIN m.department d " +
             "where a.idx= :idx ")
     Activity findByIdAndMember(Long idx);
 
