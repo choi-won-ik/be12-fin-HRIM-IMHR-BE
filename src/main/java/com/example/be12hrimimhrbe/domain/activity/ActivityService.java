@@ -91,7 +91,6 @@ public class ActivityService {
                 .content(activity.getDescription())
                 .fileUrl(servedUrl)
                 .member(new ActivityDto.ActivityMember(activity.getMember()))
-//                .memberRole(activity.getMember().getRole)
                 .build();
 
         return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
