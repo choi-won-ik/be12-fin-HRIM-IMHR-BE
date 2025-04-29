@@ -46,6 +46,7 @@ public enum BaseResponseMessage {
     MEMBER_APPROVE_SUCCESS(true, 2200, "회원 승인 완료"),
     MEMBER_REJECT_SUCCESS(true, 2200, "회원 반려 완료"),
     MEMBER_LIST_SUCCESS(true, 2200, "회원 전체 리스트 반환"),
+    INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS(false, 2404, "부적절한 접근 권한입니다."),
 
     // 협력사 기능(3000)
     PARTNER_LIST_SUCCESS(true, 3200, "협력사 리스트 반환 성공"),

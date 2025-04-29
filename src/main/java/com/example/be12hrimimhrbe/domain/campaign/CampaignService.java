@@ -32,8 +32,9 @@ public class CampaignService {
         Event event = eventRepository.findById(req.getEventIdx()).orElseThrow();
 
         if (!isAdmin) {
-            return null;
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
         }
+
         List<Member> members = memberRepository.findAllById(req.getMemberIdxList());
         List<Campaign> toSave = new ArrayList<>();
         List<Long> failed = new ArrayList<>();
@@ -63,7 +64,7 @@ public class CampaignService {
         Boolean isAdmin = member.getIsAdmin();
 
         if (!isAdmin) {
-            return null;
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
         }
 
         List<Campaign> memberList = campaignRepository.findByEventIdx(eventIdx);
@@ -84,7 +85,7 @@ public class CampaignService {
         Boolean isAdmin = nowmember.getIsAdmin();
 
         if (!isAdmin) {
-            return null;
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
         }
 
         // 원래 캠페인 정보
