@@ -4,6 +4,7 @@ import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -46,8 +47,6 @@ public class ActivityDto {
                 index.setType("봉사");
             } else if (activity.getType()==Activity.Type.DONATION) {
                 index.setType("기부");
-            } else if(activity.getType()==Activity.Type.EDUCATION){
-                index.setType("교육");
             }
             return index;
         }
@@ -95,11 +94,6 @@ public class ActivityDto {
         private Boolean isAdmin;
         private Boolean hasProdAuth;
         private Boolean hasPartnerAuth;
-        private Long companyIdx;
-        private Department department;
-        private int eScore;
-        private int sScore;
-        private int gScore;
         private String code;
         public ActivityMember(Member member) {
             this.idx=member.getIdx();
@@ -108,11 +102,6 @@ public class ActivityDto {
             this.isAdmin=member.getIsAdmin();
             this.hasProdAuth=member.getHasProdAuth();
             this.hasPartnerAuth=member.getHasPartnerAuth();
-            this.companyIdx=member.getCompany().getIdx();
-            this.department=member.getDepartment();
-            this.eScore=member.getEScore();
-            this.sScore=member.getSScore();
-            this.gScore=member.getGScore();
             this.code=member.getCode();
         }
     }
@@ -137,8 +126,36 @@ public class ActivityDto {
         private String type;
         private String title;
         private String description;
-        //        private String startDate;
+//        private String educationType;
+//        private Activity.EducationType educationType;
         private int performance;
+
+        public static Activity toEntity(Member member,ActivityRegistReq dto,Activity.Type activityType,String uploadFilePath) {
+            return Activity.builder()
+                    .member(member)
+                    .type(activityType)
+                    .title(dto.getTitle())
+                    .description(dto.getDescription())
+                    .fileUrl(uploadFilePath)
+                    .donation(dto.getPerformance())
+                    .createdAt(LocalDateTime.now())
+                    .status(Activity.Status.PENDING)
+                    .build();
+        }
+
+        public static Activity toEntityEdu(Member member,ActivityRegistReq dto,Activity.Type activityType,String uploadFilePath,Activity.EducationType educationType) {
+            return Activity.builder()
+                    .member(member)
+                    .type(activityType)
+                    .title(dto.getTitle())
+                    .description(dto.getDescription())
+                    .fileUrl(uploadFilePath)
+                    .donation(dto.getPerformance())
+                    .createdAt(LocalDateTime.now())
+                    .status(Activity.Status.PENDING)
+                    .educationType(educationType)
+                    .build();
+        }
     }
 
     @Getter

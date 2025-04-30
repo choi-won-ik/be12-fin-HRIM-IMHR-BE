@@ -2,6 +2,7 @@ package com.example.be12hrimimhrbe.domain.activity;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.education.model.EducationDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.LocalImageService;
@@ -39,7 +40,7 @@ public class ActivityService {
         // 관리자가 활동 리스트 확인
         if (member.getIsAdmin()) {
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
-            Page<Activity> list = activityRepository.findAllAndMember(pageable);
+            Page<Activity> list = activityRepository.findAllAndMemberNotEducation(pageable);
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, activity.getMember());
                 // 프론트에 출력되는 이름 변경
@@ -57,7 +58,50 @@ public class ActivityService {
         }
         // 개인 유저가 활동 리스트 확인
         else {
-            Page<Activity> list = activityRepository.findAllByMember(member, PageRequest.of(page, size));
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
+            Page<Activity> list = activityRepository.findAllByMembernotEducation(member, pageable);
+            for (Activity activity : list) {
+                ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
+                // 프론트에 출력되는 이름 변경
+                index = ActivityDto.ActivityListResp.findType(activity, index);
+                index = ActivityDto.ActivityListResp.findStatus(activity, index);
+
+                result.add(index);
+            }
+
+            return new BaseResponse<>(BaseResponseMessage.USER_ACTIVITYLIST_FIND, ActivityDto.PageActivityListResp.builder()
+                    .total(list.getTotalPages())
+                    .activityList(result)
+                    .build());
+        }
+    }
+
+    public BaseResponse<ActivityDto.PageActivityListResp> activitySearch(Member member, int page, int size, String search) {
+        List<ActivityDto.ActivityListResp> result = new ArrayList<>();
+
+        // 관리자가 활동 리스트 확인
+        if (member.getIsAdmin()) {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
+            Page<Activity> list = activityRepository.findAllAndMemberNotEducationSearch(pageable,search);
+            for (Activity activity : list) {
+                ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, activity.getMember());
+                // 프론트에 출력되는 이름 변경
+                index = ActivityDto.ActivityListResp.findType(activity, index);
+                index = ActivityDto.ActivityListResp.findStatus(activity, index);
+
+                result.add(index);
+            }
+
+            return new BaseResponse<>(BaseResponseMessage.ADMIN_ACTIVITYLIST_FIND, ActivityDto.PageActivityListResp.builder()
+                    .total(list.getTotalPages())
+                    .activityList(result)
+                    .build());
+
+        }
+        // 개인 유저가 활동 리스트 확인
+        else {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
+            Page<Activity> list = activityRepository.findAllByMembernotEducationSearch(member, pageable,search);
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
                 // 프론트에 출력되는 이름 변경
@@ -90,7 +134,6 @@ public class ActivityService {
                 .content(activity.getDescription())
                 .fileUrl(servedUrl)
                 .member(new ActivityDto.ActivityMember(activity.getMember()))
-//                .memberRole(activity.getMember().getRole)
                 .build();
 
         return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
@@ -102,43 +145,27 @@ public class ActivityService {
             ActivityDto.ActivityRegistReq dto, MultipartFile imgFile, Member member) {
         Activity activity = null;
 
-        Activity.Type activityType = null;
         // 파일 업로드
         String uploadFilePath = localImageService.upload(imgFile);
 
         // 기부 시
         if (dto.getType().equals("기부")) {
-            activityType = Activity.Type.DONATION;
-
-            activity = Activity.builder()
-                    .member(member)
-                    .type(activityType)
-                    .title(dto.getTitle())
-                    .description(dto.getDescription())
-                    .fileUrl(uploadFilePath)
-                    .donation(dto.getPerformance())
-                    .createdAt(LocalDateTime.now())
-                    .status(Activity.Status.PENDING)
-                    .build();
+            activity = ActivityDto.ActivityRegistReq.toEntity(member, dto, Activity.Type.DONATION,uploadFilePath);
         }
         // 봉사 시
-        else {
-            if (dto.getType().equals("봉사")) {
-                activityType = Activity.Type.VOLUNTEER;
-            } else if (dto.getType().equals("교육")) {
-                activityType = Activity.Type.EDUCATION;
+        else if(dto.getType().equals("봉사")){
+            activity = ActivityDto.ActivityRegistReq.toEntity(member, dto, Activity.Type.VOLUNTEER,uploadFilePath);
+        }
+        // 교육
+        else{
+            if(dto.getType().equals("환경")){
+                activity = ActivityDto.ActivityRegistReq.toEntityEdu(member, dto, Activity.Type.EDUCATION,uploadFilePath,Activity.EducationType.ENVIRONMENTAL_EDUCATION);
+            }else if(dto.getType().equals("사회")){
+                activity = ActivityDto.ActivityRegistReq.toEntityEdu(member, dto, Activity.Type.EDUCATION,uploadFilePath,Activity.EducationType.SOCIAL_EDUCATION);
+            }else if(dto.getType().equals("지배구조")){
+                activity = ActivityDto.ActivityRegistReq.toEntityEdu(member, dto, Activity.Type.EDUCATION,uploadFilePath,Activity.EducationType.GOVERNANCE_EDUCATION);
             }
 
-            activity = Activity.builder()
-                    .member(member)
-                    .type(activityType)
-                    .title(dto.getTitle())
-                    .description(dto.getDescription())
-                    .fileUrl(uploadFilePath)
-                    .performedAt(dto.getPerformance())
-                    .createdAt(LocalDateTime.now())
-                    .status(Activity.Status.PENDING)
-                    .build();
         }
         try {
             Activity result = activityRepository.save(activity);
@@ -211,4 +238,6 @@ public class ActivityService {
             return new BaseResponse<>(BaseResponseMessage.ACTIVITY_DELETE_FALSE);
         }
     }
+
+
 }

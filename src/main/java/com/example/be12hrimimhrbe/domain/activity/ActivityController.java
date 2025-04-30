@@ -28,6 +28,14 @@ public class ActivityController {
         return ResponseEntity.ok().body(activityService.activityList(member.getMember(), page, 5));
     }
 
+    @GetMapping("/activitySearch")
+    @Operation(summary = "ESG활동 내역 검색", description = "ESG활동 내역을 검색하는 기능 입니다.")
+    public ResponseEntity<BaseResponse<ActivityDto.PageActivityListResp>> activitySearch(
+            @AuthenticationPrincipal CustomUserDetails member, int page,String search
+    ) {
+        return ResponseEntity.ok().body(activityService.activitySearch(member.getMember(), page, 5,search));
+    }
+
     @GetMapping("/detail/{idx}")
     @Operation(summary = "ESG활동 상세 페이지 조회", description = "ESG활동 상세 조회 기능 입니다.")
     public ResponseEntity<BaseResponse<ActivityDto.ActivityItemResponse>> getDetail(
