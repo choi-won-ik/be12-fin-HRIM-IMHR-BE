@@ -22,6 +22,13 @@ spec:
           envFrom:
             - configMapRef:
                 name: back-cm
+          volumeMounts:
+            - name: nfs-volume
+              mountPath: /mnt
+      volumes:
+        - name: nfs-volume
+          persistentVolumeClaim:
+            claimName: nfs-pvc
   strategy:
     blueGreen:
       #activeService는 현재 운영중인 Blue 서비스
