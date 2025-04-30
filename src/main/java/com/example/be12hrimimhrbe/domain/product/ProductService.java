@@ -6,6 +6,7 @@ import com.example.be12hrimimhrbe.domain.product.model.Product;
 import com.example.be12hrimimhrbe.domain.product.model.ProductDto;
 import com.example.be12hrimimhrbe.global.utils.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +20,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CompanyRepository companyRepository;
     private final FileService fileService;
+    @Value("${STATIC_PATH}")
+    private String staticPath;
 
     /**
      * ✅ 제품 등록
@@ -31,7 +34,7 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("❗ 회사 정보를 찾을 수 없습니다."));
 
         String fileName = fileService.upload(imageFile);
-        String imagePath = "http://localhost:8080/img/" + fileName;
+        String imagePath = staticPath + fileName;
 
         Product product = dto.toEntity(company, imagePath);
         return productRepository.save(product).getIdx();
