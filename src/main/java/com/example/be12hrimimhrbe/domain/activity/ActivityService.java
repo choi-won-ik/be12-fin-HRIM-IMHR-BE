@@ -31,8 +31,8 @@ public class ActivityService {
     private final LocalImageService localImageService;
     private final FileService fileService;
     private final MemberRepository memberRepository;
-    @Value("${file.upload-path}")
-    private String uploadPath;
+    @Value("${STATIC_PATH}")
+    private String staticPath;
 
     public BaseResponse<ActivityDto.PageActivityListResp> activityList(Member member, int page, int size) {
         List<ActivityDto.ActivityListResp> result = new ArrayList<>();
@@ -122,7 +122,7 @@ public class ActivityService {
         Activity activity = activityRepository.findByIdAndMember(idx);
 
         // 이미지 url 설정
-        String servedUrl = "http://localhost:8080/img" + activity.getFileUrl();
+        String servedUrl = staticPath + activity.getFileUrl();
 
 
         ActivityDto.ActivityItemResponse result = ActivityDto.ActivityItemResponse.builder()
