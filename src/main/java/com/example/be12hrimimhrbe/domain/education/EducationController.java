@@ -35,6 +35,14 @@ public class EducationController {
     public ResponseEntity<BaseResponse<EducationDto.PageEducationListResp>> activityList(
             @AuthenticationPrincipal CustomUserDetails member, int page
     ) {
-        return ResponseEntity.ok().body(educationService.educationService(member.getMember(), page, 5));
+        return ResponseEntity.ok().body(educationService.activityList(member.getMember(), page, 5));
+    }
+
+    @GetMapping("/activitySearch")
+    @Operation(summary = "ESG활동 내역 검색", description = "ESG활동 내역을 검색하는 기능 입니다.")
+    public ResponseEntity<BaseResponse<EducationDto.PageEducationListResp>> activitySearch(
+            @AuthenticationPrincipal CustomUserDetails member, int page, String search
+    ) {
+        return ResponseEntity.ok().body(educationService.activitySearch(member.getMember(), page, 5,search));
     }
 }

@@ -22,7 +22,7 @@ import java.util.List;
 public class EducationService {
     private final ActivityRepository activityRepository;
 
-    public BaseResponse<EducationDto.PageEducationListResp> educationService(Member member, int page, int size) {
+    public BaseResponse<EducationDto.PageEducationListResp> activityList(Member member, int page, int size) {
         List<EducationDto.EducationListResp> result = new ArrayList<>();
 
         // 관리자가 활동 리스트 확인
@@ -55,6 +55,46 @@ public class EducationService {
                 result.add(index);
             }
             
+            return new BaseResponse<>(BaseResponseMessage.USER_ACTIVITYLIST_FIND, EducationDto.PageEducationListResp.builder()
+                    .total(list.getTotalPages())
+                    .educationList(result)
+                    .build());
+        }
+    }
+
+
+    public BaseResponse<EducationDto.PageEducationListResp> activitySearch(Member member, int page, int size, String search) {
+        List<EducationDto.EducationListResp> result = new ArrayList<>();
+
+        // 관리자가 활동 리스트 확인
+        if (member.getIsAdmin()) {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
+            Page<Activity> list = activityRepository.findAllAndMemberEducationSrearh(member.getCompany().getIdx(),pageable,search);
+            for (Activity activity : list) {
+                EducationDto.EducationListResp index = EducationDto.EducationListResp.to(activity, activity.getMember());
+                // 프론트에 출력되는 이름 변경
+                index = EducationDto.EducationListResp.findType(activity, index);
+                index = EducationDto.EducationListResp.findStatus(activity, index);
+
+                result.add(index);
+            }
+
+            return new BaseResponse<>(BaseResponseMessage.ADMIN_ACTIVITYLIST_FIND, EducationDto.PageEducationListResp.builder()
+                    .total(list.getTotalPages())
+                    .educationList(result)
+                    .build());
+        }else{
+            Page<Activity> list = activityRepository.findAllByMemberEducationSreath(member, PageRequest.of(page, size),search);
+
+            for (Activity activity : list) {
+                EducationDto.EducationListResp index = EducationDto.EducationListResp.to(activity, member);
+                // 프론트에 출력되는 이름 변경
+                index = EducationDto.EducationListResp.findType(activity, index);
+                index = EducationDto.EducationListResp.findStatus(activity, index);
+
+                result.add(index);
+            }
+
             return new BaseResponse<>(BaseResponseMessage.USER_ACTIVITYLIST_FIND, EducationDto.PageEducationListResp.builder()
                     .total(list.getTotalPages())
                     .educationList(result)
