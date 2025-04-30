@@ -103,11 +103,17 @@ public class DepartmentDto {
     public static class SimpleDepartmentDto {
         private Long idx;
         private String name;
+        private double eScore;
+        private double sScore;
+        private double gScore;
 
-        public static SimpleDepartmentDto fromEntity(Department dept) {
+        public static SimpleDepartmentDto fromEntity(Department dept, double eScore, double sScore, double gScore) {
             return SimpleDepartmentDto.builder()
                     .idx(dept.getIdx())
                     .name(dept.getName())
+                    .eScore(eScore)
+                    .sScore(sScore)
+                    .gScore(gScore)
                     .build();
         }
     }

@@ -62,6 +62,7 @@ public class CompanyService {
         return new BaseResponse<>(BaseResponseMessage.COMPANY_ALL_LIST_SUCCESS, resultPage);
     }
 
+    // 하나의 APi만 호출할때에 주석처리 해야함
     // 내 회사의 월별 부서들의 esg 현황 조회 기능
     @Transactional
     public BaseResponse<CompanyDto.CompanyYearResponse> monthDashboard(Member member, int year, int month) {
@@ -125,11 +126,50 @@ public class CompanyService {
                 .collect(Collectors.toList());
 
         // 회사에 소속되어 있는 부서 조회
-        List<DepartmentDto.SimpleDepartmentDto> departments = departmentRepository.findAllByCompany(company).stream()
-                .map(d -> DepartmentDto.SimpleDepartmentDto.fromEntity(d))
-                .collect(Collectors.toList());
+        List<Department> departments = departmentRepository.findAllByCompany(company);
+
+        List<DepartmentDto.SimpleDepartmentDto> departmentDtos = departments.stream()
+                .map( d -> {
+                    // 부서 소속 사원들 목록 조회
+                    List<Member> members = memberRepository.findAllByDepartment(d);
+
+                    int dEScore = 0;
+                    int dSScore = 0;
+                    int dGScore = 0;
+
+                    for (Member m : members) {
+                        List<Activity> activities = activityRepository.findAllByMember(m).stream()
+                                .filter(a-> a.getCreatedAt().getYear() == year &&
+                                        a.getCreatedAt().getMonthValue() == month )
+                                .collect(Collectors.toList());
+
+                        for (Activity a : activities) {
+                            if (a.getType() != null) {
+                                switch (a.getType()) {
+                                    case VOLUNTEER, DONATION -> dEScore += a.getScore(); // E
+                                }
+                            }
+                            if (a.getEducationType() != null) {
+                                switch (a.getEducationType()) {
+                                    case ENVIRONMENTAL_EDUCATION -> dEScore += a.getScore();
+                                    case SOCIAL_EDUCATION -> dSScore += a.getScore();
+                                    case GOVERNANCE_EDUCATION -> dGScore += a.getScore();
+                                }
+                            }
+                        }
+                    }
+
+                    int memberCount = members.size();
+                    // 0으로 나누는 것 방지
+                    double avgE = memberCount > 0 ? (double) dEScore / memberCount : 0.0;
+                    double avgS = memberCount > 0 ? (double) dSScore / memberCount : 0.0;
+                    double avgG = memberCount > 0 ? (double) dGScore / memberCount : 0.0;
+
+                    return DepartmentDto.SimpleDepartmentDto.fromEntity(d, avgE, avgS, avgG);
+                }).collect(Collectors.toList());
+
         // Dto 변환
-        CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.of(company, top3, departments);
+        CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.of(company, top3, departmentDtos);
         return new BaseResponse<>(BaseResponseMessage.COMPANY_DEPARTMENT_MONTH_SUCCESS, response);
     }
 }
