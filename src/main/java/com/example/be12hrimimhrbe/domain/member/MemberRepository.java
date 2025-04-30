@@ -46,4 +46,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 
     List<Member> findAllByDepartmentIdx(Long departmentIdx);
+
+    List<Member> findAllByDepartment(Department d);
 }

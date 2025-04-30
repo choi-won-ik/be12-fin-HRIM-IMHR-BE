@@ -34,6 +34,7 @@ public class DepartmentController {
         return ResponseEntity.ok().body(departmentService.getList(member.getMember()));
     }
 
+    // 하나의 APi만 호출할때에 주석처리 해야함
     @GetMapping("/month")
     @Operation(summary = "각 부서의 월별 대시보드 조회", description = "각 부서의 월별 대시보드를 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<DepartmentDto.DepartmentScoreResponse>> monthDepartment (
