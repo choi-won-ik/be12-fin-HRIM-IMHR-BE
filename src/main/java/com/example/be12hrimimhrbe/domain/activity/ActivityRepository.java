@@ -18,12 +18,16 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     List<Activity> findAllByMember(Member member);
 
-    @EntityGraph(attributePaths = {"member"})
-    @Query("SELECT a FROM Activity a " +
-            "LEFT JOIN a.member m " +
-            "LEFT JOIN m.company c " +
-            "where a.type!= 'EDUCATION' ")
-    Page<Activity> findAllAndMemberNotEducation(Pageable pageable);
+    @Query("""
+                SELECT DISTINCT a
+                  FROM Activity a
+                  JOIN FETCH a.member m
+                  JOIN FETCH m.company c 
+                  JOIN FETCH c.departments d 
+                 WHERE c.idx=:companyIdx 
+                 AND a.type!= 'EDUCATION' 
+            """)
+    Page<Activity> findAllAndMemberNotEducation(@Param("companyIdx")Long companyIdx,Pageable pageable);
 
     @Query("""
                 SELECT DISTINCT a
@@ -31,10 +35,11 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
                   JOIN FETCH a.member m
                   JOIN FETCH m.company c 
                   JOIN FETCH c.departments d 
-                 WHERE a.type!= 'EDUCATION' 
+                 WHERE c.idx=:companyIdx  
+                   AND a.type!= 'EDUCATION' 
                    AND a.title LIKE CONCAT('%', :search, '%')
             """)
-    Page<Activity> findAllAndMemberNotEducationSearch(Pageable pageable, @Param("search") String search);
+    Page<Activity> findAllAndMemberNotEducationSearch(@Param("companyIdx")Long companyIdx, Pageable pageable, @Param("search") String search);
 
     @EntityGraph(attributePaths = {"member"})
     @Query("SELECT a FROM Activity a " +
@@ -55,7 +60,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
                    AND a.type!= 'EDUCATION' 
                    AND a.title LIKE CONCAT('%', :search, '%')
             """)
-    Page<Activity> findAllByMembernotEducationSearch(Member member, Pageable pageable, String search);
+    Page<Activity> findAllByMembernotEducationSearch(Member member, Pageable pageable, @Param("search") String search);
 
     @EntityGraph(attributePaths = {"member", "member.department"})
     @Query("SELECT a FROM Activity a " +
@@ -83,4 +88,30 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
             "WHERE m=:member " +
             "And a.type= 'EDUCATION' ")
     Page<Activity> findAllByMemberEducation(Member member, Pageable pageable);
+
+
+    @Query("""
+                SELECT DISTINCT a
+                  FROM Activity a
+                  JOIN FETCH a.member m
+                  JOIN FETCH m.company c 
+                  JOIN FETCH c.departments d 
+                 WHERE c.idx= :companyIdx
+                   AND a.type= 'EDUCATION' 
+                   AND a.title LIKE CONCAT('%', :search, '%')
+            """)
+    Page<Activity> findAllAndMemberEducationSrearh(@Param("companyIdx") Long companyIdx, Pageable pageable,@Param("search") String search);
+
+
+    @Query("""
+                SELECT DISTINCT a
+                  FROM Activity a
+                  JOIN FETCH a.member m
+                  JOIN FETCH m.company c 
+                  JOIN FETCH c.departments d 
+                 WHERE m=:member 
+                   AND a.type= 'EDUCATION' 
+                   AND a.title LIKE CONCAT('%', :search, '%')
+            """)
+    Page<Activity> findAllByMemberEducationSreath(Member member, Pageable pageable,@Param("search") String search);
 }
