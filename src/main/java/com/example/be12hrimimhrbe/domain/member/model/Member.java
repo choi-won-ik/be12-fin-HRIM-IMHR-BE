@@ -3,10 +3,7 @@ package com.example.be12hrimimhrbe.domain.member.model;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -55,8 +52,11 @@ public class Member {
 //    public enum Role { EMPLOYEE, MANAGER, EXECUTIVE, MASTER }
     public enum Status { PENDING, APPROVED }
 
+    @Setter
     private int eScore;
+    @Setter
     private int sScore;
+    @Setter
     private int gScore;
 
     @Column(length = 20)
