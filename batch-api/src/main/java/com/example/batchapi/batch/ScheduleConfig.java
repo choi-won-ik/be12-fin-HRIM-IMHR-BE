@@ -1,4 +1,4 @@
-package com.example.be12hrimimhrbe.global.config.batch;
+package com.example.batchapi.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

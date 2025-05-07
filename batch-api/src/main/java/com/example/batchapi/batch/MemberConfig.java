@@ -1,9 +1,8 @@
-package com.example.be12hrimimhrbe.global.config.batch;
+package com.example.batchapi.batch;
 
-import com.example.be12hrimimhrbe.domain.member.MemberRepository;
-import com.example.be12hrimimhrbe.domain.member.model.Member;
-import com.example.be12hrimimhrbe.domain.rank.RankRepository;
-import com.example.be12hrimimhrbe.domain.rank.model.Rank;
+
+import com.example.batchapi.entity.Member;
+import com.example.batchapi.repository.MemberRepository;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Step;
