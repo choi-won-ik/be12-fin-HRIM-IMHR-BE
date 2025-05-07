@@ -1,4 +1,4 @@
-package com.example.be12hrimimhrbe.global.config.batch;
+package com.example.batchapi.batch;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;

@@ -1,11 +1,12 @@
-package com.example.be12hrimimhrbe.domain.rank;
+package com.example.batchapi.rank;
 
-import com.example.be12hrimimhrbe.domain.member.MemberRepository;
-import com.example.be12hrimimhrbe.domain.member.model.Member;
-import com.example.be12hrimimhrbe.domain.rank.model.Rank;
-import com.example.be12hrimimhrbe.domain.rank.model.RankDto;
+
+import com.example.batchapi.entity.Member;
+import com.example.batchapi.rank.model.Rank;
+import com.example.batchapi.rank.model.RankDto;
+import com.example.batchapi.repository.MemberRepository;
+import com.example.batchapi.repository.RankRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class RankService {
-    private final RankRepository rankRepository;
     private final MemberRepository memberRepository;
 
 

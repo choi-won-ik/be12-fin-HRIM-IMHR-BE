@@ -1,10 +1,9 @@
-package com.example.be12hrimimhrbe.domain.rank.model;
+package com.example.batchapi.rank.model;
 
-import com.example.be12hrimimhrbe.domain.company.model.Company;
-import com.example.be12hrimimhrbe.domain.member.model.Member;
-import lombok.*;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class RankDto {
 
