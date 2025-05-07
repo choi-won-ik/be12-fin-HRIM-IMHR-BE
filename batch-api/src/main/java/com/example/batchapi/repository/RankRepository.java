@@ -1,8 +1,7 @@
-package com.example.be12hrimimhrbe.domain.rank;
+package com.example.batchapi.repository;
 
-import com.example.be12hrimimhrbe.domain.rank.model.Rank;
+import com.example.batchapi.rank.model.Rank;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RankRepository extends JpaRepository<Rank, Long> {
-
 }

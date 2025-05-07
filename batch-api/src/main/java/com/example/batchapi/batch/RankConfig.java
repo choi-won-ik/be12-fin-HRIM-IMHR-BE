@@ -1,15 +1,13 @@
-package com.example.be12hrimimhrbe.global.config.batch;
+package com.example.batchapi.batch;
 
-import com.example.be12hrimimhrbe.domain.member.MemberRepository;
-import com.example.be12hrimimhrbe.domain.member.model.Member;
-import com.example.be12hrimimhrbe.domain.rank.RankProcessor;
-import com.example.be12hrimimhrbe.domain.rank.RankRepository;
-import com.example.be12hrimimhrbe.domain.rank.RankService;
-import com.example.be12hrimimhrbe.domain.rank.model.Rank;
+import com.example.batchapi.rank.model.Rank;
+import com.example.batchapi.repository.RankRepository;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -18,13 +16,16 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
-import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
-import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
+import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
+import org.springframework.batch.repeat.support.RepeatTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.Collections;
 
@@ -64,7 +65,10 @@ public class RankConfig {
         return new JobBuilder("rankJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(rankStep)
-                .next(memberStep)
+                .on("COMPLETED").to(memberStep)  // rankStep이 COMPLETED일 경우에만 memberStep 실행
+                .from(rankStep)
+                .on("*").end() // 그 외 상태일 경우 job 종료
+                .end()
                 .build();
     }
 
