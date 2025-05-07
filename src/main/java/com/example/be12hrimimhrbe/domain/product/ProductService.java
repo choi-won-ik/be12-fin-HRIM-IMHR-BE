@@ -65,7 +65,7 @@ public class ProductService {
         // 이미지가 있을 경우에만 업데이트
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = fileService.upload(imageFile);
-            String imagePath = "http://localhost:8080/img/" + fileName;
+            String imagePath = staticPath + fileName;
             product.setImagePath(imagePath);
         }
 
