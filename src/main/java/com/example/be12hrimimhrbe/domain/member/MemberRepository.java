@@ -24,15 +24,15 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByIdx(Long idx);
 
-    @EntityGraph(attributePaths = {"company"})
-    @Query("SELECT m from Member m " +
-            "LEFT JOIN m.company c " +
+    @Query("SELECT m FROM Member m " +
+            "LEFT JOIN FETCH m.company c " +
+            "LEFT JOIN FETCH m.department d " +
             "where c.code=:companyCode")
     List<Member> findAllByCompanyCode(String companyCode);
 
-    @EntityGraph(attributePaths = {"company"})
-    @Query("SELECT m from Member m " +
-            "LEFT JOIN m.company c " +
+    @Query("SELECT m FROM Member m " +
+            "LEFT JOIN FETCH m.company c " +
+            "LEFT JOIN FETCH m.department d " +
             "where c.idx=:companyIdx")
     List<Member> findAllByCompanyIdx(Long companyIdx);
 
