@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/activitySubject")
@@ -28,5 +30,14 @@ public class ActivitySubjectController {
             @RequestBody ActivitySubjectDto.ActivitySubjectRequest dto
     ) {
         return ResponseEntity.ok().body(activitySubjectService.create(dto, member.getMember()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/search")
+    @Operation(summary = "생성했던 활동 주제 양식 리스트 조회 기능", description = "생성했던 활동 주제 양식 리스트를 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<List<ActivitySubjectDto.ActivitySubjectResponse>>> search(
+            @AuthenticationPrincipal CustomUserDetails member
+    ) {
+        return ResponseEntity.ok().body(activitySubjectService.search(member.getMember()));
     }
 }
