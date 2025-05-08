@@ -26,15 +26,17 @@ public class DepartmentService {
             social+=member.getSScore();
             governance+=member.getGScore();
         }
+        LocalDateTime now = LocalDateTime.now();
 
         return DepartmentScore.builder()
                 .company(item.getCompany())
                 .department(item)
-                .total(environment+social+governance/3)
+                .total((environment+social+governance)/3)
                 .environment(environment)
                 .governance(governance)
                 .social(social)
-                .createdAt(LocalDateTime.now())
+                .year(LocalDateTime.now().getYear())
+                .month(LocalDateTime.now().getMonthValue())
                 .build();
     }
 }
