@@ -9,6 +9,8 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ActivitySubjectService {
@@ -43,5 +45,18 @@ public class ActivitySubjectService {
         activitySubjectRepository.save(activitySubject);
 
         return new BaseResponse<>(BaseResponseMessage.ACTIVITYSUBJECT_CREATE_SUCCESS, "활동 주제 양식 생성 성공");
+    }
+
+    public BaseResponse<List<ActivitySubjectDto.ActivitySubjectResponse>> search(Member member) {
+        Member nowmember = memberRepository.findByIdx(member.getIdx());
+
+        if (nowmember == null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        }
+
+        List<ActivitySubjectDto.ActivitySubjectResponse> subjects = activitySubjectRepository.findByCompanyIdx(nowmember.getCompany().getIdx()).stream()
+                .map(ActivitySubjectDto.ActivitySubjectResponse::from).toList();
+
+        return new BaseResponse<>(BaseResponseMessage.ACTIVITYSUBJECT_SEARCH_SUCCESS, subjects);
     }
 }
