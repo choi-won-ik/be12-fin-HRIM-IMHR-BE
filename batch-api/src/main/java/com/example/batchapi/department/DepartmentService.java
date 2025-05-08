@@ -26,7 +26,6 @@ public class DepartmentService {
             social+=member.getSScore();
             governance+=member.getGScore();
         }
-        LocalDateTime now = LocalDateTime.now();
 
         return DepartmentScore.builder()
                 .company(item.getCompany())

@@ -1,5 +1,6 @@
 package com.example.batchapi.rank.model;
 
+import com.example.batchapi.member.model.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ public class RankDto {
     public static class Aggregateresp{
         private Long memberIdx;
         private int average;
+        private Member member;
     }
 
 //    @Getter @NoArgsConstructor @AllArgsConstructor @Builder
