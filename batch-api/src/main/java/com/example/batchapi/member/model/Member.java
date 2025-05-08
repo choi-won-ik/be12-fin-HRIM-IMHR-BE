@@ -1,5 +1,7 @@
-package com.example.batchapi.entity;
+package com.example.batchapi.member.model;
 
+import com.example.batchapi.company.model.Company;
+import com.example.batchapi.department.model.Department;
 import jakarta.persistence.*;
 import lombok.*;
 

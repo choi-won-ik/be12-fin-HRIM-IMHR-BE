@@ -1,7 +1,7 @@
 package com.example.batchapi.repository;
 
-import com.example.batchapi.entity.Company;
-import com.example.batchapi.entity.Member;
+import com.example.batchapi.company.model.Company;
+import com.example.batchapi.member.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
