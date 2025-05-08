@@ -30,4 +30,9 @@ public class Rank {
 
     @Column(nullable = false)
     private int ranking;
+
+    @Column(nullable = false)
+    private int year;
+    @Column(nullable = false)
+    private int month;
 }
