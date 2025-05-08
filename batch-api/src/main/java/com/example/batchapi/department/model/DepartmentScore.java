@@ -41,6 +41,8 @@ public class DepartmentScore {
     @Column(nullable = false)
     private Integer governance;
 
-    @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private int year;
+    @Column(nullable = false)
+    private int month;
 }
