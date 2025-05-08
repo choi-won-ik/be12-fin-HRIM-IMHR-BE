@@ -93,6 +93,7 @@ public enum BaseResponseMessage {
 
 
 
+    ACTIVITYSUBJECT_CREATE_SUCCESS(true,7009,"활동 주제 생성이 성공하였습니다."),
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),
 
