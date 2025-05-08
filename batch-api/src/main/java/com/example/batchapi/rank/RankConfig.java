@@ -1,5 +1,7 @@
 package com.example.batchapi.rank;
 
+import com.example.batchapi.company.CompanyRepository;
+import com.example.batchapi.company.model.Company;
 import com.example.batchapi.rank.model.Rank;
 import com.example.batchapi.repository.RankRepository;
 import jakarta.persistence.EntityManagerFactory;
@@ -10,6 +12,7 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -21,12 +24,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.orm.jpa.JpaTransactionManager;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Configuration
 @RequiredArgsConstructor
 public class RankConfig {
 
     private final RankRepository rankRepository;
+    private final CompanyRepository companyRepository;
     private final EntityManagerFactory entityManagerFactory;
 
     @Bean
@@ -35,10 +42,10 @@ public class RankConfig {
     }
 
     @Bean
-    public ItemReader<Rank> rankReader() {
+    public ItemReader<Company> rankReader() {
         System.out.println("reader 실행");
-        return new RepositoryItemReaderBuilder<Rank>()
-                .repository(rankRepository)
+        return new RepositoryItemReaderBuilder<Company>()
+                .repository(companyRepository)
                 .methodName("findAll")
                 .sorts(Collections.singletonMap("idx", Sort.Direction.ASC))
                 .name("rankReader")
@@ -54,18 +61,39 @@ public class RankConfig {
     }
 
     @Bean
+    public ItemWriter<List<Rank>> delegatingRankWriter(ItemWriter<Rank> rankWriter) {
+        return items -> {
+            List<Rank> flattened = items.getItems().stream()
+                    .filter(Objects::nonNull)
+                    .flatMap(List::stream)
+                    .toList();
+
+            if (!flattened.isEmpty()) {
+                // ✅ List<Rank> → Chunk<Rank>로 변환
+                Chunk<Rank> chunk = new Chunk<>(flattened);
+                rankWriter.write(chunk);
+            } else {
+                System.out.println("저장할 Rank 항목이 없습니다.");
+            }
+        };
+    }
+
+
+    @Bean
     public Step rankStep(
             JobRepository jobRepository,
-            ItemReader<Rank> rankReader,
-            ItemProcessor<Rank, Rank> rankProcessor,
-            ItemWriter<Rank> rankWriter
+            ItemReader<Company> rankReader,
+            ItemProcessor<Company, List<Rank>> rankProcessor,
+            ItemWriter<Rank> rankWriter,
+            EntityManagerFactory entityManagerFactory
     ) {
         return new StepBuilder("rankStep", jobRepository)
-                .<Rank, Rank>chunk(30, jpaTransactionManager(entityManagerFactory))
+                .<Company, List<Rank>>chunk(30, jpaTransactionManager(entityManagerFactory))
                 .reader(rankReader)
-                .processor(rankProcessor) // @Component로 등록된 RankProcessor 자동 주입
-                .writer(rankWriter)
+                .processor(rankProcessor)
+                .writer(delegatingRankWriter(rankWriter))
                 .transactionManager(jpaTransactionManager(entityManagerFactory))
                 .build();
     }
+
 }
