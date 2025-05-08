@@ -24,6 +24,12 @@ pipeline {
             }
         }
 
+        stage('Check cloned files') {
+            steps {
+                sh 'ls -al'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'chmod +x gradlew'
