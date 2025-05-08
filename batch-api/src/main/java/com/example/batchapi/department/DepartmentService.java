@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DepartmentService {
-    private final DepartmentScoreRepository scoreRepository;
 
     public DepartmentScore score(Department item) {
         List<Member> members = item.getMembers();

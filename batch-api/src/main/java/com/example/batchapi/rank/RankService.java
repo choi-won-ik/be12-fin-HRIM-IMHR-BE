@@ -58,29 +58,4 @@ public class RankService {
 
         return result;
     }
-
-    @Transactional
-    public void memberUpdate(Member member) {
-        boolean changed = false;
-
-        if (member.getEScore() != 0) {
-            member.setEScore(0);
-            changed = true;
-        }
-
-        if (member.getSScore() != 0) {
-            member.setSScore(0);
-            changed = true;
-        }
-
-        if (member.getGScore() != 0) {
-            member.setGScore(0);
-            changed = true;
-        }
-
-        if (changed) {
-            memberRepository.save(member);
-        }
-    }
-
 }
