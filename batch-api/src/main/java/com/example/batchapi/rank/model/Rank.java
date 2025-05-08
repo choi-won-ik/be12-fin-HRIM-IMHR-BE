@@ -1,7 +1,7 @@
 package com.example.batchapi.rank.model;
 
-import com.example.batchapi.entity.Company;
-import com.example.batchapi.entity.Member;
+import com.example.batchapi.company.model.Company;
+import com.example.batchapi.member.model.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,9 @@
-package com.example.batchapi.batch;
+package com.example.batchapi.department;
 
-
-import com.example.batchapi.entity.Member;
+import com.example.batchapi.company.CompanyRepository;
+import com.example.batchapi.department.model.Department;
+import com.example.batchapi.department.model.DepartmentScore;
+import com.example.batchapi.member.model.Member;
 import com.example.batchapi.repository.MemberRepository;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +25,19 @@ import java.util.Collections;
 
 @Configuration
 @RequiredArgsConstructor
-public class MemberConfig {
+public class DepartmentScoreConfig {
 
-    private final MemberRepository memberRepository;
+    private final DepartmentRepository departmentRepository;
     private final EntityManagerFactory entityManagerFactory;
     private PlatformTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
     @Bean
-    public ItemReader<Member> memberReader() {
+    public ItemReader<Department> scoreReader() {
         System.out.println("reader 실행");
-        return new RepositoryItemReaderBuilder<Member>()
-                .repository(memberRepository)
+        return new RepositoryItemReaderBuilder<Department>()
+                .repository(departmentRepository)
                 .methodName("findAll")
                 .sorts(Collections.singletonMap("idx", Sort.Direction.ASC))
                 .name("rankReader")
@@ -43,39 +45,25 @@ public class MemberConfig {
     }
 
     @Bean
-    public ItemProcessor<Member, Member> memberProcessor() {
-        System.out.println("processor 실행");
-        return member -> {
-            member.setEScore(0);
-            member.setSScore(0);
-            member.setGScore(0);
-            return member;
-        };
-    }
-
-    @Bean
-    public ItemWriter<Member> memberWriter() {
+    public ItemWriter<DepartmentScore> scoreWriter() {
         System.out.println("writer 실행");
-        return new JpaItemWriterBuilder<Member>()
+        return new JpaItemWriterBuilder<DepartmentScore>()
                 .entityManagerFactory(entityManagerFactory)
                 .build();
     }
 
     @Bean
-    public Step memberStep(
+    public Step scoreStep(
             JobRepository jobRepository,
-            ItemReader<Member> memberReader,
-            ItemProcessor<Member, Member> memberProcessor,
-            ItemWriter<Member> memberWriter) {
-        return new StepBuilder("memberStep", jobRepository)
-                .<Member, Member>chunk(30, jpaTransactionManager(entityManagerFactory))
-                .reader(memberReader)
-                .processor(memberProcessor) // @Component로 등록된 RankProcessor 자동 주입
-                .writer(memberWriter)
+            ItemReader<Department> scoreReader,
+            ItemProcessor<Department, DepartmentScore> scoreProcessor,
+            ItemWriter<DepartmentScore> scoreWriter) {
+        return new StepBuilder("scoreStep", jobRepository)
+                .<Department, DepartmentScore>chunk(30, jpaTransactionManager(entityManagerFactory))
+                .reader(scoreReader)
+                .processor(scoreProcessor) // @Component로 등록된 RankProcessor 자동 주입
+                .writer(scoreWriter)
                 .transactionManager(jpaTransactionManager(entityManagerFactory))
                 .build();
     }
-
-
-
 }

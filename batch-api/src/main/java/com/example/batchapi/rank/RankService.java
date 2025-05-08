@@ -1,11 +1,10 @@
 package com.example.batchapi.rank;
 
 
-import com.example.batchapi.entity.Member;
+import com.example.batchapi.member.model.Member;
 import com.example.batchapi.rank.model.Rank;
 import com.example.batchapi.rank.model.RankDto;
 import com.example.batchapi.repository.MemberRepository;
-import com.example.batchapi.repository.RankRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
