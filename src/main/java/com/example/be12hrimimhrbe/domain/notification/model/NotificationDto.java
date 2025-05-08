@@ -19,9 +19,16 @@ public class NotificationDto {
         public String url;
     }
 
+    @Builder @Getter
+    public static class MemberDto{
+        private Long idx;
+        private String name;
+    }
+
     @Getter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class NotificationResp {
-        private Member member;
+        private Long idx;
+        private MemberDto member;
         private String title;
         private String content;
         private boolean isRead;
@@ -30,13 +37,17 @@ public class NotificationDto {
 
         public static NotificationResp from(Notification notification, Member member) {
             String formattedDate = notification.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
+            MemberDto dto = MemberDto.builder()
+                    .idx(member.getIdx())
+                    .name(member.getName())
+                    .build();
             return NotificationResp.builder()
+                    .idx(notification.getIdx())
                     .title(notification.getTitle())
                     .content(notification.getContent())
                     .createdAt(formattedDate)
                     .isRead(notification.getIsRead())
-                    .member(member)
+                    .member(dto)
                     .url(notification.getUrl())
                     .build();
         }
@@ -62,5 +73,16 @@ public class NotificationDto {
         private String title;
         private String content;
         private List<Long> memberIdx;
+    }
+
+    public static Notification isReadEntity(Member member,Notification notification) {
+        return Notification.builder()
+                .url(notification.getUrl())
+                .isRead(true)
+                .title(notification.getTitle())
+                .content(notification.getContent())
+                .member(member)
+                .createdAt(notification.getCreatedAt())
+                .build();
     }
 }

@@ -2,10 +2,7 @@ package com.example.be12hrimimhrbe.domain.notification.model;
 
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
