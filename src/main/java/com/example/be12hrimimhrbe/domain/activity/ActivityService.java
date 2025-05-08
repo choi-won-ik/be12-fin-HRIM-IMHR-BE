@@ -176,6 +176,21 @@ public class ActivityService {
 
     }
 
+    public void memberScoreAdd(int score,Activity activity,Member member) {
+        if(score==0)
+            score=1;
+        if(activity.getEducationType().equals(Activity.EducationType.ENVIRONMENTAL_EDUCATION)){
+            member.setEScore(score);
+            memberRepository.save(member);
+        }else if(activity.getEducationType().equals(Activity.EducationType.SOCIAL_EDUCATION)){
+            member.setSScore(score);
+            memberRepository.save(member);
+        }else if(activity.getEducationType().equals(Activity.EducationType.GOVERNANCE_EDUCATION)){
+            member.setGScore(score);
+            memberRepository.save(member);
+        }
+    }
+
     @Transactional
     public BaseResponse<Long> ativityApprovalAgree(Member member, Long idx) {
         Activity activity = activityRepository.findById(idx).get();
@@ -186,6 +201,25 @@ public class ActivityService {
                 activity = new Activity(activity, Activity.Status.APPROVED);
                 try {
                     Activity result = activityRepository.save(activity);
+
+                    // 봉사일 경우
+                    if (result.getType().equals(Activity.Type.VOLUNTEER)) {
+                        int score =result.getPerformedAt()/2;
+
+                        memberScoreAdd(score,result,member);
+                    }
+                    // 봉사일 경우
+                    else if(result.getType().equals(Activity.Type.DONATION)){
+                        int score =result.getPerformedAt()/80000;
+
+                        memberScoreAdd(score,result,member);
+                    }
+                    // 교육일 경우
+                    else if(result.getType().equals(Activity.Type.EDUCATION)){
+                        int score =result.getPerformedAt()/2;
+
+                        memberScoreAdd(score,result,member);
+                    }
                     return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result.getIdx());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
