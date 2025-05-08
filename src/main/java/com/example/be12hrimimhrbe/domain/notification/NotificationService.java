@@ -176,10 +176,17 @@ public class NotificationService {
             return new BaseResponse<>(BaseResponseMessage.NOTIFICATION_ISREAD_SUCCESS);
         } catch (Exception e) {
             return new BaseResponse<>(BaseResponseMessage.REQUEST_FAIL);
-
         }
+    }
 
+    @Transactional
+    public BaseResponse<?> remove(Long idx) {
+        try {
+            notificationRepository.deleteById(idx);
 
-
+            return new BaseResponse<>(BaseResponseMessage.NOTIFICATION_DELETE_SUCCESS);
+        } catch (Exception e) {
+            return new BaseResponse<>(BaseResponseMessage.REQUEST_FAIL);
+        }
     }
 }

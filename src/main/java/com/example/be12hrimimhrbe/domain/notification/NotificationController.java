@@ -75,4 +75,12 @@ public class NotificationController {
     ) {
         return ResponseEntity.ok().body(notificationService.isRead(Member.getMember(),idx));
     }
+
+    @DeleteMapping("/remove/{idx}")
+    @Operation(summary = "알림 삭제", description = "알림을 제거하는 기능 입니다.")
+    public ResponseEntity<BaseResponse<?>> remove(
+            @AuthenticationPrincipal CustomUserDetails Member, @PathVariable Long idx
+    ) {
+        return ResponseEntity.ok().body(notificationService.remove(idx));
+    }
 }

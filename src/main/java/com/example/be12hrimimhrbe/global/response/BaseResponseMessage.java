@@ -102,6 +102,7 @@ public enum BaseResponseMessage {
     // 알림 기능 9000
     NOTIFICATION_LIST_SUCCESS(true,9001,"알람 리스트를 확인합니다."),
     NOTIFICATION_ISREAD_SUCCESS(true,9002,"알람을 읽었습니다."),
+    NOTIFICATION_DELETE_SUCCESS(true,9003,"알람을 성공적으로 제거 하였습니다."),
 
 
 
