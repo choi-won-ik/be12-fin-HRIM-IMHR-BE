@@ -24,10 +24,23 @@ pipeline {
             }
         }
 
+        stage('Check cloned files') {
+            steps {
+                sh 'ls -al'
+            }
+        }
+
+        stage('Check gradle wrapper') {
+            steps {
+                sh 'ls -al gradle/wrapper'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'chmod +x gradlew'
-                sh './gradlew bootJar'
+//                 sh './gradlew bootJar'
+                sh './gradlew clean build --refresh-dependencies --continue'
             }
         }
 
