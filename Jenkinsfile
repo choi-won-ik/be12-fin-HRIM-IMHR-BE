@@ -30,6 +30,12 @@ pipeline {
             }
         }
 
+        stage('Check gradle wrapper') {
+            steps {
+                sh 'ls -al gradle/wrapper'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'chmod +x gradlew'
