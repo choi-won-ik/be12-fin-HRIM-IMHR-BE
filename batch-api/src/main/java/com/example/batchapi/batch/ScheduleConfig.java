@@ -20,8 +20,8 @@ public class ScheduleConfig {
     private final JobLauncher jobLauncher;
     private final JobRegistry jobRegistry;
 
-    // 한국 시간 기준으로 10초마다 배치 작업 실행
-    //@Scheduled(cron = "10 0 0 * * *", zone = "Asia/Seoul")
+//    // 매 시간 정각
+//    @Scheduled(cron = "0 32 * * * *", zone = "Asia/Seoul")
     // 매월 첫 쨰주 월용일 00:00:10
     @Scheduled(cron = "10 0 0 ? * 2#1", zone = "Asia/Seoul")
     public void runFirstJob() throws Exception {

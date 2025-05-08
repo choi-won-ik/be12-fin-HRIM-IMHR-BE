@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-
     @Query("SELECT m FROM Member m " +
             "LEFT JOIN FETCH m.company c " +
             "LEFT JOIN FETCH m.department d " +
