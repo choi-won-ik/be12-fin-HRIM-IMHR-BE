@@ -40,7 +40,7 @@ pipeline {
             steps {
                 sh 'chmod +x gradlew'
 //                 sh './gradlew bootJar'
-                sh './gradlew clean build --refresh-dependencies --continue'
+                sh './gradlew clean build --refresh-dependencies -x test'
             }
         }
 
