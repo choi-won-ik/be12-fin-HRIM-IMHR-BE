@@ -99,6 +99,9 @@ public enum BaseResponseMessage {
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),
 
+    // 알림 기능 9000
+    NOTIFICATION_LIST_SUCCESS(true,9001,"알람 리스트를 확인합니다."),
+    NOTIFICATION_ISREAD_SUCCESS(true,9002,"알람을 읽었습니다."),
 
 
 
