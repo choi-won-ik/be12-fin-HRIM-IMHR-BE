@@ -192,4 +192,11 @@ public class MemberController {
                                                                         member.getHrAuthoritySet().stream().toList());
         return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.MYINFO_RETRIEVE_SUCCESS, response));
     }
+
+    @PostMapping("/isAdmin")
+    @Operation(summary = "내 정보 조회", description = "내 정보를 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<Boolean>> isAdmin(@AuthenticationPrincipal CustomUserDetails member) {
+
+        return ResponseEntity.ok().body(new BaseResponse<>(BaseResponseMessage.MYINFO_RETRIEVE_SUCCESS, member.getMember().getIsAdmin()));
+    }
 }
