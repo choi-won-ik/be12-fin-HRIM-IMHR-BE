@@ -36,7 +36,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://www.imhr.kro.kr", "https://www.imhr.p-e.kr"));
 //        configuration.setAllowedMethod(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 //        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
+//        configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
 
@@ -77,7 +77,7 @@ public class SecurityConfig {
                                 "/ws/**", "/app/**", "/topic/**",
                                 "/member/login", "/member/signup/*","/member/logout","/activity/detail/*","/img/**",
                                 "/member/find-id", "/member/find-pw", "/member/reset-pw", "/actuator/health",
-                                "/error", "/swagger-ui/**", "/v3/api-docs/**",
+                                "/error", "/swagger-ui/**", "/v3/api-docs/**","/metrics",
                                 "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated()
         );
