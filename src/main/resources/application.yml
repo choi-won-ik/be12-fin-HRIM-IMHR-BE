@@ -87,10 +87,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: health,prometheus  # 기존 health 유지 + prometheus 추가
   endpoint:
     health:
       show-details: always
+    prometheus:
+      enabled: true                 # prometheus endpoint 활성화
   health:
     db:
       enabled: true
@@ -102,6 +104,11 @@ management:
       enabled: false
     ssl:
       enabled: false
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 
 logging:
   level:
