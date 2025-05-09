@@ -20,10 +20,10 @@ public class ScheduleConfig {
     private final JobLauncher jobLauncher;
     private final JobRegistry jobRegistry;
 
-//    // 매 시간 정각
-//    @Scheduled(cron = "0 32 * * * *", zone = "Asia/Seoul")
-    // 매월 첫 쨰주 월용일 00:00:10
-    @Scheduled(cron = "10 0 0 ? * 2#1", zone = "Asia/Seoul")
+    // 매 시간 정각
+    @Scheduled(cron = "0 5 * * * *", zone = "Asia/Seoul")
+//    // 매월 첫 쨰주 월용일 00:00:10
+//    @Scheduled(cron = "10 0 0 ? * 2#1", zone = "Asia/Seoul")
     public void runFirstJob() throws Exception {
 
         log.info("first schedule start");
