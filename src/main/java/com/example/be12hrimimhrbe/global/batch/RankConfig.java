@@ -1,8 +1,9 @@
-package com.example.batchapi.rank;
+package com.example.be12hrimimhrbe.global.batch;
 
-import com.example.batchapi.company.CompanyRepository;
-import com.example.batchapi.company.model.Company;
-import com.example.batchapi.rank.model.Rank;
+
+import com.example.be12hrimimhrbe.domain.company.CompanyRepository;
+import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.rank.Rank;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Step;

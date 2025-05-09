@@ -1,4 +1,4 @@
-package com.example.batchapi.repository;
+package com.example.batchapi.member;
 
 import com.example.batchapi.company.model.Company;
 import com.example.batchapi.member.model.Member;

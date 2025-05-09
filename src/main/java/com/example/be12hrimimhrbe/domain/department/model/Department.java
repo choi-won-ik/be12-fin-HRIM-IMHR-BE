@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.domain.department.model;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -27,4 +31,8 @@ public class Department {
     @JoinColumn(name = "company_idx", nullable = false)
     @Fetch(FetchMode.JOIN)
     private Company company;
+
+    @OneToMany(mappedBy = "department")
+//    @BatchSize(size = 1)
+    private List<Member> members = new ArrayList<>();
 }
