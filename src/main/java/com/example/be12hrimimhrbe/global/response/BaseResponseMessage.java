@@ -25,6 +25,7 @@ public enum BaseResponseMessage {
     // 회원가입 2000
     LOGIN_SUCCESS(true, 2201, "로그인 되었습니다."),
     COMPANY_SIGNUP_SUCCESS(true, 2200, "기업 회원 가입 성공"),
+    COMPANY_ISADMIN_FILE(false, 2300, "회원 권한 조회."),
     COMPANY_SIGNUP_NOT_FOUND_FILE(false, 2404, "사업자 등록 증명원 파일을 찾지 못했습니다."),
     PERSONAL_SIGNUP_SUCCESS(true, 2200, "개인 회원 가입 성공"),
     PERSONAL_SIGNUP_NOT_FOUND_COMPANY(false, 2404, "회사 정보를 찾지 못했습니다."),
@@ -101,6 +102,10 @@ public enum BaseResponseMessage {
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),
 
+    // 알림 기능 9000
+    NOTIFICATION_LIST_SUCCESS(true,9001,"알람 리스트를 확인합니다."),
+    NOTIFICATION_ISREAD_SUCCESS(true,9002,"알람을 읽었습니다."),
+    NOTIFICATION_DELETE_SUCCESS(true,9003,"알람을 성공적으로 제거 하였습니다."),
 
 
 

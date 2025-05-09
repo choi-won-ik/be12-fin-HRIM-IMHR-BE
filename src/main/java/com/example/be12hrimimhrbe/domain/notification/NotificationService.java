@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -62,8 +63,8 @@ public class NotificationService {
         for (Notification notification : notis) {
             result.add(NotificationDto.NotificationResp.from(notification, notification.getMember()));
         }
-
-        return new BaseResponse<>(BaseResponseMessage.SWGGER_SUCCESS, result);
+        result.sort(Comparator.comparing(NotificationDto.NotificationResp::isRead));
+        return new BaseResponse<>(BaseResponseMessage.NOTIFICATION_LIST_SUCCESS, result);
     }
 
 
@@ -74,7 +75,7 @@ public class NotificationService {
             if (member.getIsAdmin()) {
                 member.setNotificationCount(member.getNotificationCount() + 1);
                 memberRepository.save(member);
-                String url = "/staffSearch/" + member.getCompany().getIdx();
+                String url = "/staffDetail/" + member.getCompany().getIdx();
 
                 Notification notification = Notification.builder()
                         .isRead(false)
@@ -163,6 +164,29 @@ public class NotificationService {
             notificationRepository.save(notification);
 
             simpMessagingTemplate.convertAndSend("/topic/notification/" + member.getIdx(), NotificationDto.NotificationResp.from(notification, member));
+        }
+    }
+
+    @Transactional
+    public BaseResponse<?> isRead(Member member, Long idx) {
+        Notification notification=NotificationDto.isReadEntity(member,notificationRepository.findById(idx).get());
+        try{
+            notificationRepository.save(notification);
+
+            return new BaseResponse<>(BaseResponseMessage.NOTIFICATION_ISREAD_SUCCESS);
+        } catch (Exception e) {
+            return new BaseResponse<>(BaseResponseMessage.REQUEST_FAIL);
+        }
+    }
+
+    @Transactional
+    public BaseResponse<?> remove(Long idx) {
+        try {
+            notificationRepository.deleteById(idx);
+
+            return new BaseResponse<>(BaseResponseMessage.NOTIFICATION_DELETE_SUCCESS);
+        } catch (Exception e) {
+            return new BaseResponse<>(BaseResponseMessage.REQUEST_FAIL);
         }
     }
 }
