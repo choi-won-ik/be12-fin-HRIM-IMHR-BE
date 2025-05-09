@@ -61,12 +61,11 @@ public class CompanyService {
         // DTO 변환
         //  가장 최신 점수 조회
         Page<CompanyDto.CompanyListResponse> resultPage = pagedResult.map( c -> {
-            Company company = companyRepository.findByIdx(c.getIdx());
-            Score score = scoreRepository.findByCompanyIdx(company.getIdx()).stream()
+            Score score = scoreRepository.findByCompanyIdx(c.getIdx()).stream()
                     .sorted(Comparator.comparing(Score::getYear).reversed())
                     .findFirst()
                     .orElse(new Score());
-            return CompanyDto.CompanyListResponse.of(company, score);
+            return CompanyDto.CompanyListResponse.of(c, score);
         });
 
         return new BaseResponse<>(BaseResponseMessage.COMPANY_ALL_LIST_SUCCESS, resultPage);
