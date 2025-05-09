@@ -47,4 +47,14 @@ public class ActivitySubjectController {
     ) {
         return ResponseEntity.ok().body(activitySubjectService.update(member.getMember(), dto));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "활동 주제 양식 삭제 기능", description = "활동 주제 양식 삭제하는 기능입니다.")
+    public ResponseEntity<BaseResponse<String>> delete(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable String id
+    ) {
+        return ResponseEntity.ok().body(activitySubjectService.delete(member.getMember(), id));
+    }
 }
