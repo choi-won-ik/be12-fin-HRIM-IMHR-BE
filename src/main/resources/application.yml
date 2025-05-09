@@ -44,9 +44,9 @@ spring:
       hibernate:
         format_sql: true
 
-  data:
-    mongodb:
-      uri: mongodb://${DB_USER}:${DB_PASSWORD}@${MDB_URL}?authSource=hrim&replicaSet=${REPLICA_NAME}&readPreference=primary
+#  data:
+#    mongodb:
+#      uri: mongodb://${DB_USER}:${DB_PASSWORD}@${MDB_URL}?authSource=hrim&replicaSet=${REPLICA_NAME}&readPreference=primary
 #  security:
 #    oauth2:
 #      client:
