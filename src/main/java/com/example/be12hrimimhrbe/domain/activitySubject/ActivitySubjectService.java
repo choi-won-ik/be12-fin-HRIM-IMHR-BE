@@ -93,4 +93,22 @@ public class ActivitySubjectService {
 
         return new BaseResponse<>(BaseResponseMessage.ACTIVITYSUBJECT_UPDATE_SUCCESS, "주제 양식 수정을 성공했습니다.");
     }
+
+    public BaseResponse<String> delete(Member member, String id) {
+        Member nowmember = memberRepository.findByIdx(member.getIdx());
+
+        if (nowmember == null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
+        } else if (!nowmember.getIsAdmin()) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
+        }
+
+        Optional<ActivitySubject> beforeSubject = activitySubjectRepository.findById(id);
+        if (beforeSubject.isEmpty()) {
+            return new BaseResponse<>(BaseResponseMessage.ACTIVITYSUBJECT_NOT_FOUND, null);
+        }
+
+        activitySubjectRepository.deleteById(id);
+        return new BaseResponse<>(BaseResponseMessage.ACTIVITYSUBJECT_DELETE_SUCCESS, "활동 주제 삭제를 성공했습니다");
+    }
 }
