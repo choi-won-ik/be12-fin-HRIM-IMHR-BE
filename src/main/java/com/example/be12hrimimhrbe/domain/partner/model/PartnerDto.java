@@ -40,11 +40,13 @@ public class PartnerDto {
     @AllArgsConstructor
     public static class PartnerPageResponse {
         private Page<PartnerDto.PartnerListResp> partners;
+        @Schema(description = "회사 고유 번호", example = "1")
         private Long companyIdx;
     }
 
     @Data
     public static class PartnerListResponse {
+        @Schema(description = "회사 고유 번호", example = "1")
         private Long companyIdx;
         private List<CompanyDto.CompanyListResponse> partnerList;
     }

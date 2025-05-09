@@ -15,7 +15,6 @@ import java.util.Set;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByCode(String code);
     Optional<Company> findByName(String name);
-    Optional<Company> findByRegistrationNumber(String registrationNumber);
 
     Company findByIdx(Long idx);
 
