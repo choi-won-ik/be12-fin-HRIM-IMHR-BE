@@ -82,15 +82,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
         );
 
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/metrics").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/metrics")
-                )
-                .httpBasic(Customizer.withDefaults());
+
 
 
         http.addFilterAt(new LoginFilter(new AntPathRequestMatcher("/member/login", "POST"), configuration.getAuthenticationManager()), UsernamePasswordAuthenticationFilter.class);
