@@ -1,7 +1,8 @@
-package com.example.batchapi.department;
+package com.example.be12hrimimhrbe.global.batch;
 
-import com.example.batchapi.department.model.Department;
-import com.example.batchapi.department.model.DepartmentScore;
+import com.example.be12hrimimhrbe.domain.department.DepartmentRepository;
+import com.example.be12hrimimhrbe.domain.department.model.Department;
+import com.example.be12hrimimhrbe.domain.department.model.DepartmentScore;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Step;

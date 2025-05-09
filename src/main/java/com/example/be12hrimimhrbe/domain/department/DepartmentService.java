@@ -6,6 +6,7 @@ import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
+import com.example.be12hrimimhrbe.domain.department.model.DepartmentScore;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,5 +117,29 @@ public class DepartmentService {
 
         DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.fromEntity(department, avgE, avgS, avgG, avgtotal);
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
+    }
+
+    public DepartmentScore score(Department item) {
+        List<Member> members = item.getMembers();
+
+        int environment=0;
+        int social=0;
+        int governance= 0;
+        for (Member member : members) {
+            environment+=member.getEScore();
+            social+=member.getSScore();
+            governance+=member.getGScore();
+        }
+
+        return DepartmentScore.builder()
+                .company(item.getCompany())
+                .department(item)
+                .total((environment+social+governance)/3)
+                .environment(environment)
+                .governance(governance)
+                .social(social)
+                .year(LocalDateTime.now().getYear())
+                .month(LocalDateTime.now().getMonthValue())
+                .build();
     }
 }

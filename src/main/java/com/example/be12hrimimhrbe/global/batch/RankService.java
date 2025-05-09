@@ -1,11 +1,10 @@
-package com.example.batchapi.rank;
+package com.example.be12hrimimhrbe.global.batch;
 
 
-import com.example.batchapi.company.model.Company;
-import com.example.batchapi.member.model.Member;
-import com.example.batchapi.rank.model.Rank;
-import com.example.batchapi.rank.model.RankDto;
-import com.example.batchapi.member.MemberRepository;
+import com.example.be12hrimimhrbe.domain.company.model.Company;
+import com.example.be12hrimimhrbe.domain.member.MemberRepository;
+import com.example.be12hrimimhrbe.domain.member.model.Member;
+import com.example.be12hrimimhrbe.domain.rank.Rank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,6 @@ package com.example.batchapi.member;
 
 
 import com.example.batchapi.member.model.Member;
-import com.example.batchapi.repository.MemberRepository;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Step;
