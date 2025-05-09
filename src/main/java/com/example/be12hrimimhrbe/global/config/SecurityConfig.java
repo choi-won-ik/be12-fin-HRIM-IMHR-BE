@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -80,6 +81,16 @@ public class SecurityConfig {
                                 "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated()
         );
+
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/metrics").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/metrics")
+                )
+                .httpBasic(Customizer.withDefaults());
 
 
         http.addFilterAt(new LoginFilter(new AntPathRequestMatcher("/member/login", "POST"), configuration.getAuthenticationManager()), UsernamePasswordAuthenticationFilter.class);
