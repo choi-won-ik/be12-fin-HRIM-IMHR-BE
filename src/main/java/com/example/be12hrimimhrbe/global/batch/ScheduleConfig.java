@@ -20,22 +20,18 @@ public class ScheduleConfig {
     private final JobLauncher jobLauncher;
     private final JobRegistry jobRegistry;
 
-    // 매 시간 정각
-    @Scheduled(cron = "0 5 * * * *", zone = "Asia/Seoul")
-//    // 매월 첫 쨰주 월용일 00:00:10
-//    @Scheduled(cron = "10 0 0 ? * 2#1", zone = "Asia/Seoul")
+    // 매 시간 5분, 10분, 15분 ... 55분마다 실행 (5분 간격)
+    @Scheduled(cron = "0 5,10,15,20,25,30,35,40,45,50,55 * * * *", zone = "Asia/Seoul")
     public void runFirstJob() throws Exception {
+        log.info("rankJob schedule triggered");
 
-        log.info("first schedule start");
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String date = dateFormat.format(new Date());
 
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("date", date)
                 .toJobParameters();
 
-        // "firstJob" : 2-1 Job(작업 정의)에서 Bean으로 정의한 Job의 이름
         jobLauncher.run(jobRegistry.getJob("rankJob"), jobParameters);
     }
 }
