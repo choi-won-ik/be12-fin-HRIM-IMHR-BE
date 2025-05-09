@@ -96,6 +96,8 @@ public enum BaseResponseMessage {
 
     ACTIVITYSUBJECT_CREATE_SUCCESS(true,7009,"활동 주제 양식 생성이 성공하였습니다."),
     ACTIVITYSUBJECT_SEARCH_SUCCESS(true,7009,"활동 주제 양식 리스트 조회를 성공했습니다."),
+    ACTIVITYSUBJECT_NOT_FOUND(false, 7209, "활동 주제 양식이 존재하지 않습니다."),
+    ACTIVITYSUBJECT_UPDATE_SUCCESS(true, 7009, "활동 주제 양식 수정을 성공했습니다."),
 
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),
