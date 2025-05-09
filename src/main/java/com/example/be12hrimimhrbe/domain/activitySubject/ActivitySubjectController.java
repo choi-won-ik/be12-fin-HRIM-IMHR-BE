@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class ActivitySubjectController {
     @Operation(summary = "활동 주제별 입력 양식 생성 기능", description = "활동 주제별 입력 양식을 생성하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> create(
             @AuthenticationPrincipal CustomUserDetails member,
-            @RequestBody ActivitySubjectDto.ActivitySubjectRequest dto
+            @RequestBody List<ActivitySubjectDto.ActivitySubjectRequest> dto
     ) {
         return ResponseEntity.ok().body(activitySubjectService.create(dto, member.getMember()));
     }
@@ -39,5 +36,15 @@ public class ActivitySubjectController {
             @AuthenticationPrincipal CustomUserDetails member
     ) {
         return ResponseEntity.ok().body(activitySubjectService.search(member.getMember()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update")
+    @Operation(summary = "생성했던 활동 주제 양식 수정 기능", description = "생성했던 활동 주제 양식 수정하는 기능입니다.")
+    public ResponseEntity<BaseResponse<String>> update(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @RequestBody ActivitySubjectDto.ActivitySubjectResponse dto
+    ) {
+        return ResponseEntity.ok().body(activitySubjectService.update(member.getMember(), dto));
     }
 }
