@@ -1,6 +1,12 @@
 server:
   port: 8080
 spring:
+  batch:
+    job:
+      name: rankJob
+      enabled: false
+    jdbc:
+      initialize-schema: always
 #  application:
 #    name: chatting
 #  kafka:
