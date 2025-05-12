@@ -2,7 +2,6 @@ package com.example.be12hrimimhrbe.domain.activity;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
-import com.example.be12hrimimhrbe.domain.education.model.EducationDto;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.LocalImageService;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;

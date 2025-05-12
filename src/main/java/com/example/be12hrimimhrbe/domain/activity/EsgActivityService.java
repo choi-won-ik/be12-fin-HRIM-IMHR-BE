@@ -9,8 +9,6 @@ import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class EsgActivityService {
