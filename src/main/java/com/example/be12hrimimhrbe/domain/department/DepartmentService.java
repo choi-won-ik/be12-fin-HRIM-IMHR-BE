@@ -56,9 +56,9 @@ public class DepartmentService {
     }
 
     @Transactional
-    public BaseResponse<String> update(Long departmentIdx, int targetScore, Member member) {
+    public BaseResponse<String> update(DepartmentDto.DepartmentInfoResponse dto, Member member) {
         Member nowmember = memberRepository.findById(member.getIdx()).orElse(null);
-        Department department = departmentRepository.findById(departmentIdx).orElse(null);
+        Department department = departmentRepository.findById(dto.getIdx()).orElse(null);
 
         if (nowmember == null) {
             return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "회원을 찾을 수 없습니다.");
@@ -70,7 +70,9 @@ public class DepartmentService {
             return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_DELETE_FAIL, "존재하지 않는 부서 입니다.");
         }
 
-        department.setTargetScore(targetScore);
+        department.setTargetEScore(dto.getTargetEScore());
+        department.setTargetSScore(dto.getTargetSScore());
+        department.setTargetGScore(dto.getTargetGScore());
         departmentRepository.save(department);
 
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_UPDATE_SUCCESS, "부서 업데이트 완료");

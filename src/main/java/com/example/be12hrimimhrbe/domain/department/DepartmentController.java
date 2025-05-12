@@ -4,7 +4,6 @@ import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,14 +37,13 @@ public class DepartmentController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/update/{departmentIdx}/{targetScore}")
+    @PostMapping("/update")
     @Operation(summary = "부서 수정", description = "부서를 수정하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> update(
             @AuthenticationPrincipal CustomUserDetails member,
-            @PathVariable Long departmentIdx,
-            @PathVariable int targetScore
-    ) {
-        return ResponseEntity.ok().body(departmentService.update(departmentIdx, targetScore, member.getMember()));
+            @RequestBody DepartmentDto.DepartmentInfoResponse dto
+            ) {
+        return ResponseEntity.ok().body(departmentService.update(dto, member.getMember()));
     }
 
 
