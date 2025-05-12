@@ -63,21 +63,10 @@ public enum BaseResponseMessage {
     FEEDBACK_SUBMIT_SUCCESS(true, 4200, "피드백 작성 성공"),
 
     // 기업 관리 5000
-<<<<<<< HEAD
-<<<<<<< Updated upstream
     COMPANY_ALL_LIST_SUCCESS(true, 5200, "회사 전체 리스트 조회를 성공했습니다."),
     COMPANY_DEPARTMENT_MONTH_SUCCESS(true, 5200, "회사의 부서별의 월별 ESG 조회에 성공했습니다."),
-=======
-    COMPANY_ALL_LIST_SUCCESS(true, 5201, "회사 전체 리스트 조회를 성공했습니다."),
-    COMPANY_DEPARTMENT_MONTH_SUCCESS(true, 5201, "회사의 부서별의 월별 ESG 조회에 성공했습니다."),
     COMPANY_MY_COMPANY_SEARCH_SUCCESS(true, 5201, "내 회사 조회를 성공했습니다."),
     COMPANY_SCORE_UPDATE_SUCCESS(true, 5201, "기업 목표 점수가 성공적으로 수정되었습니다."),
->>>>>>> Stashed changes
-=======
-    COMPANY_ALL_LIST_SUCCESS(true, 5201, "회사 전체 리스트 조회를 성공했습니다."),
-    COMPANY_DEPARTMENT_MONTH_SUCCESS(true, 5201, "회사의 부서별의 월별 ESG 조회에 성공했습니다."),
-    COMPANY_MY_COMPANY_SEARCH_SUCCESS(true, 5201, "내 회사 조회를 성공했습니다."),
->>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
 
     // 캘린더 관리(이벤트 & 캠페인) 6000
     CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),
