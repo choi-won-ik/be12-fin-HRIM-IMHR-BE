@@ -19,7 +19,7 @@ public class EsgActivityDto {
         private Map<String, Object> inputs; // "봉사시간": 2, "봉사처": "서울숲" 등
 
         public EsgActivity toEntity(Long memberIdx, Long companyIdx) {
-            return new EsgActivity().builder()
+            return EsgActivity.builder()
                     .memberIdx(memberIdx)
                     .companyIdx(companyIdx)
                     .subject(subject)
