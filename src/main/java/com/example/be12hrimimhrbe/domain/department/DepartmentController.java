@@ -18,13 +18,36 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/update")
-    public ResponseEntity<BaseResponse<String>> update(
-            @RequestBody DepartmentDto.CDRequest dto,
+    @PostMapping("/create")
+    @Operation(summary = "부서 생성", description = "부서를 생성하는 기능입니다.")
+    public ResponseEntity<BaseResponse<String>> create(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @RequestBody DepartmentDto.CDRequest dto
+    ) {
+        return ResponseEntity.ok().body(departmentService.create(dto , member.getMember()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{departmentIdx}")
+    @Operation(summary = "부서 삭제", description = "부서를 삭제하는 기능입니다.")
+    public ResponseEntity<BaseResponse<String>> delete(
+            @PathVariable Long departmentIdx,
             @AuthenticationPrincipal CustomUserDetails member
     ) {
-        return ResponseEntity.ok().body(departmentService.updateElements(dto, member));
+        return ResponseEntity.ok().body(departmentService.delete(departmentIdx, member));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/update/{departmentIdx}/{targetScore}")
+    @Operation(summary = "부서 수정", description = "부서를 수정하는 기능입니다.")
+    public ResponseEntity<BaseResponse<String>> update(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable Long departmentIdx,
+            @PathVariable int targetScore
+    ) {
+        return ResponseEntity.ok().body(departmentService.update(departmentIdx, targetScore, member.getMember()));
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")

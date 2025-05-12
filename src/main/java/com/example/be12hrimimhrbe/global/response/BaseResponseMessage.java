@@ -20,6 +20,9 @@ public enum BaseResponseMessage {
     DEPARTMENT_UPDATE_SUCCESS(true, 2200, "부서 설정에 성공했습니다."),
     DEPARTMENT_RETRIEVE_SUCCESS(true, 2200, "부서 조회에 성공했습니다."),
     DEPARTMENT_MONTH_SCORE_SUCCESS(true, 2200, "부서의 월별 ESG 조회에 성공했습니다."),
+    DEPARTMENT_CREATE_SUCCESS(true, 2201, "부서 생성을 성공했습니다."),
+    DEPARTMENT_DELETE_SUCCESS(true, 2202, "부서 삭제를 성공했습니다."),
+    DEPARTMENT_DELETE_FAIL(false, 2222, "존재하지 않는 부서입니다."),
 
     // 회원 기능(2000)
     // 회원가입 2000
@@ -67,6 +70,7 @@ public enum BaseResponseMessage {
     COMPANY_DEPARTMENT_MONTH_SUCCESS(true, 5200, "회사의 부서별의 월별 ESG 조회에 성공했습니다."),
     COMPANY_MY_COMPANY_SEARCH_SUCCESS(true, 5201, "내 회사 조회를 성공했습니다."),
     COMPANY_SCORE_UPDATE_SUCCESS(true, 5201, "기업 목표 점수가 성공적으로 수정되었습니다."),
+
 
     // 캘린더 관리(이벤트 & 캠페인) 6000
     CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),
