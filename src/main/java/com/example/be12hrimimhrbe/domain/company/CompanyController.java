@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.stylesheets.LinkStyle;
@@ -34,14 +35,14 @@ public class CompanyController {
         return ResponseEntity.ok().body(companyService.fetchMyCompany(member.getMember()));
     }
 
-    @GetMapping("/scoreUpdate/{companyIdx}/{targetScore}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/scoreUpdate")
     @Operation(summary = "기업 목표 점수 수정", description = "기업 목표 점수를 수정하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> updateScore(
             @AuthenticationPrincipal CustomUserDetails member,
-            @PathVariable Long companyIdx,
-            @PathVariable int targetScore
+            @RequestBody CompanyDto.CompanyResponse dto
     ) {
-        return ResponseEntity.ok().body(companyService.updateScore(member.getMember(), companyIdx, targetScore));
+        return ResponseEntity.ok().body(companyService.updateScore(member.getMember(), dto));
     }
 
     // EsgCompany 와 Company 통합 조회 기능

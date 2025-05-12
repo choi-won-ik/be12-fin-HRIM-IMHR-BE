@@ -27,7 +27,6 @@ public class DepartmentDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class CDRequest {
         private List<CreateRequest> createRequests;
-        private List<DeleteRequest> deleteRequests;
         public List<Department> toCreateEntity(Company company) {
             List<Department> departments = new ArrayList<>();
             for (CreateRequest createRequest : createRequests) {
@@ -43,13 +42,6 @@ public class DepartmentDto {
             }
             return departments;
         }
-        public List<Department> toDeleteEntity() {
-            List<Department> departments = new ArrayList<>();
-            for (DeleteRequest deleteRequest : deleteRequests) {
-                departments.add(Department.builder().idx(deleteRequest.idx).is_deleted(false).build());
-            }
-            return departments;
-        }
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -58,12 +50,6 @@ public class DepartmentDto {
         private int targetEScore;
         private int targetSScore;
         private int targetGScore;
-        private boolean is_delete;
-    }
-
-    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
-    public static class DeleteRequest{
-        private Long idx;
         private boolean is_delete;
     }
 

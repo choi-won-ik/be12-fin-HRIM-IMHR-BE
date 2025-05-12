@@ -70,8 +70,9 @@ public class DepartmentService {
             return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_DELETE_FAIL, "존재하지 않는 부서 입니다.");
         }
 
+        department.setName(dto.getName());
         department.setTargetEScore(dto.getTargetEScore());
-        department.setTargetSScore(dto.getTargetSScore());
+        department.setTargetGScore(dto.getTargetGScore());
         department.setTargetGScore(dto.getTargetGScore());
         departmentRepository.save(department);
 
