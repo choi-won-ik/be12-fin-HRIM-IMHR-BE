@@ -27,6 +27,9 @@ public class Department {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private int targetScore;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_idx", nullable = false)
     @Fetch(FetchMode.JOIN)
