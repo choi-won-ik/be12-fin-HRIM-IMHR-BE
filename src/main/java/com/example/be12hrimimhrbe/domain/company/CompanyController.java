@@ -28,7 +28,11 @@ public class CompanyController {
 
     @PostMapping("/fetchMyCompany")
     @Operation(summary = "내 기업 조회", description = "자신이 속한 기업 조회하는 기능입니다.")
-    public ResponseEntity<BaseResponse<Company>>
+    public ResponseEntity<BaseResponse<CompanyDto.CompanyResponse>> fetchMyCompany(
+            @AuthenticationPrincipal CustomUserDetails member
+    ) {
+        return ResponseEntity.ok().body(companyService.fetchMyCompany(member));
+    }
 
     // EsgCompany 와 Company 통합 조회 기능
     @GetMapping("/list")
