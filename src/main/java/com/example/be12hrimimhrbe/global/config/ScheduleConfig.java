@@ -28,7 +28,5 @@ public class ScheduleConfig {
         rankService.batch();
         rankService.batch1();
         rankService.batch2();
-        // "firstJob" : 2-1 Job(작업 정의)에서 Bean으로 정의한 Job의 이름
-
     }
 }
