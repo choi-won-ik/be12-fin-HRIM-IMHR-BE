@@ -3,11 +3,7 @@ package com.example.be12hrimimhrbe.domain.company.model;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -31,7 +27,16 @@ public class Company {
     private boolean isMember;
 
     private boolean has_esg_data;
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
+
+    @Setter
     private int targetScore;
+>>>>>>> Stashed changes
+=======
+    private int targetScore;
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
 
     @Column(nullable = false, unique = true)
     private String registrationNumber;

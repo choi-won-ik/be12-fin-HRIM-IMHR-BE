@@ -38,9 +38,17 @@ public class DepartmentService {
             return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "회원을 찾을 수 없습니다.");
         }
         List<Department> createDepartments = dto.toCreateEntity(member.getCompany());
-        List<Department> deleteDepartments = dto.toDeleteEntity();
         departmentRepository.saveAll(createDepartments);
-        departmentRepository.deleteAllInBatch(deleteDepartments);
+
+        List<DepartmentDto.DeleteRequest> deleteDepartments = dto.getDeleteRequests();
+
+        for (DepartmentDto.DeleteRequest deleteRequest : deleteDepartments) {
+            Department department = departmentRepository.findByIdx(deleteRequest.getIdx());
+
+            if (department != null) {
+                department.setIs_deleted(true);
+            }
+        }
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_UPDATE_SUCCESS, "부서 설정 완료");
     }
 
@@ -49,7 +57,11 @@ public class DepartmentService {
         if (member == null) {
             return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
         }
-        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany());
+
+        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany()).stream()
+                .filter(d -> !d.getIs_deleted())
+                .collect(Collectors.toList());
+
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_RETRIEVE_SUCCESS,
                 DepartmentDto.DepartmentListResponse.fromDepartments(departments));
     }

@@ -36,11 +36,38 @@ public class CompanyService {
     private final MemberRepository memberRepository;
     private final ScoreRepository scoreRepository;
 
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
     public BaseResponse<CompanyDto.CompanyResponse> fetchMyCompany(Member member) {
         Company myCompany = companyRepository.findByIdx(member.getCompany().getIdx());
         return new BaseResponse<>(BaseResponseMessage.COMPANY_MY_COMPANY_SEARCH_SUCCESS, CompanyDto.CompanyResponse.of(myCompany));
     }
 
+<<<<<<< HEAD
+    public BaseResponse<String> updateScore(Member member, Long companyIdx, int score) {
+        Long myCompanyIdx = member.getCompany().getIdx();
+
+        if (!myCompanyIdx.equals(companyIdx)) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
+        }
+        if (!member.getIsAdmin()) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
+        }
+
+        Company company = companyRepository.findByIdx(companyIdx);
+
+        company.setTargetScore(score);
+        companyRepository.save(company);
+
+        return new BaseResponse<>(BaseResponseMessage.COMPANY_SCORE_UPDATE_SUCCESS, "기업 목표 점수가 성공적으로 수정되었습니다.");
+    }
+
+>>>>>>> Stashed changes
+=======
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
     @Transactional
     public BaseResponse<Page<CompanyDto.CompanyListResponse>> allList(Pageable pageable, Member member, String keyword) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
