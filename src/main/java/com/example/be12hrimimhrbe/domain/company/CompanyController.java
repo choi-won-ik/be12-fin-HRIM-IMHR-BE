@@ -60,7 +60,7 @@ public class CompanyController {
 
     // 하나의 APi만 호출할때에 주석처리 해야함
     @GetMapping("/monthDashboard")
-    @Operation(summary = "내 회사의 연도별 대시보드 조회", description = "연도별 내 회사의 대시보드를 조회하는 기능입니다.")
+    @Operation(summary = "내 회사의 연도 및 월별 대시보드 조회", description = "연도 및 월별 내 회사의 대시보드를 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<CompanyDto.CompanyYearResponse>> monthDashboard (
             @AuthenticationPrincipal CustomUserDetails member,
             @RequestParam int month,
