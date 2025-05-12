@@ -51,6 +51,7 @@ public class DepartmentDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class CreateRequest{
         private String name;
+        private int targetScore;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
@@ -62,12 +63,14 @@ public class DepartmentDto {
     public static class DepartmentInfoResponse {
         private Long idx;
         private String name;
+        private int targetScore;
         private Long companyIdx;
         private String companyName;
         public static DepartmentInfoResponse fromEntity(Department department) {
             return DepartmentInfoResponse.builder()
                     .idx(department.getIdx())
                     .name(department.getName())
+                    .targetScore(department.getTargetScore())
                     .companyIdx(department.getCompany().getIdx())
                     .companyName(department.getCompany().getName())
                     .build();
