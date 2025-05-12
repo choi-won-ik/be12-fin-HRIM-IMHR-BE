@@ -26,8 +26,6 @@ public class EsgActivityDto {
                     .activityDate(activityDate)
                     .description(description)
                     .inputs(inputs)
-                    .evidenceImgUrl(imgUrl)
-                    .inputs(inputs)
                     .createdAt(LocalDateTime.now())
                     .build();
         }
