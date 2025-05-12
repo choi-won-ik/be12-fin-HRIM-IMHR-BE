@@ -53,4 +53,19 @@ public class CompanyDto {
                     .build();
         }
     }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class CompanyResponse {
+        private Long idx;
+        private String name;
+        private int targetScore;
+
+        public static CompanyResponse of (Company company) {
+            return CompanyResponse.builder()
+                    .idx(company.getIdx())
+                    .name(company.getName())
+                    .targetScore(company.getTargetScore())
+                    .build();
+        }
+    }
 }

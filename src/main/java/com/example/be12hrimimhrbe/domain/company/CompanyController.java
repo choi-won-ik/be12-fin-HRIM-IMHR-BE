@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.company;
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
@@ -25,8 +26,11 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
     @PostMapping("/fetchMyCompany")
     @Operation(summary = "내 기업 조회", description = "자신이 속한 기업 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<CompanyDto.CompanyResponse>> fetchMyCompany(
@@ -35,6 +39,7 @@ public class CompanyController {
         return ResponseEntity.ok().body(companyService.fetchMyCompany(member.getMember()));
     }
 
+<<<<<<< HEAD
     @GetMapping("/scoreUpdate/{companyIdx}/{targetScore}")
     @Operation(summary = "기업 목표 점수 수정", description = "기업 목표 점수를 수정하는 기능입니다.")
     public ResponseEntity<BaseResponse<String>> updateScore(
@@ -46,6 +51,8 @@ public class CompanyController {
     }
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
     // EsgCompany 와 Company 통합 조회 기능
     @GetMapping("/list")
     @Operation(summary = "전체 기업 리스트", description = "페이지별로 전체 기업을 조회하는 기능입니다.")

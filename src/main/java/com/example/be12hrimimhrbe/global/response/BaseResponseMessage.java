@@ -63,6 +63,7 @@ public enum BaseResponseMessage {
     FEEDBACK_SUBMIT_SUCCESS(true, 4200, "피드백 작성 성공"),
 
     // 기업 관리 5000
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     COMPANY_ALL_LIST_SUCCESS(true, 5200, "회사 전체 리스트 조회를 성공했습니다."),
     COMPANY_DEPARTMENT_MONTH_SUCCESS(true, 5200, "회사의 부서별의 월별 ESG 조회에 성공했습니다."),
@@ -72,6 +73,11 @@ public enum BaseResponseMessage {
     COMPANY_MY_COMPANY_SEARCH_SUCCESS(true, 5201, "내 회사 조회를 성공했습니다."),
     COMPANY_SCORE_UPDATE_SUCCESS(true, 5201, "기업 목표 점수가 성공적으로 수정되었습니다."),
 >>>>>>> Stashed changes
+=======
+    COMPANY_ALL_LIST_SUCCESS(true, 5201, "회사 전체 리스트 조회를 성공했습니다."),
+    COMPANY_DEPARTMENT_MONTH_SUCCESS(true, 5201, "회사의 부서별의 월별 ESG 조회에 성공했습니다."),
+    COMPANY_MY_COMPANY_SEARCH_SUCCESS(true, 5201, "내 회사 조회를 성공했습니다."),
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
 
     // 캘린더 관리(이벤트 & 캠페인) 6000
     CALENDAR_EVENT_REGISTER_SUCCESS(true,6200, "회사 일정 등록을 성공했습니다."),
@@ -106,6 +112,9 @@ public enum BaseResponseMessage {
     ACTIVITYSUBJECT_NOT_FOUND(false, 7209, "활동 주제 양식이 존재하지 않습니다."),
     ACTIVITYSUBJECT_UPDATE_SUCCESS(true, 7009, "활동 주제 양식 수정을 성공했습니다."),
     ACTIVITYSUBJECT_DELETE_SUCCESS(true, 7009, "활동 주제 양식 삭제를 성공했습니다."),
+
+    ESG_ACTIVITY_SUBMIT_SUCCESS(true, 7200, "활동 등록이 완료되었습니다."),
+    ESG_ACTIVITY_INPUT_LEFT(false, 7404 ,"활동 입력이 누락되었습니다."),
 
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),

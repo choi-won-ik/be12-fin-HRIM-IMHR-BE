@@ -36,13 +36,17 @@ public class CompanyService {
     private final MemberRepository memberRepository;
     private final ScoreRepository scoreRepository;
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
     public BaseResponse<CompanyDto.CompanyResponse> fetchMyCompany(Member member) {
         Company myCompany = companyRepository.findByIdx(member.getCompany().getIdx());
         return new BaseResponse<>(BaseResponseMessage.COMPANY_MY_COMPANY_SEARCH_SUCCESS, CompanyDto.CompanyResponse.of(myCompany));
     }
 
+<<<<<<< HEAD
     public BaseResponse<String> updateScore(Member member, Long companyIdx, int score) {
         Long myCompanyIdx = member.getCompany().getIdx();
 
@@ -62,6 +66,8 @@ public class CompanyService {
     }
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> 7137988bf9f8e0178710db0dab5d6fb236df8176
     @Transactional
     public BaseResponse<Page<CompanyDto.CompanyListResponse>> allList(Pageable pageable, Member member, String keyword) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
