@@ -26,15 +26,12 @@ public class Department {
     private String name;
 
     @Setter
-    @Column(nullable = false)
     private int targetEScore;
 
     @Setter
-    @Column(nullable = false)
     private int targetSScore;
 
     @Setter
-    @Column(nullable = false)
     private int targetGScore;
 
     @Setter
