@@ -1,6 +1,5 @@
 package com.example.be12hrimimhrbe.domain.company.model;
 
-import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.domain.score.model.Score;

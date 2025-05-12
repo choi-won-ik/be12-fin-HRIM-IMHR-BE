@@ -33,6 +33,8 @@ public class DepartmentDto {
             for (CreateRequest createRequest : createRequests) {
                 departments.add(Department.builder()
                                 .name(createRequest.name)
+                                .targetScore(createRequest.targetScore)
+                                .is_deleted(false)
                                 .company(company)
                         .build()
                 );
@@ -42,7 +44,7 @@ public class DepartmentDto {
         public List<Department> toDeleteEntity() {
             List<Department> departments = new ArrayList<>();
             for (DeleteRequest deleteRequest : deleteRequests) {
-                departments.add(Department.builder().idx(deleteRequest.idx).build());
+                departments.add(Department.builder().idx(deleteRequest.idx).is_deleted(false).build());
             }
             return departments;
         }
@@ -52,11 +54,13 @@ public class DepartmentDto {
     public static class CreateRequest{
         private String name;
         private int targetScore;
+        private boolean is_delete;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class DeleteRequest{
         private Long idx;
+        private boolean is_delete;
     }
 
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
