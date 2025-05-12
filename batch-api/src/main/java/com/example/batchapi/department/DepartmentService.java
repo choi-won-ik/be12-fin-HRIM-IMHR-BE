@@ -29,13 +29,16 @@ public class DepartmentService {
             total+=average;
         }
 
+        int size = members.size();
+        int safeSize = size == 0 ? 1 : size;
+
         return DepartmentScore.builder()
                 .company(item.getCompany())
                 .department(item)
-                .total(total/members.size())
-                .environment(environment/members.size())
-                .governance(governance/members.size())
-                .social(social/members.size())
+                .total(size == 0 ? 0 : total / safeSize)
+                .environment(size == 0 ? 0 : environment / safeSize)
+                .governance(size == 0 ? 0 : governance / safeSize)
+                .social(size == 0 ? 0 : social / safeSize)
                 .year(LocalDateTime.now().getYear())
                 .month(LocalDateTime.now().getMonthValue())
                 .build();

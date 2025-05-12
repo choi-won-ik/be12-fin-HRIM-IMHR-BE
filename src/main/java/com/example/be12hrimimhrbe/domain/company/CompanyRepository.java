@@ -3,6 +3,7 @@ package com.example.be12hrimimhrbe.domain.company;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,11 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     );
 
     Page<Company> findByNameContainingIgnoreCaseAndIdxNotIn(String name, List<Long> idxes, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ranks", "ranks.member"})
+    @Query("SELECT c FROM Company c " +
+            "LEFT JOIN c.ranks r " +
+            "LEFT JOIN r.member m " +
+            "WHERE c.idx=:idx")
+    Company findByIdxRank(Long idx);
 }
