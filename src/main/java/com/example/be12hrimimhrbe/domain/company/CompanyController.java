@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.company;
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
@@ -24,6 +25,10 @@ import java.util.List;
 @Tag(name = "회사 관리 기능")
 public class CompanyController {
     private final CompanyService companyService;
+
+    @PostMapping("/fetchMyCompany")
+    @Operation(summary = "내 기업 조회", description = "자신이 속한 기업 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<Company>>
 
     // EsgCompany 와 Company 통합 조회 기능
     @GetMapping("/list")
