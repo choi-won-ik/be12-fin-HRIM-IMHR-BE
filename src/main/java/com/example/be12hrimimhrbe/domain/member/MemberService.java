@@ -135,7 +135,10 @@ public class MemberService implements UserDetailsService {
         for (HrAuthority hrAuthority : hrAuthorities) {
             roles.add(""+hrAuthority.getDepartment().getIdx());
         }
-        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany());
+        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany()).stream()
+                .filter(d -> !d.getIs_deleted())
+                .collect(Collectors.toList());
+
         MemberDto.InfoDetailResponse infoDetailResponse = MemberDto.InfoDetailResponse.fromEntity(
                 MemberDto.InfoResponse.fromEntity(member, roles),
                 departments
