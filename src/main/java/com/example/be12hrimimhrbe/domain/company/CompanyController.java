@@ -31,7 +31,7 @@ public class CompanyController {
     public ResponseEntity<BaseResponse<CompanyDto.CompanyResponse>> fetchMyCompany(
             @AuthenticationPrincipal CustomUserDetails member
     ) {
-        return ResponseEntity.ok().body(companyService.fetchMyCompany(member));
+        return ResponseEntity.ok().body(companyService.fetchMyCompany(member.getMember()));
     }
 
     // EsgCompany 와 Company 통합 조회 기능
