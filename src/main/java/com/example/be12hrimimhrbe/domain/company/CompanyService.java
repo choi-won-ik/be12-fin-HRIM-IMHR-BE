@@ -36,6 +36,10 @@ public class CompanyService {
     private final MemberRepository memberRepository;
     private final ScoreRepository scoreRepository;
 
+    public BaseResponse<CompanyDto.CompanyResponse> fetchMyCompany(Member member) {
+        return new BaseResponse<>(BaseResponseMessage.COMPANY_MY_COMPANY_SEARCH_SUCCESS, null);
+    }
+
     @Transactional
     public BaseResponse<Page<CompanyDto.CompanyListResponse>> allList(Pageable pageable, Member member, String keyword) {
         Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
