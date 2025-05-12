@@ -3,6 +3,7 @@ package com.example.be12hrimimhrbe.domain.company.model;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
+import com.example.be12hrimimhrbe.domain.score.model.Score;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,13 +18,19 @@ public class CompanyDto {
         private String name;
         private boolean isMember;
         private boolean has_esg_data;
+        private String eScore;
+        private String sScore;
+        private String gScore;
 
-        public static CompanyListResponse of(Company company) {
+        public static CompanyListResponse of(Company company, Score score) {
             return builder()
                     .idx(company.getIdx())
                     .name(company.getName())
                     .isMember(company.isMember())
                     .has_esg_data(company.isHas_esg_data())
+                    .eScore(score.getSocialScore())
+                    .sScore(score.getSocialScore())
+                    .gScore(score.getGovernanceScore())
                     .build();
         }
     }
@@ -44,6 +51,21 @@ public class CompanyDto {
                     .companyName(company.getName())
                     .memberScores(member.stream().toList())
                     .departments(departmentList.stream().toList())
+                    .build();
+        }
+    }
+
+    @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+    public static class CompanyResponse {
+        private Long idx;
+        private String name;
+        private int targetScore;
+
+        public static CompanyResponse of (Company company) {
+            return CompanyResponse.builder()
+                    .idx(company.getIdx())
+                    .name(company.getName())
+                    .targetScore(company.getTargetScore())
                     .build();
         }
     }

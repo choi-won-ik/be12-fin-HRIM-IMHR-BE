@@ -12,12 +12,13 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.domain.partner.PartnerRepository;
 import com.example.be12hrimimhrbe.domain.partner.model.Partner;
+import com.example.be12hrimimhrbe.domain.score.ScoreRepository;
+import com.example.be12hrimimhrbe.domain.score.model.Score;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,12 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final PartnerRepository partnerRepository;
     private final MemberRepository memberRepository;
+    private final ScoreRepository scoreRepository;
+
+    public BaseResponse<CompanyDto.CompanyResponse> fetchMyCompany(Member member) {
+        Company myCompany = companyRepository.findByIdx(member.getCompany().getIdx());
+        return new BaseResponse<>(BaseResponseMessage.COMPANY_MY_COMPANY_SEARCH_SUCCESS, CompanyDto.CompanyResponse.of(myCompany));
+    }
 
     @Transactional
     public BaseResponse<Page<CompanyDto.CompanyListResponse>> allList(Pageable pageable, Member member, String keyword) {
@@ -57,7 +64,14 @@ public class CompanyService {
         }
 
         // DTO 변환
-        Page<CompanyDto.CompanyListResponse> resultPage = pagedResult.map(CompanyDto.CompanyListResponse::of);
+        //  가장 최신 점수 조회
+        Page<CompanyDto.CompanyListResponse> resultPage = pagedResult.map( c -> {
+            Score score = scoreRepository.findByCompanyIdx(c.getIdx()).stream()
+                    .sorted(Comparator.comparing(Score::getYear).reversed())
+                    .findFirst()
+                    .orElse(new Score());
+            return CompanyDto.CompanyListResponse.of(c, score);
+        });
 
         return new BaseResponse<>(BaseResponseMessage.COMPANY_ALL_LIST_SUCCESS, resultPage);
     }

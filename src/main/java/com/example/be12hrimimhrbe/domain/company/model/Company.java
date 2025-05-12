@@ -31,6 +31,7 @@ public class Company {
     private boolean isMember;
 
     private boolean has_esg_data;
+    private int targetScore;
 
     @Column(nullable = false, unique = true)
     private String registrationNumber;

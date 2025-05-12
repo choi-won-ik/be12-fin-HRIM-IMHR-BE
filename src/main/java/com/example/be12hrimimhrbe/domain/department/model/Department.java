@@ -27,12 +27,14 @@ public class Department {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private int targetScore;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_idx", nullable = false)
     @Fetch(FetchMode.JOIN)
     private Company company;
 
-    @OneToMany(mappedBy = "department")
-//    @BatchSize(size = 1)
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     private List<Member> members = new ArrayList<>();
 }

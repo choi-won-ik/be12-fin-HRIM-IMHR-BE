@@ -1,4 +1,4 @@
-package com.example.be12hrimimhrbe.domain.rank;
+package com.example.be12hrimimhrbe.domain.rank.model;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.member.model.Member;

@@ -20,19 +20,22 @@ public class DepartmentService {
         int environment=0;
         int social=0;
         int governance= 0;
+        int total=0;
         for (Member member : members) {
+            int average=(member.getEScore()+member.getSScore()+member.getGScore())/3;
             environment+=member.getEScore();
             social+=member.getSScore();
             governance+=member.getGScore();
+            total+=average;
         }
 
         return DepartmentScore.builder()
                 .company(item.getCompany())
                 .department(item)
-                .total((environment+social+governance)/3)
-                .environment(environment)
-                .governance(governance)
-                .social(social)
+                .total(total/members.size())
+                .environment(environment/members.size())
+                .governance(governance/members.size())
+                .social(social/members.size())
                 .year(LocalDateTime.now().getYear())
                 .month(LocalDateTime.now().getMonthValue())
                 .build();
