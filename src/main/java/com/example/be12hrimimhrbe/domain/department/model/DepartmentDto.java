@@ -33,7 +33,9 @@ public class DepartmentDto {
             for (CreateRequest createRequest : createRequests) {
                 departments.add(Department.builder()
                                 .name(createRequest.name)
-                                .targetScore(createRequest.targetScore)
+                                .targetEScore(createRequest.targetEScore)
+                                .targetSScore(createRequest.targetSScore)
+                                .targetGScore(createRequest.targetGScore)
                                 .is_deleted(false)
                                 .company(company)
                         .build()
@@ -53,7 +55,9 @@ public class DepartmentDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class CreateRequest{
         private String name;
-        private int targetScore;
+        private int targetEScore;
+        private int targetSScore;
+        private int targetGScore;
         private boolean is_delete;
     }
 
@@ -67,14 +71,18 @@ public class DepartmentDto {
     public static class DepartmentInfoResponse {
         private Long idx;
         private String name;
-        private int targetScore;
+        private int targetEScore;
+        private int targetSScore;
+        private int targetGScore;
         private Long companyIdx;
         private String companyName;
         public static DepartmentInfoResponse fromEntity(Department department) {
             return DepartmentInfoResponse.builder()
                     .idx(department.getIdx())
                     .name(department.getName())
-                    .targetScore(department.getTargetScore())
+                    .targetEScore(department.getTargetEScore())
+                    .targetGScore(department.getTargetGScore())
+                    .targetSScore(department.getTargetSScore())
                     .companyIdx(department.getCompany().getIdx())
                     .companyName(department.getCompany().getName())
                     .build();
