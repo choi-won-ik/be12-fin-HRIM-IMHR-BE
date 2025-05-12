@@ -46,7 +46,7 @@ public class CompanyController {
             @RequestParam int month,
             @RequestParam int year
     ) {
-        return ResponseEntity.ok(companyService.monthDashboard1(member.getMember(), year, month));
+        return ResponseEntity.ok(companyService.monthDashboard(member.getMember(), year, month));
     }
 
 }
