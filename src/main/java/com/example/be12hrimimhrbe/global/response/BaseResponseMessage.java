@@ -101,6 +101,9 @@ public enum BaseResponseMessage {
     ACTIVITYSUBJECT_UPDATE_SUCCESS(true, 7009, "활동 주제 양식 수정을 성공했습니다."),
     ACTIVITYSUBJECT_DELETE_SUCCESS(true, 7009, "활동 주제 양식 삭제를 성공했습니다."),
 
+    ESG_ACTIVITY_SUBMIT_SUCCESS(true, 7200, "활동 등록이 완료되었습니다."),
+    ESG_ACTIVITY_INPUT_LEFT(false, 7404 ,"활동 입력이 누락되었습니다."),
+
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),
 
