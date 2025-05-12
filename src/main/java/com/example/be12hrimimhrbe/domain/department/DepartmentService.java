@@ -131,6 +131,15 @@ public class DepartmentService {
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
     }
 
+    @Transactional
+    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment1(Member member, Long departmentIdx, int year, int month) {
+
+
+        DepartmentDto.DepartmentScoreResponse response = null;
+        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
+    }
+
+
     public DepartmentScore score(Department item) {
         List<Member> members = item.getMembers();
 

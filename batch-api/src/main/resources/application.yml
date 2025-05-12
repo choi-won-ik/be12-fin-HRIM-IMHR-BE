@@ -4,7 +4,7 @@ spring:
   batch:
     job:
       name: rankJob
-      enabled: false
+#      enabled: false
     jdbc:
       initialize-schema: always
   datasource:
@@ -15,7 +15,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MariaDBDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

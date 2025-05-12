@@ -365,6 +365,7 @@ public class MemberDto {
         private int memberEScore;
         private int memberGScore;
         private int averageScore;
+        private int ranking;
 
         public static MemberScoreResponse from(Member member, int e, int s, int g) {
             return MemberScoreResponse.builder()

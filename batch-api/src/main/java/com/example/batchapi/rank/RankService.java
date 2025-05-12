@@ -39,8 +39,6 @@ public class RankService {
             list.sort(Comparator.comparing(RankDto.Aggregateresp::getAverage).reversed());
 
             for(int i = 0; i<3; i++){
-                System.out.println(list.get(i).getAverage()+" "+list.get(i).getMember().getIdx());
-
 
                 result.add(Rank.builder()
                         .member(list.get(i).getMember())
