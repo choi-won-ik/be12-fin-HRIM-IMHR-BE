@@ -37,7 +37,8 @@ public class CompanyService {
     private final ScoreRepository scoreRepository;
 
     public BaseResponse<CompanyDto.CompanyResponse> fetchMyCompany(Member member) {
-        return new BaseResponse<>(BaseResponseMessage.COMPANY_MY_COMPANY_SEARCH_SUCCESS, null);
+        Company myCompany = companyRepository.findByIdx(member.getCompany().getIdx());
+        return new BaseResponse<>(BaseResponseMessage.COMPANY_MY_COMPANY_SEARCH_SUCCESS, CompanyDto.CompanyResponse.of(myCompany));
     }
 
     @Transactional
