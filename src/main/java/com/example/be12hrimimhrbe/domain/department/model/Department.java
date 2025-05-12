@@ -32,7 +32,6 @@ public class Department {
     @Fetch(FetchMode.JOIN)
     private Company company;
 
-    @OneToMany(mappedBy = "department")
-//    @BatchSize(size = 1)
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     private List<Member> members = new ArrayList<>();
 }
