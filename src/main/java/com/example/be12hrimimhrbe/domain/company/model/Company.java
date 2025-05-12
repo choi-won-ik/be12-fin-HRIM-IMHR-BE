@@ -30,7 +30,11 @@ public class Company {
     private boolean has_esg_data;
 
     @Setter
-    private int targetScore;
+    private int targetEScore;
+    @Setter
+    private int targetSScore;
+    @Setter
+    private int targetGScore;
 
     @Column(nullable = false, unique = true)
     private String registrationNumber;

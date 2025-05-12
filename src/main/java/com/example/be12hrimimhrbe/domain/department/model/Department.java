@@ -21,15 +21,18 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @Setter
     @Column(nullable = false)
     private String name;
 
     @Setter
     @Column(nullable = false)
     private int targetEScore;
+
     @Setter
     @Column(nullable = false)
     private int targetSScore;
+
     @Setter
     @Column(nullable = false)
     private int targetGScore;
@@ -45,4 +48,5 @@ public class Department {
 
     @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     private List<Member> members = new ArrayList<>();
+
 }
