@@ -1,18 +1,13 @@
 package com.example.be12hrimimhrbe.domain.department.model;
 
 import com.example.be12hrimimhrbe.domain.company.model.Company;
-import com.example.be12hrimimhrbe.domain.member.model.Member;
-import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DepartmentDto {
 
@@ -116,16 +111,6 @@ public class DepartmentDto {
         private double eScore;
         private double sScore;
         private double gScore;
-
-        public static SimpleDepartmentDto fromEntity(Department dept, double eScore, double sScore, double gScore) {
-            return SimpleDepartmentDto.builder()
-                    .idx(dept.getIdx())
-                    .name(dept.getName())
-                    .eScore(eScore)
-                    .sScore(sScore)
-                    .gScore(gScore)
-                    .build();
-        }
     }
 
 }
