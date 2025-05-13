@@ -27,7 +27,6 @@ public class EsgActivity {
 
     private LocalDate activityDate;
     private String description;
-    private String evidenceImgUrl;
     private Map<String, Object> inputs;
     private LocalDateTime createdAt;
 }
