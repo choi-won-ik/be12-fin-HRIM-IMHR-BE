@@ -41,7 +41,4 @@ public class EsgActivityService {
         return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_SUBMIT_SUCCESS, "활동 등록 완료");
     }
 
-    public BaseResponse<List<EsgActivityDto.ActivityResponse>> list(CustomUserDetails member) {
-
-    }
 }
