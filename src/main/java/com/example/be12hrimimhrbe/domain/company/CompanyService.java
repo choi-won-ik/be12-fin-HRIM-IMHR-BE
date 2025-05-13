@@ -103,6 +103,11 @@ public class CompanyService {
 //    // 내 회사의 월별 부서들의 esg 현황 조회 기능
     @Transactional
     public BaseResponse<CompanyDto.CompanyYearResponse> monthDashboard(Member member, int year, int month) {
+        month--;
+        if(month<0){
+            month=12;
+            year--;
+        }
 
         List<Rank> list = rankRepository.findByCompanyIdx(member.getCompany().getIdx(), year, month)
                 .stream()
