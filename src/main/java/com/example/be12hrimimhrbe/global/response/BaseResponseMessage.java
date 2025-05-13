@@ -108,6 +108,7 @@ public enum BaseResponseMessage {
 
     ESG_ACTIVITY_SUBMIT_SUCCESS(true, 7200, "활동 등록이 완료되었습니다."),
     ESG_ACTIVITY_INPUT_LEFT(false, 7404 ,"활동 입력이 누락되었습니다."),
+    ESG_ACTIVITY_LIST_SEARCH_SUCCESS(true, 7201,"활동 리스트 조회를 성공했습니다."),
 
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),

@@ -21,11 +21,14 @@ public class EsgActivity {
     private String id;
 
     private Long memberIdx;
+    private String userName;
+    private String userID;
     private Long companyIdx;
     private String subject;
+    private String segScore;
+    private Boolean status;
 
     private LocalDate activityDate;
-    private String description;
     private Map<String, Object> inputs;
     private LocalDateTime createdAt;
 }

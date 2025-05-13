@@ -16,6 +16,7 @@ public class ActivitySubject {
     private String id;
 
     private Long companyIdx;
+    private Long memberIdx;
     private String subject;
     private String esgValue;
     private int esgScore;
@@ -28,5 +29,6 @@ public class ActivitySubject {
     public static class input {
         private String text;
         private String type;
+        private String inputValue;
     }
 }

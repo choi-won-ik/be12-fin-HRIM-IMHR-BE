@@ -3,7 +3,9 @@ package com.example.be12hrimimhrbe.domain.activity;
 import com.example.be12hrimimhrbe.domain.activity.model.EsgActivityDto;
 import com.example.be12hrimimhrbe.domain.activitySubject.ActivitySubjectRepository;
 import com.example.be12hrimimhrbe.domain.activitySubject.model.ActivitySubject;
+import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
+import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.global.LocalImageService;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,24 +22,46 @@ public class EsgActivityService {
     private final ActivitySubjectRepository subjectRepository;
     private final EsgActivityRepository activityRepository;
     private final LocalImageService localImageService;
+    private final MemberRepository memberRepository;
+    private final EsgActivityRepository esgActivityRepository;
 
     @Transactional
     public BaseResponse<String> createActivity(EsgActivityDto.ActivityRequest dto,
                                                CustomUserDetails member,
                                                List<MultipartFile> files) {
         ActivitySubject subject = subjectRepository.findById(dto.getSubjectId()).orElseThrow();
-        List<String> fileUrls = new ArrayList<>();
+
         for(ActivitySubject.input input : subject.getInputs()) {
-            if(!input.getType().equals("file") && !dto.getInputs().containsKey(input.getText())) {
-                return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_INPUT_LEFT, "필수 입력값 누락: "+input.getText());
+            if(!input.getType().equals("file") && !dto.getInputs().containsKey(input.getInputValue())) {
+                return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_INPUT_LEFT, "필수 입력값 누락: "+input.getInputValue());
             }
         }
         for(MultipartFile file : files) {
             String uploadFilePath = localImageService.upload(file);
             dto.getInputs().put(file.getName(), uploadFilePath);
         }
-        activityRepository.save(dto.toEntity(member.getMember().getIdx(), member.getMember().getCompany().getIdx()));
+        activityRepository.save(dto.toEntity(member.getMember().getMemberId(),member.getUsername(), member.getMember().getIdx(), member.getMember().getCompany().getIdx()));
         return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_SUBMIT_SUCCESS, "활동 등록 완료");
     }
 
+    @Transactional
+    public BaseResponse<List<EsgActivityDto.ActivityResponse>> listSearch(Member member, Long myIdx) {
+        Member nowmember = memberRepository.findByIdx(member.getIdx());
+
+        if (!nowmember.getIsAdmin() && !nowmember.getIdx().equals(myIdx)) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
+        }
+        List<EsgActivityDto.ActivityResponse> activitys = List.of();
+
+        if (nowmember.getIsAdmin()) {
+            activitys = esgActivityRepository.findByCompanyIdx(nowmember.getCompany().getIdx()).stream()
+                    .map(EsgActivityDto.ActivityResponse::fromEntity).toList();
+        }
+        if (!nowmember.getIsAdmin()) {
+            activitys = esgActivityRepository.findByMemberIdx(myIdx).stream()
+                    .map(EsgActivityDto.ActivityResponse::fromEntity).toList();
+        }
+
+        return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_LIST_SEARCH_SUCCESS, activitys);
+    }
 }
