@@ -15,16 +15,18 @@ public class EsgActivityDto {
         private String subjectId;
         private String subject; // 예: "봉사"
         private LocalDate activityDate;
-        private String description;
         private Map<String, Object> inputs; // "봉사시간": 2, "봉사처": "서울숲" 등
+        private Boolean status;
 
-        public EsgActivity toEntity(Long memberIdx, Long companyIdx) {
+        public EsgActivity toEntity(String userID, String name, Long memberIdx, Long companyIdx) {
             return EsgActivity.builder()
                     .memberIdx(memberIdx)
+                    .userName(name)
                     .companyIdx(companyIdx)
+                    .userID(userID)
                     .subject(subject)
+                    .status(false)
                     .activityDate(activityDate)
-                    .description(description)
                     .inputs(inputs)
                     .createdAt(LocalDateTime.now())
                     .build();
@@ -37,18 +39,22 @@ public class EsgActivityDto {
         private Long memberIdx;
         private Long companyIdx;
         private String subject;
-        private String description;
         private Map<String, Object> inputs;
         private LocalDate activityDate;
+        private String userName;
+        private String userID;
         private LocalDateTime createdAt;
+        private Boolean status;
 
         public static ActivityResponse fromEntity(EsgActivity entity) {
             return ActivityResponse.builder()
                     .activityId(entity.getId())
                     .memberIdx(entity.getMemberIdx())
+                    .userName(entity.getUserName())
                     .companyIdx(entity.getCompanyIdx())
                     .subject(entity.getSubject())
-                    .description(entity.getDescription())
+                    .userID(entity.getUserID())
+                    .status(false)
                     .inputs(entity.getInputs())
                     .activityDate(entity.getActivityDate())
                     .createdAt(entity.getCreatedAt())

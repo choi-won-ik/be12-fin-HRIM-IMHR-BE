@@ -24,6 +24,7 @@ public class ActivitySubjectDto {
         public static class InputRequest {
             private String text;
             private String type;
+            private String inputValue;
         }
     }
 
@@ -41,6 +42,7 @@ public class ActivitySubjectDto {
         public static class InputResponse {
             private String text;
             private String type;
+            private String inputValue;
         }
 
         public static ActivitySubjectResponse from(ActivitySubject activitySubject) {
@@ -54,6 +56,7 @@ public class ActivitySubjectDto {
                     .inputs(activitySubject.getInputs().stream()
                             .map(i -> InputResponse.builder()
                                     .type(i.getType())
+                                    .inputValue(i.getInputValue())
                                     .text(i.getText())
                                     .build()
                             ).toList()
