@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,10 @@ public class ActivitySubjectService {
             ActivitySubject activitySubject = ActivitySubject.builder()
                     .companyIdx(companyIdx)
                     .subject(d.getSubject())
+                    .esgValue(d.getEsgValue())
+                    .esgScore(d.getEsgScore())
+                    .esgActivityItem(d.getEsgActivityItem())
+                    .evaluationCriteria(d.getEvaluationCriteria())
                     .inputs(d.getInputs().stream()
                             .map( i -> ActivitySubject.input.builder()
                                     .text(i.getText())
@@ -77,19 +82,24 @@ public class ActivitySubjectService {
             return new BaseResponse<>(BaseResponseMessage.ACTIVITYSUBJECT_NOT_FOUND, null);
         }
 
-        ActivitySubject before = beforeSubject.get();
-
-        before.setSubject(dto.getSubject());
-        before.setInputs(
-                dto.getInputs().stream()
+        ActivitySubject updated = ActivitySubject.builder()
+                .id(dto.getId())
+                .companyIdx(nowmember.getCompany().getIdx())
+                .subject(dto.getSubject())
+                .esgValue(dto.getEsgValue())
+                .esgScore(dto.getEsgScore())
+                .esgActivityItem(dto.getEsgActivityItem())
+                .evaluationCriteria(dto.getEvaluationCriteria())
+                .inputs(dto.getInputs().stream()
                         .map(i -> ActivitySubject.input.builder()
                                 .type(i.getType())
                                 .text(i.getText())
                                 .build())
-                        .toList()
-        );
+                        .collect(Collectors.toList())
+                )
+                .build();
 
-        activitySubjectRepository.save(before);
+        activitySubjectRepository.save(updated);
 
         return new BaseResponse<>(BaseResponseMessage.ACTIVITYSUBJECT_UPDATE_SUCCESS, "주제 양식 수정을 성공했습니다.");
     }

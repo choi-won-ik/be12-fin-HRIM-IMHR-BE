@@ -14,6 +14,10 @@ public class ActivitySubjectDto {
         private String id;
         private Long companyIdx;
         private String subject;
+        private String esgValue;
+        private int esgScore;
+        private String esgActivityItem;
+        private String evaluationCriteria;
         private List<InputRequest> inputs;
 
         @Getter @Builder @NoArgsConstructor @AllArgsConstructor
@@ -27,6 +31,10 @@ public class ActivitySubjectDto {
     public static class ActivitySubjectResponse {
         private String id;
         private String subject;
+        private String esgValue;
+        private int esgScore;
+        private String esgActivityItem;
+        private String evaluationCriteria;
         private List<InputResponse> inputs;
 
         @Getter @Builder @NoArgsConstructor @AllArgsConstructor
@@ -39,6 +47,10 @@ public class ActivitySubjectDto {
             return builder()
                     .id(activitySubject.getId())
                     .subject(activitySubject.getSubject())
+                    .esgValue(activitySubject.getEsgValue())
+                    .esgScore(activitySubject.getEsgScore())
+                    .esgActivityItem(activitySubject.getEsgActivityItem())
+                    .evaluationCriteria(activitySubject.getEvaluationCriteria())
                     .inputs(activitySubject.getInputs().stream()
                             .map(i -> InputResponse.builder()
                                     .type(i.getType())
