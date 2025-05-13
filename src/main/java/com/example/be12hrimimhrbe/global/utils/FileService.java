@@ -31,6 +31,6 @@ public class FileService {
             throw new RuntimeException("파일 저장 실패", e);
         }
 
-        return uuidName;
+        return "/"+uuidName;
     }
 }
