@@ -12,6 +12,8 @@ public interface DepartmentScoreRepository extends JpaRepository<DepartmentScore
     @EntityGraph(attributePaths = {"department"})
     @Query("SELECT ds FROM DepartmentScore ds " +
             "LEFT JOIN ds.department d  " +
-            "WHERE d.idx= :departmentIdx")
-    List<DepartmentScore> findByCompanyIdx(Long departmentIdx);
+            "WHERE d.idx= :departmentIdx " +
+            "AND ds.year=:year " +
+            "AND ds.month=:month ")
+    DepartmentScore findByCompanyIdx(Long departmentIdx,int year, int month);
 }

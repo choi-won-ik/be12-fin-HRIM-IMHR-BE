@@ -60,10 +60,10 @@ public class DepartmentController {
     @Operation(summary = "각 부서의 월별 대시보드 조회", description = "각 부서의 월별 대시보드를 조회하는 기능입니다.")
     public ResponseEntity<BaseResponse<DepartmentDto.DepartmentScoreResponse>> monthDepartment (
             @AuthenticationPrincipal CustomUserDetails member,
-            @RequestParam(required = false) Long departmentIdx,
+            @RequestParam Long departmentIdx,
             @RequestParam int year,
             @RequestParam int month
     ) {
-        return ResponseEntity.ok(departmentService.monthDepartment(member.getMember(), departmentIdx, year, month));
+        return ResponseEntity.ok(departmentService.monthDepartment(departmentIdx, year, month));
     }
 }
