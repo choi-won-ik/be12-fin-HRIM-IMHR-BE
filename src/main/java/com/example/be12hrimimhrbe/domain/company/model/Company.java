@@ -50,8 +50,7 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private List<Member> members=new ArrayList<>();
 
-    @OneToMany(mappedBy = "company")
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<Department> departments=new ArrayList<>();
 
     @OneToMany(mappedBy = "company")

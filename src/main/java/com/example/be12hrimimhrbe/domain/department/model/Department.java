@@ -42,7 +42,7 @@ public class Department {
     @Fetch(FetchMode.JOIN)
     private Company company;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private List<Member> members = new ArrayList<>();
 
 }
