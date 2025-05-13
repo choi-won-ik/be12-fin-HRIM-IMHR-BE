@@ -25,6 +25,7 @@ public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final MemberRepository memberRepository;
     private final ActivityRepository activityRepository;
+    private final DepartmentScoreRepository departmentScoreRepository;
 
     @Transactional
     public BaseResponse<String> create(DepartmentDto.CDRequest dto, Member member) {
@@ -95,7 +96,7 @@ public class DepartmentService {
 
     // 하나의 APi만 호출할때에 주석처리 해야함
     @Transactional
-    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Member member, Long departmentIdx, int year, int month) {
+    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment1(Member member, Long departmentIdx, int year, int month) {
 
         Company mycompany = member.getCompany();
 
@@ -158,11 +159,30 @@ public class DepartmentService {
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
     }
 
-    @Transactional
-    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment1(Member member, Long departmentIdx, int year, int month) {
-
+    @Transactional(readOnly = true)
+    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Member member, Long departmentIdx, int year, int month) {
+        System.out.println("======================================");
+        System.out.println("======================================");
+        System.out.println("======================================");
+        System.out.println("======================================");
+        System.out.println("======================================");
+        List<DepartmentScore> ds = departmentScoreRepository.findByCompanyIdx(departmentIdx);
 
         DepartmentDto.DepartmentScoreResponse response = null;
+        for (DepartmentScore d : ds) {
+            if(d.getMonth()==month && d.getYear()==year) {
+                response = DepartmentDto.DepartmentScoreResponse.builder()
+                        .idx(departmentIdx)
+                        .departmentName(d.getDepartment().getName())
+                        .departmentEScore(d.getEnvironment())
+                        .departmentGScore(d.getGovernance())
+                        .departmentSScore(d.getSocial())
+                        .departmentTotalScore(d.getTotal())
+                        .build();
+            }
+        }
+
+
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
     }
 

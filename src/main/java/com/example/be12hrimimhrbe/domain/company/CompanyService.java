@@ -13,6 +13,7 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.domain.partner.PartnerRepository;
 import com.example.be12hrimimhrbe.domain.partner.model.Partner;
+import com.example.be12hrimimhrbe.domain.rank.RankRepository;
 import com.example.be12hrimimhrbe.domain.rank.model.Rank;
 import com.example.be12hrimimhrbe.domain.rank.model.RankDto;
 import com.example.be12hrimimhrbe.domain.score.ScoreRepository;
@@ -32,12 +33,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
-    private final DepartmentRepository departmentRepository;
-    private final ActivityRepository activityRepository;
     private final CompanyRepository companyRepository;
     private final PartnerRepository partnerRepository;
     private final MemberRepository memberRepository;
     private final ScoreRepository scoreRepository;
+    private final RankRepository rankRepository;
 
     public BaseResponse<CompanyDto.CompanyResponse> fetchMyCompany(Member member) {
         Company myCompany = companyRepository.findByIdx(member.getCompany().getIdx());
@@ -101,126 +101,21 @@ public class CompanyService {
 
 //    // 하나의 APi만 호출할때에 주석처리 해야함
 //    // 내 회사의 월별 부서들의 esg 현황 조회 기능
-//    @Transactional
-//    public BaseResponse<CompanyDto.CompanyYearResponse> monthDashboard(Member member, int year, int month) {
-//        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
-//        Company company = companyRepository.findByIdx(myCompanyIdx);
-//
-//        // 1. 기업에 해당하는 모든 사원 Idx 조회
-//        List<Long> companyMemberIdxs = memberRepository.findAllByCompanyIdx(myCompanyIdx)
-//                .stream().map(m -> m.getIdx()).collect(Collectors.toList());
-//
-//        // 2. 모든 사원 ID -> 사원 객체 Map (이름 등 매핑용)
-//        Map<Long, Member> memberMap = memberRepository.findAllByCompanyIdx(myCompanyIdx).stream()
-//                .collect(Collectors.toMap(Member::getIdx, m -> m));
-//
-//        // 3. 모든 사원 활동 필터링 및 점수 계산
-//        Map<Long, int[]> memberScoreMap = companyMemberIdxs.stream()
-//                .flatMap(idx -> activityRepository.findAllByMemberIdx(idx).stream())
-//                .filter(a -> a.getCreatedAt().getYear() == year && a.getCreatedAt().getMonthValue() == month)
-//                .collect(Collectors.groupingBy(
-//                        a -> a.getMember().getIdx(),
-//                        Collectors.reducing(
-//                                new int[3], // [E, S, G]
-//                                a -> {
-//                                    int[] score = new int[3];
-//                                    if (a.getType() != null) {
-//                                        switch (a.getType()) {
-//                                            case VOLUNTEER, DONATION -> score[0] = a.getScore(); // E
-//                                        }
-//                                    }
-//                                    if (a.getEducationType() != null) {
-//                                        switch (a.getEducationType()) {
-//                                            case ENVIRONMENTAL_EDUCATION -> score[0] = a.getScore(); // E
-//                                            case SOCIAL_EDUCATION -> score[1] = a.getScore(); // S
-//                                            case GOVERNANCE_EDUCATION -> score[2] = a.getScore(); // G
-//                                        }
-//                                    }
-//                                    return score;
-//                                },
-//                                (a1, a2) -> new int[]{
-//                                        a1[0] + a2[0],
-//                                        a1[1] + a2[1],
-//                                        a1[2] + a2[2]
-//                                }
-//                        )
-//                ));
-//
-//        //4. 총합 기준 정렬 후 상위 3명 뽑기
-//        List<MemberDto.MemberScoreResponse> top3 = memberScoreMap.entrySet().stream()
-//                .sorted((e1, e2) -> {
-//                    int total1 = Arrays.stream(e1.getValue()).sum();
-//                    int total2 = Arrays.stream(e2.getValue()).sum();
-//                    return Integer.compare(total2, total1); // 내림차순
-//                })
-//                .limit(3)
-//                .map(entry -> {
-//                    Long memberId = entry.getKey();
-//                    int[] scoreArr = entry.getValue();
-//                    Member member1 = memberMap.get(memberId);
-//                    return MemberDto.MemberScoreResponse.from(member1, scoreArr[0], scoreArr[1], scoreArr[2]);
-//                })
-//                .collect(Collectors.toList());
-//
-//        // 회사에 소속되어 있는 부서 조회
-//        List<Department> departments = departmentRepository.findAllByCompany(company);
-//
-//        List<DepartmentDto.SimpleDepartmentDto> departmentDtos = departments.stream()
-//                .map( d -> {
-//                    // 부서 소속 사원들 목록 조회
-//                    List<Member> members = memberRepository.findAllByDepartment(d);
-//
-//                    int dEScore = 0;
-//                    int dSScore = 0;
-//                    int dGScore = 0;
-//
-//                    for (Member m : members) {
-//                        List<Activity> activities = activityRepository.findAllByMember(m).stream()
-//                                .filter(a-> a.getCreatedAt().getYear() == year &&
-//                                        a.getCreatedAt().getMonthValue() == month )
-//                                .collect(Collectors.toList());
-//
-//                        for (Activity a : activities) {
-//                            if (a.getType() != null) {
-//                                switch (a.getType()) {
-//                                    case VOLUNTEER, DONATION -> dEScore += a.getScore(); // E
-//                                }
-//                            }
-//                            if (a.getEducationType() != null) {
-//                                switch (a.getEducationType()) {
-//                                    case ENVIRONMENTAL_EDUCATION -> dEScore += a.getScore();
-//                                    case SOCIAL_EDUCATION -> dSScore += a.getScore();
-//                                    case GOVERNANCE_EDUCATION -> dGScore += a.getScore();
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    int memberCount = members.size();
-//                    // 0으로 나누는 것 방지
-//                    double avgE = memberCount > 0 ? (double) dEScore / memberCount : 0.0;
-//                    double avgS = memberCount > 0 ? (double) dSScore / memberCount : 0.0;
-//                    double avgG = memberCount > 0 ? (double) dGScore / memberCount : 0.0;
-//
-//                    return DepartmentDto.SimpleDepartmentDto.fromEntity(d, avgE, avgS, avgG);
-//                }).collect(Collectors.toList());
-//
-//        // Dto 변환
-//        CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.of(company, top3, departmentDtos);
-//        return new BaseResponse<>(BaseResponseMessage.COMPANY_DEPARTMENT_MONTH_SUCCESS, response);
-//    }
-
     @Transactional
     public BaseResponse<CompanyDto.CompanyYearResponse> monthDashboard(Member member, int year, int month) {
-        System.out.println(member.getCompany().getIdx());
-        Company company = companyRepository.findByIdxRank(member.getCompany().getIdx());
+
+        List<Rank> list = rankRepository.findByCompanyIdx(member.getCompany().getIdx(), year, month)
+                .stream()
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
 
 
         // 1~3등
         List<MemberDto.MemberScoreResponse> top3 = new ArrayList<>();
         List<Rank> ranks = new ArrayList<>();
-        ranks.sort(Comparator.comparing(Rank::getAverage).reversed());
-        for (Rank r : company.getRanks()) {
+
+        list.sort(Comparator.comparing(Rank::getAverage).reversed());
+        for (Rank r : list) {
             if(r.getYear() == year && r.getMonth() == month) {
                 ranks.add(r);
             }
@@ -237,20 +132,20 @@ public class CompanyService {
 
         }
 
-
         // 각 부서별 점수
         List<DepartmentDto.SimpleDepartmentDto> departmentDtos= new ArrayList<>();
-        List<Department> departments = company.getDepartments();
+        List<Department> departments =ranks.get(0).getCompany().getDepartments();
+
         for (Department d : departments) {
             departmentDtos.add(DepartmentDto.SimpleDepartmentDto.builder()
-                            .idx(d.getIdx())
-                            .name(d.getName())
+                    .idx(d.getIdx())
+                    .name(d.getName())
                     .build());
         }
 
         CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.builder()
-                .companyName(company.getName())
-                .idx(company.getIdx())
+                .companyName(ranks.get(0).getCompany().getName())
+                .idx(ranks.get(0).getCompany().getIdx())
                 .memberScores(top3)
                 .departments(departmentDtos)
                 .build();
