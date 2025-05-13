@@ -30,4 +30,29 @@ public class EsgActivityDto {
                     .build();
         }
     }
+
+    @Getter @Builder @NoArgsConstructor @AllArgsConstructor
+    public static class ActivityResponse {
+        private String activityId;
+        private Long memberIdx;
+        private Long companyIdx;
+        private String subject;
+        private String description;
+        private Map<String, Object> inputs;
+        private LocalDate activityDate;
+        private LocalDateTime createdAt;
+
+        public static ActivityResponse fromEntity(EsgActivity entity) {
+            return ActivityResponse.builder()
+                    .activityId(entity.getId())
+                    .memberIdx(entity.getMemberIdx())
+                    .companyIdx(entity.getCompanyIdx())
+                    .subject(entity.getSubject())
+                    .description(entity.getDescription())
+                    .inputs(entity.getInputs())
+                    .activityDate(entity.getActivityDate())
+                    .createdAt(entity.getCreatedAt())
+                    .build();
+        }
+    }
 }
