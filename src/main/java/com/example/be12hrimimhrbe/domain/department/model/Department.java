@@ -3,11 +3,7 @@ package com.example.be12hrimimhrbe.domain.department.model;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -24,17 +20,29 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    @Setter
     @Column(nullable = false)
     private String name;
 
+    @Setter
+    private int targetEScore;
+
+    @Setter
+    private int targetSScore;
+
+    @Setter
+    private int targetGScore;
+
+    @Setter
     @Column(nullable = false)
-    private int targetScore;
+    private Boolean is_deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_idx", nullable = false)
     @Fetch(FetchMode.JOIN)
     private Company company;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private List<Member> members = new ArrayList<>();
+
 }

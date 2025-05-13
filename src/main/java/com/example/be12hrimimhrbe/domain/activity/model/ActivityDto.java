@@ -1,6 +1,5 @@
 package com.example.be12hrimimhrbe.domain.activity.model;
 
-import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import lombok.*;
 

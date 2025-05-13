@@ -1,13 +1,9 @@
 package com.example.be12hrimimhrbe.domain.company.model;
 
-import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.domain.score.model.Score;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -59,13 +55,17 @@ public class CompanyDto {
     public static class CompanyResponse {
         private Long idx;
         private String name;
-        private int targetScore;
+        private int targetEScore;
+        private int targetSScore;
+        private int targetGScore;
 
         public static CompanyResponse of (Company company) {
             return CompanyResponse.builder()
                     .idx(company.getIdx())
                     .name(company.getName())
-                    .targetScore(company.getTargetScore())
+                    .targetEScore(company.getTargetEScore())
+                    .targetSScore(company.getTargetSScore())
+                    .targetGScore(company.getTargetGScore())
                     .build();
         }
     }

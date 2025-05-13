@@ -29,15 +29,29 @@ public class DepartmentService {
             total+=average;
         }
 
+        int nowYear = LocalDateTime.now().getYear();
+        int nowMonth = LocalDateTime.now().getMonthValue();
+
+        // 1월이면 작년 12월로 보정
+        if (nowMonth == 1) {
+            nowMonth = 12;
+            nowYear -= 1;
+        } else {
+            nowMonth -= 1;
+        }
+
+        int size = members.size();
+        int safeSize = size == 0 ? 1 : size;
+
         return DepartmentScore.builder()
                 .company(item.getCompany())
                 .department(item)
-                .total(total/members.size())
-                .environment(environment/members.size())
-                .governance(governance/members.size())
-                .social(social/members.size())
-                .year(LocalDateTime.now().getYear())
-                .month(LocalDateTime.now().getMonthValue())
+                .total(size == 0 ? 0 : total / safeSize)
+                .environment(size == 0 ? 0 : environment / safeSize)
+                .governance(size == 0 ? 0 : governance / safeSize)
+                .social(size == 0 ? 0 : social / safeSize)
+                .year(nowYear)
+                .month(nowMonth)
                 .build();
     }
 }

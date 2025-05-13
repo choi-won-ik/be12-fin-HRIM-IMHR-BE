@@ -5,6 +5,8 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -16,7 +18,7 @@ public class Rank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_idx")
     @Setter
     private Member member;
@@ -35,4 +37,17 @@ public class Rank {
     private int year;
     @Column(nullable = false)
     private int month;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Rank)) return false;
+        Rank rank = (Rank) o;
+        return idx != null && idx.equals(rank.idx);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idx);
+    }
 }

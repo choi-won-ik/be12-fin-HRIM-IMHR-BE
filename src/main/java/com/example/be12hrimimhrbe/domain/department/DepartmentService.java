@@ -3,14 +3,12 @@ package com.example.be12hrimimhrbe.domain.department;
 import com.example.be12hrimimhrbe.domain.activity.ActivityRepository;
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
-import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentScore;
 import com.example.be12hrimimhrbe.domain.member.MemberRepository;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
-import com.example.be12hrimimhrbe.domain.member.model.MemberDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -30,18 +25,59 @@ public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final MemberRepository memberRepository;
     private final ActivityRepository activityRepository;
+    private final DepartmentScoreRepository departmentScoreRepository;
 
     @Transactional
-    public BaseResponse<String> updateElements(DepartmentDto.CDRequest dto, CustomUserDetails customMember) {
+    public BaseResponse<String> create(DepartmentDto.CDRequest dto, Member member) {
+        Member nowmember = memberRepository.findById(member.getIdx()).orElse(null);
+        if (nowmember == null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "회원을 찾을 수 없습니다.");
+        }
+
+        List<Department> createDepartments = dto.toCreateEntity(nowmember.getCompany());
+        departmentRepository.saveAll(createDepartments);
+
+        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_CREATE_SUCCESS, "부서 생성 완료");
+    }
+
+    @Transactional
+    public BaseResponse<String> delete(Long departmentIdx, CustomUserDetails customMember) {
         Member member = memberRepository.findById(customMember.getMember().getIdx()).orElse(null);
         if (member == null) {
             return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "회원을 찾을 수 없습니다.");
         }
-        List<Department> createDepartments = dto.toCreateEntity(member.getCompany());
-        List<Department> deleteDepartments = dto.toDeleteEntity();
-        departmentRepository.saveAll(createDepartments);
-        departmentRepository.deleteAllInBatch(deleteDepartments);
-        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_UPDATE_SUCCESS, "부서 설정 완료");
+
+        Department department = departmentRepository.findByIdx(departmentIdx);
+
+        if (department != null) {
+            department.setIs_deleted(true);
+        }
+
+        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_DELETE_SUCCESS, "부서 삭제 완료");
+    }
+
+    @Transactional
+    public BaseResponse<String> update(DepartmentDto.DepartmentInfoResponse dto, Member member) {
+        Member nowmember = memberRepository.findById(member.getIdx()).orElse(null);
+        Department department = departmentRepository.findById(dto.getIdx()).orElse(null);
+
+        if (nowmember == null) {
+            return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, "회원을 찾을 수 없습니다.");
+        }
+        if (!member.getIsAdmin()) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
+        }
+        if (department == null) {
+            return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_DELETE_FAIL, "존재하지 않는 부서 입니다.");
+        }
+
+        department.setName(dto.getName());
+        department.setTargetEScore(dto.getTargetEScore());
+        department.setTargetGScore(dto.getTargetGScore());
+        department.setTargetGScore(dto.getTargetGScore());
+        departmentRepository.save(department);
+
+        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_UPDATE_SUCCESS, "부서 업데이트 완료");
     }
 
     public BaseResponse<DepartmentDto.DepartmentListResponse> getList(Member member) {
@@ -49,18 +85,22 @@ public class DepartmentService {
         if (member == null) {
             return new BaseResponse<>(BaseResponseMessage.MEMBER_SEARCH_NOT_FOUND, null);
         }
-        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany());
+
+        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany()).stream()
+                .filter(d -> !d.getIs_deleted())
+                .collect(Collectors.toList());
+
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_RETRIEVE_SUCCESS,
                 DepartmentDto.DepartmentListResponse.fromDepartments(departments));
     }
 
     // 하나의 APi만 호출할때에 주석처리 해야함
     @Transactional
-    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Member member, Long departmentIdx, int year, int month) {
+    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment1(Member member, Long departmentIdx, int year, int month) {
 
         Company mycompany = member.getCompany();
 
-        List<Member> dMembers = new ArrayList<>();
+        List<Member> dMembers;
         Department department;
 
         // 1. 해당 부서 소속 사원 목록 조회
@@ -118,6 +158,30 @@ public class DepartmentService {
         DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.fromEntity(department, avgE, avgS, avgG, avgtotal);
         return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
     }
+
+    @Transactional(readOnly = true)
+    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Long departmentIdx, int year, int month) {
+
+        DepartmentScore ds = departmentScoreRepository.findByCompanyIdx(departmentIdx,year,month);
+
+        DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.builder()
+                .idx(departmentIdx)
+                .departmentName(ds.getDepartment().getName())
+                .departmentEScore(ds.getEnvironment())
+                .departmentGScore(ds.getGovernance())
+                .departmentSScore(ds.getSocial())
+                .departmentTotalScore(ds.getTotal())
+                .build();
+//        for (DepartmentScore d : ds) {
+//            if(d.getMonth()==month && d.getYear()==year) {
+//                response =
+//            }
+//        }
+
+
+        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
+    }
+
 
     public DepartmentScore score(Department item) {
         List<Member> members = item.getMembers();

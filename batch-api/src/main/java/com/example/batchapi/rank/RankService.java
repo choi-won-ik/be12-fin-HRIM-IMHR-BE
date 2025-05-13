@@ -25,7 +25,7 @@ public class RankService {
         List<Member> members = memberRepository.findAllByCompany(item);
 
         List<RankDto.Aggregateresp> list = new ArrayList<>();
-        if(!members.isEmpty()) {
+        if (!members.isEmpty()) {
             for (Member member : members) {
                 int average = (member.getEScore() + member.getSScore() + member.getGScore()) / 3;
 
@@ -38,17 +38,26 @@ public class RankService {
 
             list.sort(Comparator.comparing(RankDto.Aggregateresp::getAverage).reversed());
 
-            for(int i = 0; i<3; i++){
-                System.out.println(list.get(i).getAverage()+" "+list.get(i).getMember().getIdx());
+            for (int i = 0; i < 3; i++) {
 
+                int nowYear = LocalDateTime.now().getYear();
+                int nowMonth = LocalDateTime.now().getMonthValue();
+
+                // 1월이면 작년 12월로 보정
+                if (nowMonth == 1) {
+                    nowMonth = 12;
+                    nowYear -= 1;
+                } else {
+                    nowMonth -= 1;
+                }
 
                 result.add(Rank.builder()
                         .member(list.get(i).getMember())
                         .company(item)
                         .average(list.get(i).getAverage())
-                        .ranking(i+1)
-                        .year(LocalDateTime.now().getYear())
-                        .month(LocalDateTime.now().getMonthValue())
+                        .ranking(i + 1)
+                        .year(nowYear)
+                        .month(nowMonth)
                         .build());
             }
         }
