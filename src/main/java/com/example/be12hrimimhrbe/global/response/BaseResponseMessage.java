@@ -92,7 +92,6 @@ public enum BaseResponseMessage {
     USER_ACTIVITYLIST_FIND(true,7002,"개인 유저가 활동 리스트를 확인합니다."),
     ACTIVITY_APPROVAL_AGREE(true,7003,"활동이 승인 되었습니다."),
     ACTIVITY_APPROVAL_OPPOSE(true,7004,"활동이 반려 되었습니다."),
-    MY_ACTIVITY_PROCESSED(false,7005,"이미 처리된 활동입니다."),
     ACTIVITY_APPROVAL_FALSE(false,7005,"활동 처리 권한이 없습니다."),
     ACTIVITY_REGIST_SUCCESS(true,7006,"활동 등록이 완료 되었습니다."),
     ACTIVITY_DELETE_SUCCESS(true,7007,"내 활동이 삭제 되었습니다."),
@@ -110,6 +109,9 @@ public enum BaseResponseMessage {
     ESG_ACTIVITY_INPUT_LEFT(false, 7404 ,"활동 입력이 누락되었습니다."),
     ESG_ACTIVITY_LIST_SEARCH_SUCCESS(true, 7201,"활동 리스트 조회를 성공했습니다."),
     ESG_ACTIVITY_DETAIL_SUCCESS(true, 7201,"활동 상세 조회를 성공했습니다."),
+    ESG_ACTIVITY_APPROVAL_AGREE(true,7003,"활동이 승인 되었습니다."),
+    ESG_ACTIVITY_APPROVAL_OPPOSE(true,7004,"활동이 반려 되었습니다."),
+    MY_ACTIVITY_PROCESSED(false,7005,"이미 처리된 활동입니다."),
 
     // 회사 점수 8000
     MY_COMPANY_SUCCESS(true, 8801, "회사 점수를 확인합니다."),

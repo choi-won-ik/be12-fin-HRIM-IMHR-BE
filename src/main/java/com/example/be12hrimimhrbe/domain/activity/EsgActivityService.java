@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.activity;
 
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.EsgActivity;
 import com.example.be12hrimimhrbe.domain.activity.model.EsgActivityDto;
 import com.example.be12hrimimhrbe.domain.activitySubject.ActivitySubjectRepository;
@@ -81,6 +82,7 @@ public class EsgActivityService {
         return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_LIST_SEARCH_SUCCESS, responses);
     }
 
+    @Transactional
     public BaseResponse<EsgActivity> detail(Member member, String id) {
         Long companyIdx = member.getCompany().getIdx();
 
@@ -91,5 +93,60 @@ public class EsgActivityService {
         }
 
         return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_DETAIL_SUCCESS, esgActivity);
+    }
+
+    @Transactional
+    public BaseResponse<String> approvalAgree(Member member, String id) {
+        EsgActivity esgActivity = esgActivityRepository.findById(id);
+        Member activityMember = memberRepository.findByIdx(member.getIdx());
+
+        if (!member.getIsAdmin()) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, "접근 불가능한 권한입니다.");
+        }
+
+        if (esgActivity.getStatus() != null && !esgActivity.getStatus()) {
+            return new BaseResponse<>(BaseResponseMessage.MY_ACTIVITY_PROCESSED, "이미 처리된 활동입니다.");
+        }
+
+
+        memberScoreAdd(esgActivity, activityMember);
+
+        esgActivity.setStatus(true);
+        esgActivityRepository.save(esgActivity);
+
+        return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_APPROVAL_AGREE, "활등 승인이 완료되었습니다.");
+    }
+
+    @Transactional
+    public BaseResponse<String> approvalOppose(Member member, String id) {
+        EsgActivity esgActivity = esgActivityRepository.findById(id);
+
+        if (!member.getIsAdmin()) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, "접근 불가능한 권한입니다.");
+        }
+
+        if (esgActivity.getStatus() != null && esgActivity.getStatus()) {
+            return new BaseResponse<>(BaseResponseMessage.MY_ACTIVITY_PROCESSED, "이미 처리된 활동입니다.");
+        }
+
+        System.out.println(esgActivity.getId());
+        esgActivity.setStatus(false);
+        esgActivityRepository.save(esgActivity);
+
+        return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_APPROVAL_OPPOSE, "활동 반려가 완료되었습니다.");
+    }
+
+    @Transactional
+    public void memberScoreAdd(EsgActivity esgActivity, Member member) {
+        if(esgActivity.getEsgValue().equals("E")){
+            member.setEScore(member.getEScore() + esgActivity.getEsgScore());
+            memberRepository.save(member);
+        }else if(esgActivity.getEsgValue().equals("S")){
+            member.setSScore(member.getSScore() + esgActivity.getEsgScore());
+            memberRepository.save(member);
+        }else if(esgActivity.getEsgValue().equals("G")){
+            member.setGScore(member.getGScore() + esgActivity.getEsgScore());
+            memberRepository.save(member);
+        }
     }
 }

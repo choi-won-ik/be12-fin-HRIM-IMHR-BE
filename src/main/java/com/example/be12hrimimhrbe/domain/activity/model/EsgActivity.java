@@ -1,10 +1,7 @@
 package com.example.be12hrimimhrbe.domain.activity.model;
 
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -25,8 +22,12 @@ public class EsgActivity {
     private String userID;
     private Long companyIdx;
     private String subject;
-    private String segScore;
+    private int esgScore;
+    private String esgValue;
+
+    @Setter
     private Boolean status;
+
     private String esgActivityItem;
 
     private LocalDate activityDate;
