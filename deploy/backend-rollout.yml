@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: imhr-back
-          image: imhrkr/imhr-backend:1.140
+          image: imhrkr/imhr-backend:1.141
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
