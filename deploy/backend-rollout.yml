@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: backend-rollout
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: back-bluegreen
+  template:
+    metadata:
+      labels:
+        app: back-bluegreen
+    spec:
+      containers:
+        - name: imhr-back
+          image: imhrkr/imhr-backend:1.151
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: back-cm
+          volumeMounts:
+            - name: nfs-volume
+              mountPath: /mnt
+      volumes:
+        - name: nfs-volume
+          persistentVolumeClaim:
+            claimName: nfs-pvc
+  strategy:
+    blueGreen:
+      #activeService는 현재 운영중인 Blue 서비스
+      activeService: rollout-bluegreen-active
+
+      #previewService는 새롭게 배포될 Green 서비스
+      previewService: rollout-bluegreen-preview

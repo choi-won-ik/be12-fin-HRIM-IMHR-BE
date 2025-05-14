@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rollout-bluegreen-active
+spec:
+  type: LoadBalancer
+  selector:
+    app: back-bluegreen
+  ports:
+    - protocol: TCP
+      name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 30181
