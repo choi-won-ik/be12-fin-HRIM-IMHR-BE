@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: rank-batch
-              image: imhr/rank-batch1.16
+              image: imhr/rank-batch:1.0.0
               env:
                 - name: BATCH_JOB_NAME
                   value: rankJob
