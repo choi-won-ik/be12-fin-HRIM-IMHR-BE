@@ -62,6 +62,11 @@ pipeline {
                             def newVersion = "${IMAGE_TAG}"
                             echo "Editing Manifest..."
 
+                            // 변경사항 초기화 (모든 변경 제거)
+                            sh 'git reset --hard'
+                            sh 'git clean -fd' // untracked 파일도 삭제
+
+                            // 브랜치 강제 checkout
                             sh 'git fetch origin'
                             sh 'git checkout -B deploy/argo/cd origin/deploy/argo/cd'
 
