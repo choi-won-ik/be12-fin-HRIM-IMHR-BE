@@ -61,19 +61,27 @@ pipeline {
                         script{
                             def newVersion = "${IMAGE_TAG}"
                             echo "Editing Manifest..."
-                            sh 'cd ..'
-                            sh 'git checkout -f deploy/argo/cd'
-                            dir('batch') {
 
+                            // 변경사항 초기화 (모든 변경 제거)
+                            sh 'git reset --hard'
+                            sh 'git clean -fd' // untracked 파일도 삭제
+
+                            // 브랜치 강제 checkout
+                            sh 'git fetch origin'
+                            sh 'git checkout -B deploy/argo/cd origin/deploy/argo/cd'
+
+                            dir('batch') {
                                 def files = [
                                         "rankJob.yaml",
                                         "scoreJob.yaml",
                                         "memberJob.yaml"
                                 ]
                                 files.each { file ->
-                                    sh "sed -i 's/:1\\.[0-9]\\+/${newVersion}/g' ${file}"
+                                    sh "sed -i 's|image: imhrkr/batch-api:[0-9.]*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' ${file}"
                                 }
 
+                                // 변경된 파일 git add
+                                sh "git add ${files.join(' ')}"
                             }
 
                         }
@@ -91,12 +99,13 @@ pipeline {
 
 
                         sh """
-                          git add .
-                          git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
-                          echo "after commit"
-                          git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
-                          echo "after seturl"
-                          git push origin deploy/argo/cd
+                          if ! git diff --cached --quiet; then
+                            git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
+                            git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
+                            git push origin deploy/argo/cd
+                          else
+                            echo "No changes to commit."
+                          fi
                         """
 
                     }
