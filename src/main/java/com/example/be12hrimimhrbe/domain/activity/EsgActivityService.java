@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.activity;
 
+import com.example.be12hrimimhrbe.domain.activity.model.EsgActivity;
 import com.example.be12hrimimhrbe.domain.activity.model.EsgActivityDto;
 import com.example.be12hrimimhrbe.domain.activitySubject.ActivitySubjectRepository;
 import com.example.be12hrimimhrbe.domain.activitySubject.model.ActivitySubject;
@@ -10,6 +11,8 @@ import com.example.be12hrimimhrbe.global.LocalImageService;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import com.example.be12hrimimhrbe.global.response.BaseResponseMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,23 +48,36 @@ public class EsgActivityService {
     }
 
     @Transactional
-    public BaseResponse<List<EsgActivityDto.ActivityResponse>> listSearch(Member member, Long myIdx) {
+    public BaseResponse<Page<EsgActivityDto.ActivityResponse>> listSearch(Member member, Long myIdx, Pageable pageable, String search) {
         Member nowmember = memberRepository.findByIdx(member.getIdx());
 
         if (!nowmember.getIsAdmin() && !nowmember.getIdx().equals(myIdx)) {
             return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
         }
-        List<EsgActivityDto.ActivityResponse> activitys = List.of();
 
+        Page<EsgActivity> esgActivities = null;
+
+        // 관리자
         if (nowmember.getIsAdmin()) {
-            activitys = esgActivityRepository.findByCompanyIdx(nowmember.getCompany().getIdx()).stream()
-                    .map(EsgActivityDto.ActivityResponse::fromEntity).toList();
-        }
-        if (!nowmember.getIsAdmin()) {
-            activitys = esgActivityRepository.findByMemberIdx(myIdx).stream()
-                    .map(EsgActivityDto.ActivityResponse::fromEntity).toList();
+            if (search != null && !search.isBlank()) {
+                esgActivities = esgActivityRepository.findByCompanyIdxAndSubjectContainingIgnoreCase(nowmember.getCompany().getIdx(), search, pageable);
+            } else {
+                esgActivities = esgActivityRepository.findAllByCompanyIdx(nowmember.getCompany().getIdx(), pageable);
+            }
         }
 
-        return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_LIST_SEARCH_SUCCESS, activitys);
+        // 개인
+        if (!nowmember.getIsAdmin()) {
+            if (search != null && !search.isBlank()) {
+                esgActivities = esgActivityRepository.findByMemberIdxAndSubjectContainingIgnoreCase(member.getIdx(), search, pageable);
+            } else {
+                esgActivities = esgActivityRepository.findAllByMemberIdx(member.getIdx(), pageable);
+            }
+        }
+
+        Page<EsgActivityDto.ActivityResponse> responses = esgActivities
+                .map(EsgActivityDto.ActivityResponse::fromEntity);
+
+        return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_LIST_SEARCH_SUCCESS, responses);
     }
 }

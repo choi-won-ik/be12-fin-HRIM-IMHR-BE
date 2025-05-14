@@ -6,6 +6,9 @@ import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -44,12 +47,16 @@ public class EsgActivityController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/listsearch/{myIdx}")
+    @GetMapping("/pageList")
     @Operation(summary = "내 활동 리스트 조회", description = "내가 한 ESG 활동들의 리스트를 조회하는기능입니다.")
-    public ResponseEntity<BaseResponse<List<EsgActivityDto.ActivityResponse>>> listSearch(
+    public ResponseEntity<BaseResponse<Page<EsgActivityDto.ActivityResponse>>> listSearch(
             @AuthenticationPrincipal CustomUserDetails member,
-            @PathVariable Long myIdx
+            @RequestParam Long myIdx,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(required = false) String keyword
     ) {
-        return ResponseEntity.ok().body(esgActivityService.listSearch(member.getMember(), myIdx));
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok().body(esgActivityService.listSearch(member.getMember(), myIdx, pageable, keyword));
     }
 }

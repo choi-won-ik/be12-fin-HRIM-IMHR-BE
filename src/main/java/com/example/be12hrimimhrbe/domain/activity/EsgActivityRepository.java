@@ -9,8 +9,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface EsgActivityRepository extends MongoRepository<EsgActivity, Long> {
-//    Page<EsgActivity> findByCompanyIdx(Long companyIdx, Pageable pageable);
-
-    List<EsgActivity> findByMemberIdx(Long memberIdx);
     List<EsgActivity> findByCompanyIdx(Long companyIdx);
+
+    Page<EsgActivity> findAllByCompanyIdx(Long companyIdx, Pageable pageable);
+    Page<EsgActivity> findByCompanyIdxAndSubjectContainingIgnoreCase(Long companyIdx, String subject, Pageable pageable);
+
+    Page<EsgActivity> findAllByMemberIdx(Long memberIdx, Pageable pageable);
+    Page<EsgActivity> findByMemberIdxAndSubjectContainingIgnoreCase(Long memberIdx, String subject, Pageable pageable);
 }
