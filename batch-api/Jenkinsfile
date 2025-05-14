@@ -63,25 +63,27 @@ pipeline {
                         usernamePassword(credentialsId: 'IUCH_GIT', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD'),
                         string(credentialsId: 'IMHR_GIT_URL', variable: 'GITHUB_URL')
                     ]) {
+                        dir('batch') {
+                            def files = [
+                                "rankJob.yaml",
+                                "scoreJob.yaml",
+                                "memberJob.yaml"
+                            ]
 
-                        def files = [
-                            "rankJob.yaml",
-                            "scoreJob.yaml",
-                            "memberJob.yaml"
-                        ]
+                            files.each { file ->
+                                sh "sed -i 's/latest/${newVersion}/g' ${file}"
+                            }
 
-                        files.each { file ->
-                            sh "sed -i 's/latest/${newVersion}/g' ${file}"
+                            sh """
+                              git add .
+                              git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
+                              echo "after commit"
+                              git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
+                              echo "after seturl"
+                              git push origin deploy/argo/cd
+                            """
                         }
 
-                        sh """
-                          git add .
-                          git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
-                          echo "after commit"
-                          git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
-                          echo "after seturl"
-                          git push origin deploy/argo/cd
-                        """
                     }
                 }
             }
