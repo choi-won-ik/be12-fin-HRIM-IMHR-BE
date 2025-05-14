@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: score-batch
-              image: imhrkr/batch-api:1.29
+              image: imhrkr/batch-api:1.30
               env:
                 - name: BATCH_JOB_NAME
                   value: scoreJob
