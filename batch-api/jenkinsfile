@@ -64,6 +64,11 @@ pipeline {
                         string(credentialsId: 'IMHR_GIT_URL', variable: 'GITHUB_URL')
                     ]) {
 
+                        sh """
+                            git checkout -f deploy/argo/cd
+                            git pull --rebase origin deploy/argo/cd
+                        """
+
                         def files = [
                             "/batch-api/rankJob.yaml",
                             "/batch-api/scoreJob.yaml",
