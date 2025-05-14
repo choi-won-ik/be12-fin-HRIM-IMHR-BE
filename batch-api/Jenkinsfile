@@ -37,17 +37,17 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('/batch-api') {
-                    sh 'chmod +x gradlew'
-                    sh './gradlew clean build --refresh-dependencies -x test'
-                }
+
+                sh 'chmod +x gradlew'
+                sh './gradlew clean build --refresh-dependencies -x test'
+
             }
         }
 
         stage('Docker Build & Push') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'IMHR_DOCKER_HUB', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} /batch-api"
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                     sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
                     sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
@@ -65,9 +65,9 @@ pipeline {
                     ]) {
 
                         def files = [
-                            "/batch-api/rankJob.yaml",
-                            "/batch-api/scoreJob.yaml",
-                            "/batch-api/memberJob.yaml"
+                            "rankJob.yaml",
+                            "scoreJob.yaml",
+                            "memberJob.yaml"
                         ]
 
                         files.each { file ->
