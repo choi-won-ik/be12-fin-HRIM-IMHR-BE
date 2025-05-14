@@ -80,4 +80,16 @@ public class EsgActivityService {
 
         return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_LIST_SEARCH_SUCCESS, responses);
     }
+
+    public BaseResponse<EsgActivity> detail(Member member, String id) {
+        Long companyIdx = member.getCompany().getIdx();
+
+        EsgActivity esgActivity = esgActivityRepository.findById(id);
+
+        if (!companyIdx.equals(esgActivity.getCompanyIdx())) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, null);
+        }
+
+        return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_DETAIL_SUCCESS, esgActivity);
+    }
 }

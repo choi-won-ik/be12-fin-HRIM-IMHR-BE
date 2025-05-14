@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.domain.activity;
 
 
+import com.example.be12hrimimhrbe.domain.activity.model.EsgActivity;
 import com.example.be12hrimimhrbe.domain.activity.model.EsgActivityDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
@@ -58,5 +59,14 @@ public class EsgActivityController {
     ) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return ResponseEntity.ok().body(esgActivityService.listSearch(member.getMember(), myIdx, pageable, keyword));
+    }
+
+    @GetMapping("/detail/{id}")
+    @Operation(summary = "활동 상세 조회", description = "활동 내역 상세 조회하는 기능입니다.")
+    public ResponseEntity<BaseResponse<EsgActivity>> detail(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable String id
+    ) {
+        return ResponseEntity.ok().body(esgActivityService.detail(member.getMember(), id));
     }
 }
