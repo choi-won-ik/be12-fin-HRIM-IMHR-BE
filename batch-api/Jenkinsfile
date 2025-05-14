@@ -91,12 +91,15 @@ pipeline {
 
 
                         sh """
-                          git add .
-                          git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
-                          echo "after commit"
-                          git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
-                          echo "after seturl"
-                          git push origin deploy/argo/cd
+                          if ! git diff --cached --quiet; then
+                            git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
+                            echo "after commit"
+                            git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
+                            echo "after seturl"
+                            git push origin deploy/argo/cd
+                          else
+                            echo "No changes to commit."
+                          fi
                         """
 
                     }
