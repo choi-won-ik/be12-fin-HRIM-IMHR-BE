@@ -16,4 +16,6 @@ public interface EsgActivityRepository extends MongoRepository<EsgActivity, Long
 
     Page<EsgActivity> findAllByMemberIdx(Long memberIdx, Pageable pageable);
     Page<EsgActivity> findByMemberIdxAndSubjectContainingIgnoreCase(Long memberIdx, String subject, Pageable pageable);
+
+    EsgActivity findById(String id);
 }
