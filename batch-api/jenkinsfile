@@ -63,11 +63,6 @@ pipeline {
                         usernamePassword(credentialsId: 'IUCH_GIT', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD'),
                         string(credentialsId: 'IMHR_GIT_URL', variable: 'GITHUB_URL')
                     ]) {
-                        sh """
-                            git config --global user.email "jenkins@ci"
-                            git config --global user.name "jenkins"
-                            git checkout deploy/argo/cd
-                        """
 
                         def files = [
                             "/batch-api/rankJob.yaml",
