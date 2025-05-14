@@ -1,7 +1,9 @@
 package com.example.be12hrimimhrbe.domain.member;
 
 import com.example.be12hrimimhrbe.domain.activity.ActivityRepository;
+import com.example.be12hrimimhrbe.domain.activity.EsgActivityRepository;
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
+import com.example.be12hrimimhrbe.domain.activity.model.EsgActivity;
 import com.example.be12hrimimhrbe.domain.authority.HrAuthorityRepository;
 import com.example.be12hrimimhrbe.domain.authority.model.HrAuthority;
 import com.example.be12hrimimhrbe.domain.campaign.CampaignRepository;
@@ -49,6 +51,7 @@ public class MemberService implements UserDetailsService {
     private final CampaignRepository campaignRepository;
     private final FeedbackResponseRepository feedbackResponseRepository;
     private final ActivityRepository activityRepository;
+    private final EsgActivityRepository esgActivityRepository;
     private final NotificationRepository notificationRepository;
     private final PasswordEncoder passwordEncoder;
     private final HrAuthorityRepository hrAuthorityRepository;
@@ -193,7 +196,8 @@ public class MemberService implements UserDetailsService {
     }
 
     public BaseResponse<MemberDto.ActivityResponse> getMyActivity(CustomUserDetails customMember) {
-        List<Activity> activities = activityRepository.findAllByMember(customMember.getMember());
+//        List<Activity> activities = activityRepository.findAllByMember(customMember.getMember());
+        List<EsgActivity> activities = esgActivityRepository.findAllByMemberIdx(customMember.getMember().getIdx());
         List<Campaign> campaigns = campaignRepository.findAllByMember(customMember.getMember());
         List<MemberDto.ActivityItem> activityItems = activities.stream()
                                                             .map(MemberDto.ActivityItem::fromActivity)

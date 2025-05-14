@@ -2,6 +2,7 @@ package com.example.be12hrimimhrbe.domain.member.model;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.activity.model.ActivityDto;
+import com.example.be12hrimimhrbe.domain.activity.model.EsgActivity;
 import com.example.be12hrimimhrbe.domain.campaign.model.Campaign;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
@@ -135,6 +136,7 @@ public class MemberDto {
     @Getter @Builder @AllArgsConstructor @NoArgsConstructor
     public static class ActivityItem {
         private Long activityIdx;
+        private String activityId;
         private Long campaignIdx;
         private String type;
         private String content;
@@ -146,6 +148,14 @@ public class MemberDto {
                     .type(activity.getType().toString())
                     .title(activity.getTitle())
                     .content(activity.getDescription())
+                    .date(activity.getCreatedAt().toLocalDate())
+                    .build();
+        }
+        public static ActivityItem fromActivity(EsgActivity activity) {
+            return ActivityItem.builder()
+                    .activityId(activity.getId())
+                    .type(activity.getSubject())
+                    .title(activity.getSubject())
                     .date(activity.getCreatedAt().toLocalDate())
                     .build();
         }
