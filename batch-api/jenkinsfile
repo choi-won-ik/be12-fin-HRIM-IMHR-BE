@@ -64,11 +64,6 @@ pipeline {
                         string(credentialsId: 'IMHR_GIT_URL', variable: 'GITHUB_URL')
                     ]) {
 
-                        sh """
-                            git checkout -f deploy/argo/cd
-                            git pull --rebase origin deploy/argo/cd
-                        """
-
                         def files = [
                             "/batch-api/rankJob.yaml",
                             "/batch-api/scoreJob.yaml",
@@ -80,10 +75,12 @@ pipeline {
                         }
 
                         sh """
-                            git add rankJob.yaml scoreJob.yaml memberJob.yaml
-                            git commit -m "[Deploy] ${newVersion} 배포"
-                            git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
-                            git push origin deploy/argo/cd
+                          git add .
+                          git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
+                          echo "after commit"
+                          git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
+                          echo "after seturl"
+                          git push origin deploy/argo/cd
                         """
                     }
                 }
