@@ -69,4 +69,22 @@ public class EsgActivityController {
     ) {
         return ResponseEntity.ok().body(esgActivityService.detail(member.getMember(), id));
     }
+
+    @GetMapping("/ativityApproval/agree/{id}")
+    @Operation(summary = "ESG활동 승인", description = "직원 ESG활동을 승인 합니다.")
+    public ResponseEntity<BaseResponse<String>> approvalAgree(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable("id") String id
+    ){
+        return ResponseEntity.ok().body(esgActivityService.approvalAgree(member.getMember(), id));
+    }
+
+    @GetMapping("/ativityApproval/oppose/{id}")
+    @Operation(summary = "ESG활동 반려", description = "직원 ESG활동을 반려 합니다.")
+    public ResponseEntity<BaseResponse<String>> approvalOppose(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable("id") String id
+    ){
+        return ResponseEntity.ok().body(esgActivityService.approvalOppose(member.getMember(), id));
+    }
 }

@@ -174,7 +174,7 @@ public class ActivityService {
 
     }
 
-    public void memberScoreAdd(int score,Activity activity,Member member) {
+    public void memberScoreAdd(int score, Activity activity,Member member) {
         if(score==0)
             score=1;
         if(activity.getEducationType().equals(Activity.EducationType.ENVIRONMENTAL_EDUCATION)){
