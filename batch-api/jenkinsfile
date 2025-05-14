@@ -65,8 +65,8 @@ pipeline {
                     ]) {
 
                         sh """
-                            git checkout -f deploy/argo/cd
-                            git pull --rebase origin deploy/argo/cd
+                            git checkout -f deploy/argo/batch
+                            git pull --rebase origin deploy/argo/batch
                         """
 
                         def files = [
@@ -83,7 +83,7 @@ pipeline {
                             git add rankJob.yaml scoreJob.yaml memberJob.yaml
                             git commit -m "[Deploy] ${newVersion} 배포"
                             git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
-                            git push origin deploy/argo/cd
+                            git push origin deploy/argo/batch
                         """
                     }
                 }
