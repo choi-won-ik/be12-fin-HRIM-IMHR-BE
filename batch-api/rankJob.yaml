@@ -20,5 +20,3 @@ spec:
               envFrom:
                 - configMapRef:
                     name: back-cm
-          restartPolicy: OnFailure
-      backoffLimit: 5
