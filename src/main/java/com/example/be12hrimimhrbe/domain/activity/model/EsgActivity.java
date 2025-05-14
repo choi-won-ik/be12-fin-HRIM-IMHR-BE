@@ -27,6 +27,7 @@ public class EsgActivity {
     private String subject;
     private String segScore;
     private Boolean status;
+    private String esgActivityItem;
 
     private LocalDate activityDate;
     private Map<String, Object> inputs;

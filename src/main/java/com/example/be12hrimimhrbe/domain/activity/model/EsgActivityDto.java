@@ -14,6 +14,7 @@ public class EsgActivityDto {
     public static class ActivityRequest {
         private String subjectId;
         private String subject; // 예: "봉사"
+        private String esgActivityItem;
         private LocalDate activityDate;
         private Map<String, Object> inputs; // "봉사시간": 2, "봉사처": "서울숲" 등
         private Boolean status;
@@ -38,6 +39,7 @@ public class EsgActivityDto {
         private String activityId;
         private Long memberIdx;
         private Long companyIdx;
+        private String esgActivityItem;
         private String subject;
         private Map<String, Object> inputs;
         private LocalDate activityDate;
@@ -51,6 +53,7 @@ public class EsgActivityDto {
                     .activityId(entity.getId())
                     .memberIdx(entity.getMemberIdx())
                     .userName(entity.getUserName())
+                    .esgActivityItem(entity.getEsgActivityItem())
                     .companyIdx(entity.getCompanyIdx())
                     .subject(entity.getSubject())
                     .userID(entity.getUserID())
