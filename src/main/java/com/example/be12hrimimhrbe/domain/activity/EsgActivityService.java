@@ -82,6 +82,17 @@ public class EsgActivityService {
         return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_LIST_SEARCH_SUCCESS, responses);
     }
 
+    public BaseResponse<String> delete(Member member, String id) {
+        EsgActivity esgActivity = esgActivityRepository.findById(id);
+
+        if (!esgActivity.getMemberIdx().equals(member.getIdx())) {
+            return new BaseResponse<>(BaseResponseMessage.INAPPROPRIATE_MEMBER_ACCESS_RIGHTS_FAILS, "접근 불가능한 권한입니다.");
+        }
+
+        activityRepository.delete(esgActivity);
+        return new BaseResponse<>(BaseResponseMessage.ESG_ACTIVITY_DELETE_SUCCESS, "활동 삭제를 성공했습니다.");
+    }
+
     @Transactional
     public BaseResponse<EsgActivity> detail(Member member, String id) {
         Long companyIdx = member.getCompany().getIdx();

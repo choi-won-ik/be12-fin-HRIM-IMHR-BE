@@ -1,6 +1,5 @@
 package com.example.be12hrimimhrbe.domain.activity;
 
-
 import com.example.be12hrimimhrbe.domain.activity.model.EsgActivity;
 import com.example.be12hrimimhrbe.domain.activity.model.EsgActivityDto;
 import com.example.be12hrimimhrbe.domain.member.model.CustomUserDetails;
@@ -70,11 +69,20 @@ public class EsgActivityController {
         return ResponseEntity.ok().body(esgActivityService.detail(member.getMember(), id));
     }
 
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "활동 삭제", description = "활동 내역을 삭제하는 기능입니다.")
+    public ResponseEntity<BaseResponse<String>> delete(
+            @AuthenticationPrincipal CustomUserDetails member,
+            @PathVariable String id
+    ) {
+        return ResponseEntity.ok().body(esgActivityService.delete(member.getMember(), id));
+    }
+
     @GetMapping("/ativityApproval/agree/{id}")
     @Operation(summary = "ESG활동 승인", description = "직원 ESG활동을 승인 합니다.")
     public ResponseEntity<BaseResponse<String>> approvalAgree(
             @AuthenticationPrincipal CustomUserDetails member,
-            @PathVariable("id") String id
+            @PathVariable String id
     ){
         return ResponseEntity.ok().body(esgActivityService.approvalAgree(member.getMember(), id));
     }
@@ -83,7 +91,7 @@ public class EsgActivityController {
     @Operation(summary = "ESG활동 반려", description = "직원 ESG활동을 반려 합니다.")
     public ResponseEntity<BaseResponse<String>> approvalOppose(
             @AuthenticationPrincipal CustomUserDetails member,
-            @PathVariable("id") String id
+            @PathVariable String id
     ){
         return ResponseEntity.ok().body(esgActivityService.approvalOppose(member.getMember(), id));
     }

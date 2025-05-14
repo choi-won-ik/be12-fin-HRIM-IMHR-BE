@@ -111,6 +111,7 @@ public enum BaseResponseMessage {
     ESG_ACTIVITY_DETAIL_SUCCESS(true, 7201,"활동 상세 조회를 성공했습니다."),
     ESG_ACTIVITY_APPROVAL_AGREE(true,7003,"활동이 승인 되었습니다."),
     ESG_ACTIVITY_APPROVAL_OPPOSE(true,7004,"활동이 반려 되었습니다."),
+    ESG_ACTIVITY_DELETE_SUCCESS(true,7007,"내 활동이 삭제 되었습니다."),
     MY_ACTIVITY_PROCESSED(false,7005,"이미 처리된 활동입니다."),
 
     // 회사 점수 8000
