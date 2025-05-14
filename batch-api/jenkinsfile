@@ -1,0 +1,93 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = 'imhrkr/batch-api'
+        IMAGE_TAG  = "1.${BUILD_NUMBER}"
+    }
+
+    stages {
+
+        stage('Clean up directory') {
+            steps {
+                script {
+                    sh 'rm -rf ./* ./.git'
+                }
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                echo "Cloning Repository..."
+                git branch: 'main', url: 'https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE.git'
+            }
+        }
+
+        stage('Check cloned files') {
+            steps {
+                sh 'ls -al'
+            }
+        }
+
+        stage('Check gradle wrapper') {
+            steps {
+                sh 'ls -al batch-api/gradle/wrapper'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('batch-api') {
+                    sh 'chmod +x gradlew'
+                    sh './gradlew clean build --refresh-dependencies -x test'
+                }
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'IMHR_DOCKER_HUB', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} /batch-api"
+                    sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
+                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                }
+            }
+        }
+
+        stage('Update YAML and Push to Git') {
+            steps {
+                script {
+                    def newVersion = "${IMAGE_TAG}"
+
+                    withCredentials([
+                        usernamePassword(credentialsId: 'IUCH_GIT', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD'),
+                        string(credentialsId: 'IMHR_GIT_URL', variable: 'GITHUB_URL')
+                    ]) {
+                        sh """
+                            git config --global user.email "jenkins@ci"
+                            git config --global user.name "jenkins"
+                            git checkout deploy/argo/cd
+                        """
+
+                        def files = [
+                            "/batch-api/rankJob.yaml",
+                            "/batch-api/scoreJob.yaml",
+                            "/batch-api/memberJob.yaml"
+                        ]
+
+                        files.each { file ->
+                            sh "sed -i 's/latest/${newVersion}/g' ${file}"
+                        }
+
+                        sh """
+                            git add rankJob.yaml scoreJob.yaml memberJob.yaml
+                            git commit -m "[Deploy] ${newVersion} 배포"
+                            git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
+                            git push origin deploy/argo/cd
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
