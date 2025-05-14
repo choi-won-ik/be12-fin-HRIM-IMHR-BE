@@ -61,10 +61,11 @@ pipeline {
                         script{
                             def newVersion = "${IMAGE_TAG}"
                             echo "Editing Manifest..."
-                            sh 'cd ..'
-                            sh 'git checkout -f deploy/argo/cd'
-                            dir('batch') {
 
+                            sh 'git fetch origin'
+                            sh 'git checkout -B deploy/argo/cd origin/deploy/argo/cd'
+
+                            dir('batch') {
                                 def files = [
                                         "rankJob.yaml",
                                         "scoreJob.yaml",
@@ -74,6 +75,8 @@ pipeline {
                                     sh "sed -i 's|image: imhrkr/batch-api:[0-9.]*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' ${file}"
                                 }
 
+                                // 변경된 파일 git add
+                                sh "git add ${files.join(' ')}"
                             }
 
                         }
@@ -93,9 +96,7 @@ pipeline {
                         sh """
                           if ! git diff --cached --quiet; then
                             git commit -m "[Deploy] v1.${BUILD_NUMBER} 배포"
-                            echo "after commit"
                             git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@${GITHUB_URL}
-                            echo "after seturl"
                             git push origin deploy/argo/cd
                           else
                             echo "No changes to commit."
