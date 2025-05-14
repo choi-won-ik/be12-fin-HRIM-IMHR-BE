@@ -63,7 +63,7 @@ pipeline {
                             echo "Editing Manifest..."
                             sh 'cd ..'
                             sh 'git checkout -f deploy/argo/cd'
-                            dir('batch-api') {
+                            dir('batch') {
 
                                 def files = [
                                         "rankJob.yaml",
