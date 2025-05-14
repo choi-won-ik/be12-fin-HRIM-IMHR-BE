@@ -37,7 +37,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('batch-api') {
+                dir('/batch-api') {
                     sh 'chmod +x gradlew'
                     sh './gradlew clean build --refresh-dependencies -x test'
                 }
