@@ -71,7 +71,7 @@ pipeline {
                                         "memberJob.yaml"
                                 ]
                                 files.each { file ->
-                                    sh "sed -i 's/:1\\.[0-9]\\+/${newVersion}/g' ${file}"
+                                    sh "sed -i 's|image: imhrkr/batch-api:[0-9.]*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' ${file}"
                                 }
 
                             }
