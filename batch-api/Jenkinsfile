@@ -37,10 +37,10 @@ pipeline {
 
         stage('Build') {
             steps {
-
-                sh 'chmod +x gradlew'
-                sh './gradlew clean build --refresh-dependencies -x test'
-
+                dir('batch-api') {
+                    sh 'chmod +x gradlew'
+                    sh './gradlew clean build --refresh-dependencies -x test'
+                }
             }
         }
 
@@ -63,7 +63,7 @@ pipeline {
                         usernamePassword(credentialsId: 'IUCH_GIT', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD'),
                         string(credentialsId: 'IMHR_GIT_URL', variable: 'GITHUB_URL')
                     ]) {
-                        dir('batch') {
+                        dir('batch-api') {
                             def files = [
                                 "rankJob.yaml",
                                 "scoreJob.yaml",
