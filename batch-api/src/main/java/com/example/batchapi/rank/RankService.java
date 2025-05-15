@@ -47,17 +47,16 @@ public class RankService {
             } else {
                 nowMonth -= 1;
             }
-            for (int i = 0; i < 3; i++) {
-                if(list.size()<i){
-                    result.add(Rank.builder()
-                            .member(list.get(i).getMember())
-                            .company(item)
-                            .average(list.get(i).getAverage())
-                            .ranking(i + 1)
-                            .year(nowYear)
-                            .month(nowMonth)
-                            .build());
-                }
+            int limit = Math.min(3, list.size());
+            for (int i = 0; i < limit; i++) {
+                result.add(Rank.builder()
+                        .member(list.get(i).getMember())
+                        .company(item)
+                        .average(list.get(i).getAverage())
+                        .ranking(i + 1)
+                        .year(nowYear)
+                        .month(nowMonth)
+                        .build());
             }
         }
 
