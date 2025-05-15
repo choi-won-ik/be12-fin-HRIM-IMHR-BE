@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: member-batch
-              image: imhrkr/batch-api:1.30
+              image: imhrkr/batch-api:1.31
               env:
                 - name: BATCH_JOB_NAME
                   value: memberJob
