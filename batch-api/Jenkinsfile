@@ -70,17 +70,19 @@ pipeline {
                             sh 'git fetch origin'
                             sh 'git checkout -B deploy/argo/cd origin/deploy/argo/cd'
 
-                            def manifestFiles = [
-                                "batch/rankJob.yaml",
-                                "batch/scoreJob.yaml",
-                                "batch/memberJob.yaml"
-                            ]
+                            dir('batch') {
+                                def files = [
+                                        "rankJob.yaml",
+                                        "scoreJob.yaml",
+                                        "memberJob.yaml"
+                                ]
+                                files.each { file ->
+                                    sh "sed -i 's|image: imhrkr/batch-api:[0-9.]*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' ${file}"
+                                }
 
-                            manifestFiles.each { file ->
-                                sh "sed -i 's|image: imhrkr/batch-api:[0-9.]*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' ${file}"
+                                // 변경된 파일 git add
+                                sh "git add ${files.join(' ')}"
                             }
-
-                            sh "git add ${manifestFiles.join(' ')}"
 
                         }
                     }
