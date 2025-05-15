@@ -12,7 +12,6 @@ spec:
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 30
-      backoffLimit: 2
       template:
         spec:
           restartPolicy: OnFailure
