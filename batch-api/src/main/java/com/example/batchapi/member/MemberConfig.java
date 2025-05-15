@@ -4,7 +4,11 @@ package com.example.batchapi.member;
 import com.example.batchapi.member.model.Member;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -53,10 +57,19 @@ public class MemberConfig {
     }
 
     @Bean
+    @StepScope
     public ItemWriter<Member> memberWriter() {
         System.out.println("writer 실행");
         return new JpaItemWriterBuilder<Member>()
                 .entityManagerFactory(entityManagerFactory)
+                .build();
+    }
+
+    @Bean
+    public Job memberJob(JobRepository jobRepository, Step memberStep) {
+        return new JobBuilder("memberJob", jobRepository)
+                .incrementer(new RunIdIncrementer())
+                .start(memberStep)
                 .build();
     }
 
@@ -74,7 +87,4 @@ public class MemberConfig {
                 .transactionManager(jpaTransactionManager(entityManagerFactory))
                 .build();
     }
-
-
-
 }
