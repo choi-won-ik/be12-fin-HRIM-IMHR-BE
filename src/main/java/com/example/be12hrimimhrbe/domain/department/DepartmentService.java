@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -162,16 +163,23 @@ public class DepartmentService {
     @Transactional(readOnly = true)
     public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Long departmentIdx, int year, int month) {
 
-        DepartmentScore ds = departmentScoreRepository.findByDepartmentIdx(departmentIdx,year,month);
+        Optional<DepartmentScore> ds = departmentScoreRepository.findByDepartmentIdx(departmentIdx,year,month);
 
-        DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.builder()
-                .idx(departmentIdx)
-                .departmentName(ds.getDepartment().getName())
-                .departmentEScore(ds.getEnvironment())
-                .departmentGScore(ds.getGovernance())
-                .departmentSScore(ds.getSocial())
-                .departmentTotalScore(ds.getTotal())
-                .build();
+        if(ds.isPresent()) {
+            DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.builder()
+                    .idx(departmentIdx)
+                    .departmentName(ds.get().getDepartment().getName())
+                    .departmentEScore(ds.get().getEnvironment())
+                    .departmentGScore(ds.get().getGovernance())
+                    .departmentSScore(ds.get().getSocial())
+                    .departmentTotalScore(ds.get().getTotal())
+                    .build();
+
+            return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
+        }else{
+            return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_FAIL);
+        }
+
 //        for (DepartmentScore d : ds) {
 //            if(d.getMonth()==month && d.getYear()==year) {
 //                response =
@@ -179,7 +187,7 @@ public class DepartmentService {
 //        }
 
 
-        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
+
     }
 
 
