@@ -56,7 +56,6 @@ pipeline {
             }
         }
 
-
         stage('Edit Manifest') {
                     steps {
                         script{
