@@ -161,11 +161,7 @@ public class DepartmentService {
 
     @Transactional(readOnly = true)
     public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Long departmentIdx, int year, int month) {
-        month--;
-        if(month<0){
-            month=12;
-            year--;
-        }
+
         DepartmentScore ds = departmentScoreRepository.findByCompanyIdx(departmentIdx,year,month);
 
         DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.builder()
