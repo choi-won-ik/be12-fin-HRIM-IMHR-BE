@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class BatchApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BatchApiApplication.class, args);
+        System.exit(SpringApplication.exit(SpringApplication.run(BatchApiApplication.class, args)));
+//        SpringApplication.run(BatchApiApplication.class, args);
     }
 }
