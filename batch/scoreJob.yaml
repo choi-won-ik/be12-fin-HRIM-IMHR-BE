@@ -14,7 +14,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: score-batch
-              image: imhrkr/batch-api:1.0
+              image: imhrkr/batch-api:1.41
               env:
                 - name: BATCH_JOB_NAME
                   value: scoreJob
