@@ -7,8 +7,8 @@ spec:
   schedule: "*/5,*/9 * * * *"
   startingDeadlineSeconds: 40  # ⬅️ 잡이 실행되지 못할 경우 허용 대기 시간 (선택)
   concurrencyPolicy: Forbid     # ⬅️ 이전 실행이 끝나지 않으면 중복 실행 금지
-  successfulJobsHistoryLimit: 1 # ⬅️ 완료된 잡 기록 수 제한
-  failedJobsHistoryLimit: 1     # ⬅️ 실패한 잡 기록 수 제한
+  successfulJobsHistoryLimit: 0 # ⬅️ 완료된 잡 기록 수 제한
+  failedJobsHistoryLimit: 0     # ⬅️ 실패한 잡 기록 수 제한
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 30
