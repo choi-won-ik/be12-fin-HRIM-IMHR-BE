@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: score-batch-job
+  namespace: imhr
+spec:
+  schedule: "0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58 * * * *"
+  successfulJobsHistoryLimit: 0   # 성공한 Job은 즉시 삭제
+  failedJobsHistoryLimit: 1       # 실패한 Job은 1개까지 보관
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 30
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: score-batch
+              image: imhrkr/batch-api:1.0
+              env:
+                - name: BATCH_JOB_NAME
+                  value: scoreJob
+              envFrom:
+                - configMapRef:
+                    name: back-cm

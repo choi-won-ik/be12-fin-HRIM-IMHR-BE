@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: member-batch-job
+  namespace: imhr
+spec:
+  schedule: "1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59 * * * *"
+  successfulJobsHistoryLimit: 0   # 성공한 Job은 즉시 삭제
+  failedJobsHistoryLimit: 1       # 실패한 Job은 1개까지 보관
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 30
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: member-batch
+              image: imhrkr/batch-api:1.0
+              env:
+                - name: BATCH_JOB_NAME
+                  value: memberJob
+              envFrom:
+                - configMapRef:
+                    name: back-cm
