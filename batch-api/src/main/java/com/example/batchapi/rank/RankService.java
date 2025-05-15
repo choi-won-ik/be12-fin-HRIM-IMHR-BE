@@ -48,15 +48,16 @@ public class RankService {
                 nowMonth -= 1;
             }
             for (int i = 0; i < 3; i++) {
-
-                result.add(Rank.builder()
-                        .member(list.get(i).getMember())
-                        .company(item)
-                        .average(list.get(i).getAverage())
-                        .ranking(i + 1)
-                        .year(nowYear)
-                        .month(nowMonth)
-                        .build());
+                if(list.size()<i){
+                    result.add(Rank.builder()
+                            .member(list.get(i).getMember())
+                            .company(item)
+                            .average(list.get(i).getAverage())
+                            .ranking(i + 1)
+                            .year(nowYear)
+                            .month(nowMonth)
+                            .build());
+                }
             }
         }
 
