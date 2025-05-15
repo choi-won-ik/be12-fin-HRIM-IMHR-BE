@@ -11,6 +11,7 @@ spec:
   failedJobsHistoryLimit: 1     # ⬅️ 실패한 잡 기록 수 제한
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 60
       backoffLimit: 2
       template:
         spec:
