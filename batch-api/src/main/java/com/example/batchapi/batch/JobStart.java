@@ -11,9 +11,11 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 @Configuration
 @RequiredArgsConstructor
 public class JobStart implements CommandLineRunner {
@@ -26,19 +28,24 @@ public class JobStart implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("배치 작업 시작");
+
         try {
             Job job = (Job) applicationContext.getBean(jobName);
-            System.out.println(job);
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
                     .toJobParameters();
             jobLauncher.run(job, jobParameters);
             System.out.println("배치 작업 성공");
+
+            int exitCode = SpringApplication.exit(applicationContext, () -> 0);
+            System.exit(exitCode);
+
         } catch (Exception e) {
             System.out.println("배치 작업 실패");
             e.printStackTrace();
-            // Optional: System.exit(1); 대신 예외 그대로 throw
-            throw e;
+
+            int exitCode = SpringApplication.exit(applicationContext, () -> 1);
+            System.exit(exitCode);
         }
     }
 }
