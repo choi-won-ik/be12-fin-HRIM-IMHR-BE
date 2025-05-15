@@ -18,7 +18,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: member-batch
-              image: imhrkr/batch-api:1.38
+              image: imhrkr/batch-api:1.39
               env:
                 - name: BATCH_JOB_NAME
                   value: memberJob
