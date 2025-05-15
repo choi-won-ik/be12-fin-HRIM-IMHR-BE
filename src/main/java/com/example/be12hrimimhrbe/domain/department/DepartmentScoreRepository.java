@@ -15,5 +15,5 @@ public interface DepartmentScoreRepository extends JpaRepository<DepartmentScore
             "WHERE d.idx= :departmentIdx " +
             "AND ds.year=:year " +
             "AND ds.month=:month ")
-    DepartmentScore findByCompanyIdx(Long departmentIdx,int year, int month);
+    DepartmentScore findByDepartmentIdx(Long departmentIdx,int year, int month);
 }
