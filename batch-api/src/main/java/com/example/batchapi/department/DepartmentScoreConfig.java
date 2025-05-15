@@ -4,7 +4,10 @@ import com.example.batchapi.department.model.Department;
 import com.example.batchapi.department.model.DepartmentScore;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -46,6 +49,14 @@ public class DepartmentScoreConfig {
         System.out.println("writer 실행");
         return new JpaItemWriterBuilder<DepartmentScore>()
                 .entityManagerFactory(entityManagerFactory)
+                .build();
+    }
+
+    @Bean
+    public Job scoreJob(JobRepository jobRepository, Step scoreStep) {
+        return new JobBuilder("scoreJob", jobRepository)
+                .incrementer(new RunIdIncrementer())
+                .start(scoreStep)
                 .build();
     }
 

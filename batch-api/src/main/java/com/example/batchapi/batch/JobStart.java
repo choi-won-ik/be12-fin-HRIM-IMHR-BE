@@ -23,30 +23,6 @@ public class JobStart implements CommandLineRunner {
     @Value("${spring.batch.job.name}")
     private String jobName;
 
-    @Bean
-    public Job rankJob(JobRepository jobRepository, Step rankStep) {
-        return new JobBuilder("rankJob", jobRepository)
-                .incrementer(new RunIdIncrementer())
-                .start(rankStep)
-                .build();
-    }
-
-    @Bean
-    public Job scoreJob(JobRepository jobRepository, Step scoreStep) {
-        return new JobBuilder("scoreJob", jobRepository)
-                .incrementer(new RunIdIncrementer())
-                .start(scoreStep)
-                .build();
-    }
-
-    @Bean
-    public Job memberJob(JobRepository jobRepository, Step memberStep) {
-        return new JobBuilder("memberJob", jobRepository)
-                .incrementer(new RunIdIncrementer())
-                .start(memberStep)
-                .build();
-    }
-
     @Override
     public void run(String... args) throws Exception {
         System.out.println("배치 작업 시작");
@@ -61,8 +37,9 @@ public class JobStart implements CommandLineRunner {
         } catch (Exception e) {
             System.out.println("배치 작업 실패");
             e.printStackTrace();
-        } finally {
-            System.exit(0);
         }
+//        finally {
+//            System.exit(0);
+//        }
     }
 }
