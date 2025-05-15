@@ -56,34 +56,6 @@ pipeline {
             }
         }
 
-stage('Build cleaner/kubectl image if needed') {
-    steps {
-        script {
-            def cleanerImage = "cleaner/kubectl:latest"
-
-            echo "Checking if ${cleanerImage} exists on Docker Hub..."
-
-            def imageExists = sh(
-                script: "docker pull ${cleanerImage} > /dev/null 2>&1 || echo 'MISSING'",
-                returnStdout: true
-            ).trim()
-
-            if (imageExists == "MISSING") {
-                echo "${cleanerImage} not found. Building it locally..."
-                dir('cleaner') {
-                    withCredentials([usernamePassword(credentialsId: 'IMHR_DOCKER_HUB', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker build -t ${cleanerImage} ."
-                        sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
-                        sh "docker push ${cleanerImage}"
-                    }
-                }
-            } else {
-                echo "${cleanerImage} already exists on Docker Hub. Skipping build."
-            }
-        }
-    }
-}
-
 
         stage('Edit Manifest') {
                     steps {
