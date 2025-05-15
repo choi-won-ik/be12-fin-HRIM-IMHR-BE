@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cleanup-jobs
+  namespace: imhr
+spec:
+  schedule: "*/2 * * * *"  # 2분마다 실행
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: cleaner
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  echo "Cleaning up completed jobs..."
+                  kubectl delete jobs --field-selector=status.successful=1 -n imhr
+          restartPolicy: OnFailure
