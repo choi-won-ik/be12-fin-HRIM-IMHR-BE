@@ -37,9 +37,8 @@ public class JobStart implements CommandLineRunner {
         } catch (Exception e) {
             System.out.println("배치 작업 실패");
             e.printStackTrace();
+        } finally {
+            System.exit(0);
         }
-//        finally {
-//            System.exit(0);
-//        }
     }
 }
