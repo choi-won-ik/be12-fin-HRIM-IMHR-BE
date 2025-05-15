@@ -4,14 +4,14 @@ metadata:
   name: cleanup-jobs
   namespace: imhr
 spec:
-  schedule: "*/2 * * * *"  # 5분마다 실행
+  schedule: "*/2 * * * *"  # 2분마다 실행
   jobTemplate:
     spec:
       template:
         spec:
           containers:
             - name: cleaner
-              image: cleaner/kubectl:latest
+              image: bitnami/kubectl:latest
               command:
                 - /bin/sh
                 - -c
