@@ -20,6 +20,7 @@ public enum BaseResponseMessage {
     DEPARTMENT_UPDATE_SUCCESS(true, 2200, "부서 설정에 성공했습니다."),
     DEPARTMENT_RETRIEVE_SUCCESS(true, 2200, "부서 조회에 성공했습니다."),
     DEPARTMENT_MONTH_SCORE_SUCCESS(true, 2200, "부서의 월별 ESG 조회에 성공했습니다."),
+    DEPARTMENT_MONTH_SCORE_FAIL(true, 2203, "부서의 월별 ESG 점수가 없습니다."),
     DEPARTMENT_CREATE_SUCCESS(true, 2201, "부서 생성을 성공했습니다."),
     DEPARTMENT_DELETE_SUCCESS(true, 2202, "부서 삭제를 성공했습니다."),
     DEPARTMENT_DELETE_FAIL(false, 2222, "존재하지 않는 부서입니다."),

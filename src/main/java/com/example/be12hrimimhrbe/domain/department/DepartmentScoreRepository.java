@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DepartmentScoreRepository extends JpaRepository<DepartmentScore, Long> {
 
@@ -15,5 +16,5 @@ public interface DepartmentScoreRepository extends JpaRepository<DepartmentScore
             "WHERE d.idx= :departmentIdx " +
             "AND ds.year=:year " +
             "AND ds.month=:month ")
-    DepartmentScore findByDepartmentIdx(Long departmentIdx,int year, int month);
+    Optional<DepartmentScore> findByDepartmentIdx(Long departmentIdx, int year, int month);
 }
