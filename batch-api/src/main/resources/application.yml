@@ -12,6 +12,13 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20           # 동시에 사용할 수 있는 커넥션 수 제한
+      minimum-idle: 5                 # 최소 유휴 커넥션 수
+      idle-timeout: 60000             # 유휴 커넥션 1분 후 정리 (ms)
+      max-lifetime: 1800000           # 커넥션 30분 후 강제 종료 (ms)
+      connection-timeout: 30000       # 커넥션 가져오기를 30초 기다림
+      leak-detection-threshold: 20000 # 커넥션 20초 이상 사용 시 로그로 누수 경고
   jpa:
     database-platform: org.hibernate.dialect.MariaDBDialect
     hibernate:
