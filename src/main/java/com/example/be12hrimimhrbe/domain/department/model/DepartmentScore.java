@@ -17,7 +17,7 @@ public class DepartmentScore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idx;
+    private Long idx;
 
     @ManyToOne
     @JoinColumn(name = "department_idx", nullable = false)

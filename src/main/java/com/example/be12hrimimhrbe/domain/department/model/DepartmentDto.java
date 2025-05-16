@@ -74,31 +74,15 @@ public class DepartmentDto {
     public static class DepartmentScoreResponse {
         private Long idx;
         private String departmentName;
-        private double departmentEScore;
-        private double departmentGScore;
-        private double departmentSScore;
-        private double departmentTotalScore;
+        private int departmentEScore;
+        private int departmentGScore;
+        private int departmentSScore;
+        private int departmentTotalScore;
 
         private int targetEScore;
         private int targetSScore;
         private int targetGScore;
         private int targetTotalScore;
-
-
-        public static DepartmentScoreResponse fromEntity(Department department, double EScore, double GScore, double SScore, double totalScore) {
-            return DepartmentScoreResponse.builder()
-                    .idx(department.getIdx())
-                    .departmentName(department.getName())
-                    .targetEScore(department.getTargetEScore())
-                    .targetSScore(department.getTargetSScore())
-                    .targetGScore(department.getTargetGScore())
-                    .targetTotalScore((department.getTargetEScore() + department.getTargetSScore() + department.getTargetGScore()) / 3)
-                    .departmentEScore(EScore)
-                    .departmentSScore(SScore)
-                    .departmentGScore(GScore)
-                    .departmentTotalScore(totalScore)
-                    .build();
-        }
     }
 
     @Getter
@@ -112,5 +96,4 @@ public class DepartmentDto {
         private double sScore;
         private double gScore;
     }
-
 }
