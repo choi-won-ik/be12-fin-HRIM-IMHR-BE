@@ -1,10 +1,9 @@
 package com.example.be12hrimimhrbe.domain.company;
 
-import com.example.be12hrimimhrbe.domain.activity.ActivityRepository;
-import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.company.model.CompanyDto;
 import com.example.be12hrimimhrbe.domain.department.DepartmentRepository;
+import com.example.be12hrimimhrbe.domain.department.DepartmentScoreRepository;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentScore;
@@ -15,7 +14,6 @@ import com.example.be12hrimimhrbe.domain.partner.PartnerRepository;
 import com.example.be12hrimimhrbe.domain.partner.model.Partner;
 import com.example.be12hrimimhrbe.domain.rank.RankRepository;
 import com.example.be12hrimimhrbe.domain.rank.model.Rank;
-import com.example.be12hrimimhrbe.domain.rank.model.RankDto;
 import com.example.be12hrimimhrbe.domain.score.ScoreRepository;
 import com.example.be12hrimimhrbe.domain.score.model.Score;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
@@ -38,6 +36,8 @@ public class CompanyService {
     private final MemberRepository memberRepository;
     private final ScoreRepository scoreRepository;
     private final RankRepository rankRepository;
+    private final DepartmentRepository departmentRepository;
+    private final DepartmentScoreRepository departmentScoreRepository;
 
     public BaseResponse<CompanyDto.CompanyResponse> fetchMyCompany(Member member) {
         Company myCompany = companyRepository.findByIdx(member.getCompany().getIdx());
@@ -109,7 +109,6 @@ public class CompanyService {
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
 
-
         // 1~3등
         List<MemberDto.MemberScoreResponse> top3 = new ArrayList<>();
         List<Rank> ranks = new ArrayList<>();
@@ -132,22 +131,29 @@ public class CompanyService {
 
         }
 
-        // 각 부서별 점수
-        List<DepartmentDto.SimpleDepartmentDto> departmentDtos= new ArrayList<>();
-        List<Department> departments =ranks.get(0).getCompany().getDepartments();
+        List<Department> departments = departmentRepository.findAllByCompany(member.getCompany());
+        List<Object[]> result = departmentRepository.findAllDepartmentsWithScore(departments , year, month);
 
-        for (Department d : departments) {
-            departmentDtos.add(DepartmentDto.SimpleDepartmentDto.builder()
-                    .idx(d.getIdx())
-                    .name(d.getName())
-                    .build());
-        }
+        List<DepartmentDto.SimpleDepartmentDto> resp = result.stream()
+                .map(arr -> {
+                    Department d = (Department) arr[0];
+                    DepartmentScore ds = (DepartmentScore) arr[1];
+
+                    return DepartmentDto.SimpleDepartmentDto.builder()
+                            .idx(d.getIdx())
+                            .name(d.getName())
+                            .eScore(ds != null && ds.getEnvironment() != null ? ds.getEnvironment() : 0)
+                            .gScore(ds != null && ds.getGovernance() != null ? ds.getGovernance() : 0)
+                            .sScore(ds != null && ds.getSocial() != null ? ds.getSocial() : 0)
+                            .build();
+                }).collect(Collectors.toList());
+
 
         CompanyDto.CompanyYearResponse response = CompanyDto.CompanyYearResponse.builder()
                 .companyName(ranks.get(0).getCompany().getName())
                 .idx(ranks.get(0).getCompany().getIdx())
                 .memberScores(top3)
-                .departments(departmentDtos)
+                .departments(resp)
                 .build();
 
         return new BaseResponse<>(BaseResponseMessage.COMPANY_DEPARTMENT_MONTH_SUCCESS, response);

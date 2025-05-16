@@ -44,5 +44,4 @@ public class Department {
 
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private List<Member> members = new ArrayList<>();
-
 }

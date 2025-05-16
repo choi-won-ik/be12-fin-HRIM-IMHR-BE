@@ -5,8 +5,6 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.rank.model.Rank;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class Company {
     private List<Member> members=new ArrayList<>();
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-    private List<Department> departments=new ArrayList<>();
+    private List<Department> departments = new ArrayList<>();
 
     @OneToMany(mappedBy = "company")
     private List<Rank> ranks=new ArrayList<>();

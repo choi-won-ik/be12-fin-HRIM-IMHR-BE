@@ -24,11 +24,4 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     );
 
     Page<Company> findByNameContainingIgnoreCaseAndIdxNotIn(String name, List<Long> idxes, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"ranks", "ranks.member"})
-    @Query("SELECT c FROM Company c " +
-            "LEFT JOIN c.ranks r " +
-            "LEFT JOIN r.member m " +
-            "WHERE c.idx=:idx")
-    Company findByIdxRank(Long idx);
 }

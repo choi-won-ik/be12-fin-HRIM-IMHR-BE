@@ -1,8 +1,5 @@
 package com.example.be12hrimimhrbe.domain.department;
 
-import com.example.be12hrimimhrbe.domain.activity.ActivityRepository;
-import com.example.be12hrimimhrbe.domain.activity.model.Activity;
-import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentDto;
 import com.example.be12hrimimhrbe.domain.department.model.DepartmentScore;
@@ -17,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -25,7 +21,6 @@ import java.util.stream.Collectors;
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final MemberRepository memberRepository;
-    private final ActivityRepository activityRepository;
     private final DepartmentScoreRepository departmentScoreRepository;
 
     @Transactional
@@ -95,99 +90,23 @@ public class DepartmentService {
                 DepartmentDto.DepartmentListResponse.fromDepartments(departments));
     }
 
-    // 하나의 APi만 호출할때에 주석처리 해야함
-    @Transactional
-    public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment1(Member member, Long departmentIdx, int year, int month) {
-
-        Company mycompany = member.getCompany();
-
-        List<Member> dMembers;
-        Department department;
-
-        // 1. 해당 부서 소속 사원 목록 조회
-        if (departmentIdx == null) {
-            // 회사의 제일 작은 idx를 가진 부서 조회
-            Long departId = departmentRepository.findFirstByCompanyOrderByIdxAsc(mycompany).getIdx();
-            dMembers = memberRepository.findAllByDepartmentIdx(departId);
-            department = departmentRepository.findByIdx(departId);
-        } else {
-            dMembers = memberRepository.findAllByDepartmentIdx(departmentIdx);
-            department = departmentRepository.findByIdx(departmentIdx);
-        }
-
-        //부서 소속 총 사원 수
-        int memberCount = dMembers.size();
-
-        // E, S, G 점수 총 합
-        int totalE = 0;
-        int totalS = 0;
-        int totalG = 0;
-
-        // 사원별 모든 활동들의 점수들 계산
-        for (Member m : dMembers) {
-            // 각 사원의 활동 총조회
-            List<Activity> activities = activityRepository.findAllByMember(m).stream()
-                    .filter(a -> a.getCreatedAt().getYear() == year
-                    && a.getCreatedAt().getMonthValue() == month)
-                    .collect(Collectors.toList());
-
-            // 활동 점수 계산
-            for (Activity a : activities) {
-                if (a.getType() != null) {
-                    switch (a.getType()) {
-                        case VOLUNTEER -> totalE += a.getScore(); // 환경
-                        case DONATION -> totalE += a.getScore();
-                    }
-                }
-
-                // EducationType이 null이 아닌 경우에만 switch
-                if (a.getEducationType() != null) {
-                    switch (a.getEducationType()) {
-                        case ENVIRONMENTAL_EDUCATION -> totalE += a.getScore();
-                        case SOCIAL_EDUCATION -> totalS += a.getScore();
-                        case GOVERNANCE_EDUCATION -> totalG += a.getScore();
-                    }
-                }
-            }
-        }
-
-        double avgE = memberCount > 0 ? (double) totalE / memberCount : 0.0;
-        double avgS = memberCount > 0 ? (double) totalS / memberCount : 0.0;
-        double avgG = memberCount > 0 ? (double) totalG / memberCount : 0.0;
-        double avgtotal = (avgG + avgE + avgS) /3;
-
-        DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.fromEntity(department, avgE, avgS, avgG, avgtotal);
-        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
-    }
-
     @Transactional(readOnly = true)
     public BaseResponse<DepartmentDto.DepartmentScoreResponse> monthDepartment(Long departmentIdx, int year, int month) {
 
-        Optional<DepartmentScore> ds = departmentScoreRepository.findByDepartmentIdx(departmentIdx,year,month);
+        Object[] ds = (Object[]) departmentScoreRepository.findByDepartmentIdx(departmentIdx,year,month);
+        Department d = (Department) ds[0];
+        DepartmentScore dScore = (DepartmentScore) ds[1];
 
-        if(ds.isPresent()) {
-            DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.builder()
-                    .idx(departmentIdx)
-                    .departmentName(ds.get().getDepartment().getName())
-                    .departmentEScore(ds.get().getEnvironment())
-                    .departmentGScore(ds.get().getGovernance())
-                    .departmentSScore(ds.get().getSocial())
-                    .departmentTotalScore(ds.get().getTotal())
-                    .build();
+        DepartmentDto.DepartmentScoreResponse response = DepartmentDto.DepartmentScoreResponse.builder()
+                .idx(departmentIdx)
+                .departmentName(d.getName())
+                .departmentEScore(dScore != null && dScore.getEnvironment() != null ? dScore.getEnvironment() : 0)
+                .departmentGScore(dScore != null && dScore.getGovernance() != null ? dScore.getGovernance() : 0)
+                .departmentSScore(dScore != null && dScore.getSocial() != null ? dScore.getSocial() : 0)
+                .departmentTotalScore(dScore != null && dScore.getTotal() != null ? dScore.getTotal() : 0)
+                .build();
 
-            return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
-        }else{
-            return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_FAIL);
-        }
-
-//        for (DepartmentScore d : ds) {
-//            if(d.getMonth()==month && d.getYear()==year) {
-//                response =
-//            }
-//        }
-
-
-
+        return new BaseResponse<>(BaseResponseMessage.DEPARTMENT_MONTH_SCORE_SUCCESS, response);
     }
 
 

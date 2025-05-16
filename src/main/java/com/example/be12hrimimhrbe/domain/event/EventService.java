@@ -71,7 +71,7 @@ public class EventService {
 
 //  월별 이벤트 리스트
     public BaseResponse<List<EventDto.EventResponse>> eventList(Member member, int year, int month) {
-        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Long myCompanyIdx = member.getCompany().getIdx();
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
@@ -84,7 +84,7 @@ public class EventService {
 
 //  일별 이벤트 리스트
     public BaseResponse<List<EventDto.EventResponse>> readEventByDate(Member member, LocalDate date) {
-        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Long myCompanyIdx = member.getCompany().getIdx();
         List<Event> events = eventRepository.findByCompanyIdxAndStartDateLessThanEqualAndEndDateGreaterThanEqual
                 (myCompanyIdx, date, date);
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_BY_DAY_LIST_SUCCESS, events.stream().map(EventDto.EventResponse::of).toList());
@@ -92,7 +92,7 @@ public class EventService {
 
 //  이벤트 상세 조회
     public BaseResponse<EventDto.EventResponse> readEventDetail(Member member, Long idx) {
-        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Long myCompanyIdx = member.getCompany().getIdx();
         Event event = eventRepository.findByCompanyIdxAndIdx(myCompanyIdx, idx);
         return new BaseResponse<>(BaseResponseMessage.CALENDAR_EVENT_DETAIL_SUCCESS, EventDto.EventResponse.of(event));
     }
@@ -101,7 +101,7 @@ public class EventService {
     @Transactional
     public boolean deleteEvent(Member member, Long idx) {
         Member newMember = memberRepository.findByIdx(member.getIdx());
-        Long myCompanyIdx = memberRepository.findByIdx(member.getIdx()).getCompany().getIdx();
+        Long myCompanyIdx = member.getCompany().getIdx();
         Long eventIdx = eventRepository.findByIdxAndCompanyIdx(idx, myCompanyIdx).getIdx();
 
         if (!newMember.getIsAdmin()) {
