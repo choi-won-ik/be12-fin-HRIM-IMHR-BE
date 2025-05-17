@@ -3,10 +3,10 @@ server:
 spring:
   batch:
     job:
-      name: ${BATCH_JOB_NAME}
+      name: rankJob
       enabled: false
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
   datasource:
     url: ${DB_URL}
     driver-class-name: org.mariadb.jdbc.Driver
