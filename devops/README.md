@@ -174,44 +174,19 @@
 
 ## ⚙️ 주요 기능 시연
 <details>
-<summary>회원가입</summary>
+<summary>Blue/Green 배포</summary>
 
-![회원가입](https://주소)
-> 이메일, 비밀번호, 닉네임, 프로필 이미지(필수 X)로 회원 가입을 한다.  
-> 이메일, 닉네임은 **중복이 불가능**하다.
-</details>
+![블루그린](https://주소)
+> 코드 푸시 및 PR을 하면 자동으로 빌드와 배포가 블루그린 방식으로 진행된다.  
 
-<details>
-<summary>로그인</summary>
-
-![로그인](https://주소)
-> 일반 로그인, 소셜(Github) 로그인
-
-<img width="1361" alt="image" src="https://source">
-
-> 소셜 로그인은 소셜로 로그인 한 후 최초 로그인시 동의를 받는다.
-</details>
-
-<details>
-<summary>검색</summary>
-
-### 통합 검색
-![통합검색](https://주소)
-> 헤더에 있는 검색창으로 3개의 게시판 **통합 검색** 가능하다.  
-> 검색 후 원하는 게시판으로 더보기 버튼 누를 시 해당 **검색어 유지** 된 상태로 페이지 이동을 한다.
----
-### 게시판 별 검색
-![상세검색](https://주소)
-> 게시판 별로 상세 검색이 가능하다.  
-> **카테고리**(상위, 하위), **범위**(제목+내용, 제목, 내용), **정렬**(최신순, 좋아요순, 검색 시에만 가능한 **정확도순**)
 </details>
 
 
-## 🚀 핵심 로직 상세 설명
-### [📃 프로젝트 Wiki](https://주소) <br><br>
+## 🚀 핵심 상세 설명
+### [📃 프로젝트 Wiki](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/wiki) <br><br>
 
 
 ## 📂 프로젝트 폴더 바로가기
-### [📃 Backend](https:/주소) <br>
-### [📃 Devops](https://주소)
+### [📃 Backend](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/tree/main) <br>
+### [📃 Devops](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/tree/main/devops)
 <br>
