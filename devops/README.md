@@ -120,11 +120,44 @@
 <img src="https://주소"><br><br>
 
 
-## 📚 프론트엔드 프로젝트 목표
-- `사용자 인터페이스(UI) 개발` : 직관적이고 반응형(Responsive) 디자인 구현
-- `사용자 경험(UX) 향상` : 사용자의 편의성과 흐름을 고려한 화면 흐름 설계
-- `프론트엔드 기술 활용` : HTML, CSS, JavaScript, 프레임워크(Vue, React 등)를 사용할 때 확장성을 고려하여 프로젝트를 진행
-- `API 연동` : 백엔드와의 데이터 통신(fetch, promise, ajax, axios, interceptor 등)
+## 📚 프로젝트 내 DevOps 주요 목표
+## ✅ DevOps 주요 목표
+
+### 1. 지속적 통합(Continuous Integration) 및 배포 자동화
+- Jenkins를 이용해 프론트엔드 및 백엔드 코드에 대한 CI 파이프라인 구축
+- 코드 커밋 시 자동 빌드 및 테스트 수행 후, ArgoCD를 통한 자동 배포 연계
+- GitLab/GitHub webhook 기반 트리거로 개발-운영 간 릴리즈 간극 최소화
+<br>
+
+### 2. GitOps 기반 선언형 배포 운영
+- ArgoCD를 통해 Git에 정의된 배포 설정을 기준으로 K8s 클러스터와 상태 동기화
+- 수동 배포 없이 Git 커밋만으로 안정적인 CD 환경 구현
+- 배포 이력 관리, 롤백, 헬스체크 등을 ArgoCD UI를 통해 시각적으로 제어
+<br>
+
+### 3. Blue-Green 배포 전략 (Argo Rollouts 기반)
+- Argo Rollouts를 이용한 단계적 배포로 장애 리스크 최소화
+- 배포 실패 시 빠른 롤백 가능하도록 기존 서비스(Blue) 유지
+- 운영 중인 사용자에게 영향 없이 새로운 기능을 안전하게 배포
+<br>
+
+### 4. 운영 신뢰성과 관리 편의성 향상
+- Kubernetes를 기반으로 컨테이너화된 애플리케이션의 자동화된 배포와 관리
+- 애플리케이션 로그와 상태는 Kubernetes Events 및 Istio의 텔레메트리를 통해 추적
+- 장애 대응 시 자동 복구 및 수동 확장에 유연하게 대응
+<br>
+
+### 5. 개발-운영 협업 최적화
+- Git 기반 협업 프로세스: 브랜치 전략, PR 리뷰 및 Merge 관리 체계 운영
+- Jira를 통해 개발 이슈, 배포 일정, 업무 히스토리를 체계적으로 관리
+- 향후 Discord/Slack 등 협업 도구와의 배포 알림 연동 고려 여지 확보
+<br>
+
+### 6. 보안 및 구성 관리 효율화
+- 민감 정보는 `Secret`, 환경 설정은 `ConfigMap`을 활용해 배포와 분리
+- ArgoCD Sync 옵션을 활용해 변경사항 자동 감지 및 관리 자동화
+- `.gitignore`를 통해 민감한 설정 파일(`.env`, `secret.yaml` 등)의 커밋 방지
+- GitHub의 Branch Protection Rule 및 PR 리뷰 정책으로 무분별한 코드 반영 차단
   <br>
 
 ## 📈 프로젝트 설계
