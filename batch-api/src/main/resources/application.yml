@@ -3,7 +3,7 @@ server:
 spring:
   batch:
     job:
-      name: rankJob
+      name: ${BATCH_JOB_NAME}
       enabled: false
     jdbc:
       initialize-schema: never
