@@ -131,11 +131,11 @@
 
 ### [1. 기획서 바로가기](https://www.notion.so/IMHR-1c2977eeefbe805a99a9d7271fbab5e1)
 
-### [2. 요구사항 정의서](https://www.notion.so/1c2977eeefbe8007898cea29b5e836d6)
+### [2. 요구사항 정의서](https://docs.google.com/spreadsheets/d/1NbC2fMWq6Q9psj9yfC09IHeKi16ttwFMdeP_DTnfdCg/edit?gid=1870690557#gid=1870690557)
 
 ### [3. WBS](https://www.notion.so/WBS-Work-Breakdown-Structure-1c2977eeefbe808e9ffde53a0ecbb5ac)
 
-### [4. 프로그램 사양서(API 명세서)](https://www.notion.so/API-1c8977eeefbe8096aa87c8fb4293bd65)
+### [4. 프로그램 사양서(API 명세서)](https://www.imhr.p-e.kr/api/swagger-ui/index.html)
 
 <br><br>
 
