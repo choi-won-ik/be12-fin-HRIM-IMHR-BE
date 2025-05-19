@@ -17,7 +17,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: rank-batch
-              image: imhrkr/batch-api:1.67
+              image: imhrkr/batch-api:1.68
               env:
                 - name: BATCH_JOB_NAME
                   value: rankJob
