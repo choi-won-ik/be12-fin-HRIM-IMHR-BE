@@ -50,10 +50,10 @@
 
 #### &nbsp;　[ Backend ]
 &nbsp;&nbsp;&nbsp;&nbsp; ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white" style="border-radius: 5px;">
-<img src="https://img.shields.io/badge/Spring data jpa-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="border-radius: 5px;">
-<img src="https://img.shields.io/badge/Spring Batch-6DB33F?style=for-the-badge&logo=Spring&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/Springdata jpa-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/SpringBatch-6DB33F?style=for-the-badge&logo=Spring&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/SMTP-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" style="border-radius: 5px;">
 
 
@@ -86,19 +86,39 @@
 ### [IMHR](https://www.imhr.kro.kr)</a>
 <br><br>
 ## 🎨 IMHR 서비스 소개
-<img src= "https://주소">
+![image](https://github.com/user-attachments/assets/c3520e4f-34a4-42c2-bf52-7e198073b286)
 
-#### 프로젝트 배경
-- **인사 관리 & ESG 관리 통합 플랫폼**
-- `ESG 관리`와 `인사 관리`를 한 곳에서 통합적으로 관리할 수 있는 플랫폼<br>
-  기업의 ESG를 효과적으로 관리하기 위해 인사 관리도 함께 이루어져야 했지만, 두 시스템을 각각 따로 접속해 관리해야한다는 분편함이 있었다.<br>
-  이 불편함을 해결하고자 Imhr 서비스는 기업 임원, 인사 관리자 등 다양한 사용자가 한 사이트에서 ESG와 인사 정보를 대시보드로 직관적으로 확인하고, 효율적으로 관리할 수 있도록 구축했다.
-  <br>
 
-- `기업과 인사 ESG 관리` : 기업 고위 임원들과 관리자들이 인사 ESG 그리고 그와 관련된 기업 ESG를 효율적으로 관리 할 수 있다.<br>
-- `기업 맞춤형 활동과 평가 기준 설정 및 관리` : 각각의 기업이 선정한 ESG 활동들과 그 평가 기준들을 자유롭게 설정 할 수 있다.<br>
-- `효과적인 시각 자료` : 기업 혹은 각 부서의 ESG 관리 현황 및 변화 추이를 한눈에 그리고 선택적으로 간편하게 볼 수 있다.
-  <br>
+## 📌 프로젝트 배경
+
+> 본 프로젝트는 **기업 ESG 활동과 인사 데이터를 통합적으로 관리**할 수 있는 플랫폼을 DevOps 기반에서 안정적으로 운영하고, 빠른 피드백 루프와 유연한 배포 전략을 실현하기 위해 기획되었습니다.
+
+---
+
+### 1. 인사 + ESG 통합 플랫폼의 운영 복잡성 해결
+
+- 기존 시스템은 **ESG 관리 시스템**과 **인사 관리 시스템**이 별도로 분리되어 있어, 담당자는 각각의 시스템에 로그인하고 관리해야 하는 번거로움이 있었습니다.
+- 또한, 기능별 시스템 배포는 수동으로 이뤄져, 변경 사항 적용에 시간과 인적 리소스가 과도하게 소요되었습니다.
+
+---
+
+### 2. 통합 관리 체계 필요성
+
+- `ESG와 인사 데이터의 상관 관계`를 같은 플랫폼 내에서 연결하고 시각화해야 할 필요성이 증가했습니다.
+- 기업 임원 및 인사 담당자들이 **대시보드 기반으로 ESG·인사 정보를 한눈에 파악**하고, 맞춤형 활동과 평가 기준을 설정/관리할 수 있어야 했습니다.
+
+---
+
+### 3. DevOps 기반 운영 자동화 필요성
+
+- 안정적인 플랫폼 운영을 위해 **CI/CD 파이프라인**, **GitOps 배포 전략**, **무중단 배포 구조**가 요구되었습니다.
+- 개발과 운영 간 경계를 줄이고, 빠른 기능 적용 및 오류 대응을 위한 DevOps 환경 도입이 필수적이었습니다.
+  
+---
+
+> 🔧 본 프로젝트는 기능 개발뿐 아니라 **운영 자동화, 배포 신뢰성, 그리고 협업 효율성**까지 고려한  
+> **실전 DevOps 기반 ESG/인사 통합 서비스 구축 사례**입니다.
+
 
 
 #### 주요 기능
@@ -115,7 +135,12 @@
   <br>
 
 ## 🏗️ 시스템 아키텍처
-<img src="https://주소"><br><br>
+<p>
+  <img src="https://github.com/user-attachments/assets/cebe3064-c7e3-4948-babd-cc5c0607fe73" 
+       width="800px" 
+       height="700px"
+       style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" />
+</p>
 
 
 ## 📚 프로젝트 내 DevOps 주요 목표
@@ -160,11 +185,11 @@
 
 ## 📈 프로젝트 설계
 
-### [1. 기획서 바로가기](https://구글docs_링크/기획서)
+### [1. 기획서 바로가기](https://www.notion.so/IMHR-1c2977eeefbe805a99a9d7271fbab5e1)
 
-### [2. 요구사항 정의서](https://구글docs_링크/요구사항_정의서)
+### [2. 요구사항 정의서](https://docs.google.com/spreadsheets/d/1NbC2fMWq6Q9psj9yfC09IHeKi16ttwFMdeP_DTnfdCg/edit?gid=1870690557#gid=1870690557)
 
-### [3. WBS](https://구글docs_링크/WBS)
+### [3. WBS](https://www.notion.so/WBS-Work-Breakdown-Structure-1c2977eeefbe808e9ffde53a0ecbb5ac)
 
 <br><br>
 
