@@ -166,12 +166,13 @@
 
 - 개인 회원가입
     - 요청<br>
-      ![image](https://github.com/user-attachments/assets/b0b88be9-290d-4bcf-83d4-18080e67176d)
+      ![image](https://github.com/user-attachments/assets/4a9d4a86-a6ca-4287-bf7d-38c0f1329d39)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/5945a44e-1939-4e22-81b1-87bb303e4add)
 - 기업 회원가입
     - 요청<br>
-      ![image](https://github.com/user-attachments/assets/2cb39f16-3cda-4e6f-bb85-c575e1c05d80)
+      ![image](https://github.com/user-attachments/assets/f07ae787-958c-4625-aee1-0a4e7e45b687)
+      ![image](https://github.com/user-attachments/assets/a72d9fe3-8a1f-406d-8b6e-c07ef76041b8)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/187a146c-6499-4bbf-b2b0-acdd246e5481)
 
@@ -180,32 +181,16 @@
 </details>
 
 <details>
-<summary>기업/개인 회원가입</summary>
-
-- 회원가입 승인
-    - 요청<br>
-      ![image](https://github.com/user-attachments/assets/ed6b58e0-2a6c-4d97-8c6f-0179ee1f560a)
-    - 응답<br>
-      ![image](https://github.com/user-attachments/assets/81f8bb78-09fe-411b-814e-b1113ece3490)
-- 회원가입 반려
-    - 요청<br>
-      ![image](https://github.com/user-attachments/assets/f080f61b-d367-4b1b-8fe1-f48044a37089)
-    - 응답<br>
-      ![image](https://github.com/user-attachments/assets/6bb71450-8389-4253-bfb2-a898edec9bb3)
-
-</details>
-
-<details>
 <summary>로그인/로그아웃</summary>
 
 - 로그인
     - 요청<br>
-      ![image](https://github.com/user-attachments/assets/a219c713-5678-474d-8fbc-51bf50e641a4)
+      ![image](https://github.com/user-attachments/assets/b1222157-86d4-4a2e-b9ac-6c3ec3fc16c2)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/5c82befd-587d-485e-aa9f-49ed332621ce)
 - 로그아웃
-    - 요청<br>
-      ![image](https://github.com/user-attachments/assets/c8f174bb-9a80-4666-b450-23658a44e79b)
+  - 요청<br>
+  ![image](https://github.com/user-attachments/assets/715ab9bf-044e-4b73-b4dd-1a576ac7d4c8)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/9cf448c5-3956-42b8-bee5-755150ccff75)
 
@@ -216,32 +201,32 @@
 
 - 아이디 찾기
     - 요청<br>
-      ![image](https://github.com/user-attachments/assets/9e1d3e75-7cae-4bca-aae9-bddcccc734f5)
+      ![image](https://github.com/user-attachments/assets/339a9577-1334-45ae-ae95-757871556a0b)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/9968bb78-9150-4a17-887b-ab4e940ca814)
 - 비밀번호 찾기
-    - 요청<br>
-      ![image](https://github.com/user-attachments/assets/44f42e1b-3643-4e41-92f2-74ea5098a31b)
+  - 요청<br>
+  ![image](https://github.com/user-attachments/assets/d3addfdc-9f7f-45d6-9c05-d9532a74b5ca)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/51b0d1d2-270b-4bd8-916c-943aa1191ee4)
 - 비밀번호 재설정
     - 요청<br>
-      ![image](https://github.com/user-attachments/assets/37b53c7e-8e0b-4e07-b99b-4f4816a9db3d)
+      ![image](https://github.com/user-attachments/assets/310fec70-a41b-4c20-807c-51230ecf8820)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/1fea5079-245b-498e-b000-72200417d204)
-- 회원 조회
-    - 요청<br>
-      ![image](https://github.com/user-attachments/assets/6de261b1-44c7-49e8-a75b-85ad40395408)
-    - 응답<br>
-      ![image](https://github.com/user-attachments/assets/0617cea6-a45a-4eeb-b4ca-63ffd7de62f6)
+      회원 조회
+        - 요청<br>
+          ![image](https://github.com/user-attachments/assets/d309e481-8a9c-43be-8c45-9695ca879205)
+        - 응답<br>
+          ![image](https://github.com/user-attachments/assets/0617cea6-a45a-4eeb-b4ca-63ffd7de62f6)
 - 회원 상세조회
     - 요청<br>
-      ![image](https://github.com/user-attachments/assets/0ce66e60-b6bc-4798-98d3-cf04eadc3b78)
+      ![image](https://github.com/user-attachments/assets/b7a4e3df-2469-421a-bc95-bd1711fb37f0)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/dc7e41e2-2ea1-4902-801f-b0a03ebb77fa)
 - 내 ESG활동 내역 조회
     - 요청<br>
-      ![image](https://github.com/user-attachments/assets/115fc9e7-4c89-4630-a425-2e3c9493c12f)
+      ![image](https://github.com/user-attachments/assets/4af5ed19-ef28-46ba-b822-20b5aba23adc)
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/d581064b-a54f-425b-8804-f7edf063e538)
 
@@ -339,6 +324,62 @@
 
 </details>
 
+<summary>이벤트 관리 기능</summary>
+
+- 일정 등록
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/20ca294b-1c58-4137-b36d-79b4422dfa5b)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/fbcd135c-c222-4e77-9660-5b3a5609a4f8)
+- 일정 수정
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/4d1cb060-05a9-4058-99bc-9d44604499b4)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/ac038684-0703-43c4-92f6-0dd3b1e2b979)
+- 기업의 월별 일정 리스트
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/9ce85801-da9a-4819-b445-b915ccced2a1)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/faacb4c3-b2bc-4f0c-a8be-53ee1c6b9235)
+- 특정 일정 상세조회
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/47670605-8ed0-4731-86ad-001da96095fc)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/0a86d01c-8963-478b-8e8d-365a8ef7cc41)
+
+</details>
+
+<details>
+<summary>캠패인 관리 기능</summary>
+
+- 캠패인 참여 사원 등록
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/d59a0314-40a1-4e4c-9cf8-3ccbb3d69635)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/14a04099-d0ee-4ed9-967b-b816781aa454)
+- 캠패인 참여 사원 조회
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/a0688868-03e1-42b6-addc-63e40c7adfdc)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/2303e20b-e48e-4765-9ee4-e76b836bffb7)
+
+</details>
+
+<details>
+<summary>ESG활동 주제</summary>
+
+- ESG활동 주제별 입력양식 생성
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/16a56633-0cc5-4d00-a85a-f0d548aba7c5)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/b838e624-bd80-4b1d-995a-c600b43de760)
+ - ESG활동 주제 조회
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/e4f1da1e-bda4-42f9-a707-b0699b66654f)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/8b3995ad-11f5-4e9c-945b-6d09d58f18bc)
+
+</details>
 
 <details>
 <summary>검색</summary>
