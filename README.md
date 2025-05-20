@@ -325,6 +325,22 @@
 </details>
 
 <details>
+<summary>ESG활동 주제</summary>
+
+- ESG활동 주제별 입력양식 생성
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/16a56633-0cc5-4d00-a85a-f0d548aba7c5)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/b838e624-bd80-4b1d-995a-c600b43de760)
+ - ESG활동 주제 조회
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/e4f1da1e-bda4-42f9-a707-b0699b66654f)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/8b3995ad-11f5-4e9c-945b-6d09d58f18bc)
+
+</details>
+
+<details>
 <summary>검색</summary>
 
 ### 통합 검색
