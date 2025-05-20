@@ -1,4 +1,4 @@
-# 🌏IMHR 🙋‍♂️ !
+![ESG 활동 반려 응답](https://github.com/user-attachments/assets/a311382b-3298-4a37-bfb0-9671c7557d1e)# 🌏IMHR 🙋‍♂️ !
 
 <p align="middle" style="margin: 0; padding: 0;">
   <img width="250px" src="https://github.com/user-attachments/assets/7cb81506-35bb-4770-99ee-d2dc8821f443">
@@ -268,6 +268,62 @@
 </details>
 
 <details>
+<summary>직원 활동내역 관리 기능</summary>
+
+###  ESG 활동 등록
+
+- **요청**  
+  ![활동 요청](https://github.com/user-attachments/assets/8fc80185-b1c2-4d60-ac79-a6bedb958b4b)
+
+- **응답**  
+  ![ESG 활동 응답](https://github.com/user-attachments/assets/668d1016-4c1c-434a-9025-6f742b07d21a)
+
+---
+
+###  ESG 활동 상세 페이지 조회
+
+- **요청**  
+  ![상세 요청](https://github.com/user-attachments/assets/8fc80185-b1c2-4d60-ac79-a6bedb958b4b)
+
+- **응답**  
+  ![상세 응답](https://github.com/user-attachments/assets/668d1016-4c1c-434a-9025-6f742b07d21a)
+
+
+###  ESG 활동 반려
+
+- **요청**  
+ ![ESG 활동 반려 요청](https://github.com/user-attachments/assets/01020040-87ce-4ad7-9d52-168c3fc81e49)
+ 
+
+- **응답**
+ ![ESG 활동 반려 응답](https://github.com/user-attachments/assets/4f86703c-5149-4f63-b73d-1270b4969944)
+  
+
+###  ESG 활동 승인
+
+- **요청**  
+ ![ESG 활동 승인 요청](https://github.com/user-attachments/assets/1378eb8f-4388-4e15-802b-d29e61721ce5)
+
+ 
+
+- **응답**
+![ESG 활동 승인 응답](https://github.com/user-attachments/assets/2f089e04-9c2b-4f95-b95c-74a868b4dc09)
+
+
+###  ESG 활동 삭제
+
+- **요청**  
+![ESG 활동 삭제 요청](https://github.com/user-attachments/assets/22380cdf-1c31-4876-95e5-ed1aec50f356)
+
+
+ 
+
+- **응답**
+![ESG 활동 삭제 응답](https://github.com/user-attachments/assets/81451616-637f-41d1-b9f3-05b0e3db3a42)
+
+
+</details>
+
 <summary>이벤트 관리 기능</summary>
 
 - 일정 등록
