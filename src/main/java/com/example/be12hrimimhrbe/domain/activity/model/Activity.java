@@ -1,5 +1,6 @@
 package com.example.be12hrimimhrbe.domain.activity.model;
 
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,11 @@ public class Activity {
     @ManyToOne
     @JoinColumn(name = "member_idx")
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "company_idx")
+    private Company company;
+
 
     @Enumerated(EnumType.STRING)
     private Type type;
