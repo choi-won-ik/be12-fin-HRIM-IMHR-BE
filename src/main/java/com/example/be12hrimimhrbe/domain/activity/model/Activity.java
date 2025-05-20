@@ -24,10 +24,6 @@ public class Activity {
     @JoinColumn(name = "member_idx")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "company_idx")
-    private Company company;
-
 
     @Enumerated(EnumType.STRING)
     private Type type;

@@ -37,7 +37,11 @@ public class ActivityService {
 
         // 관리자가 활동 리스트 확인
         if (member.getIsAdmin()) {
-            List<Activity> list = activityRepository.findByCompany(member.getCompany());
+            List<Member> members = memberRepository.findAllByCompany(member.getCompany());
+            List<Activity> list = new ArrayList<>();
+            for (Member user : members){
+                list.addAll(user.getActivities());
+            }
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, activity.getMember());
                 // 프론트에 출력되는 이름 변경

@@ -17,7 +17,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     @Query("SELECT a FROM Activity a WHERE a.member = :member AND a.type <> 'EDUCATION'")
     List<Activity> findActivitiesExcludingEducation(Member member);
 
-    List<Activity> findByCompany(Company company);
 
     List<Activity> findAllByMember(Member member);
 
