@@ -407,6 +407,39 @@
 
 </details>
 
+---
+
+<details>
+<summary>직원 활동내역 관리 기능</summary>
+
+- 내 ESG활동 리스트 조회
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/95d48956-1656-406f-8c2e-c7ee22815da2)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/0f01c07c-7267-4936-acbc-ebdcb63c340d)
+- ESG활동 상세 조회
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/b79714f1-0c3b-4934-a228-4914808b3e8e)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/4ca2f658-15c1-4448-a727-6e39800e7dbc)
+- ESG활동 반려
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/d94df9e9-52eb-447c-bdc5-33fb3729bde4)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/2cfb2b79-d4ef-4f2a-be3e-8af4fd36c35f)
+- ESG활동 승인
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/15c00654-3efd-4263-bb91-9caf1c7de7f8)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/d7fe4674-a950-408a-8136-c8ba53eb1350)
+- ESG활동 삭제
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/286bc07b-1ad9-44f7-937f-ee99f40d91e8)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/0c9a5d72-54f1-4bce-8a30-0abf518a7d77)
+
+</details>
+
 
 
 
