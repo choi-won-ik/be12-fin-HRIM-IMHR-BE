@@ -6,6 +6,7 @@ import com.example.be12hrimimhrbe.domain.member.model.Member;
 import com.example.be12hrimimhrbe.domain.notification.model.NotificationDto;
 import com.example.be12hrimimhrbe.global.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +72,7 @@ public class NotificationController {
     @PostMapping("/isRead/{idx}")
     @Operation(summary = "알림 읽음 처리", description = "알림을 읽음 처리하는 기능 입니다.")
     public ResponseEntity<BaseResponse<?>> isRead(
-            @AuthenticationPrincipal CustomUserDetails Member, @PathVariable Long idx
+            @AuthenticationPrincipal CustomUserDetails Member,@Parameter(example = "1") @PathVariable Long idx
     ) {
         return ResponseEntity.ok().body(notificationService.isRead(Member.getMember(),idx));
     }
