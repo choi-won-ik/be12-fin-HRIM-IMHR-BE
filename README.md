@@ -259,6 +259,31 @@
  	![image](https://github.com/user-attachments/assets/7e7b0107-91c1-48e4-9be1-b2de4c2786d3)
 
 </details>
+<details>
+<summary>이벤트 관리 기능</summary>summary>
+
+- 일정 등록
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/20ca294b-1c58-4137-b36d-79b4422dfa5b)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/fbcd135c-c222-4e77-9660-5b3a5609a4f8)
+- 일정 수정
+	- 요청<br>
+ 	![image](https://github.com/user-attachments/assets/4d1cb060-05a9-4058-99bc-9d44604499b4)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/ac038684-0703-43c4-92f6-0dd3b1e2b979)
+- 기업의 월별 일정 리스트
+	- 요청<br>
+ 	![image](https://github.com/user-attachments/assets/9ce85801-da9a-4819-b445-b915ccced2a1)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/faacb4c3-b2bc-4f0c-a8be-53ee1c6b9235)
+- 특정 일정 상세조회
+	- 요청<br>
+ 	![image](https://github.com/user-attachments/assets/47670605-8ed0-4731-86ad-001da96095fc)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/0a86d01c-8963-478b-8e8d-365a8ef7cc41)
+
+</details>
 
 <details>
 <summary>검색</summary>
