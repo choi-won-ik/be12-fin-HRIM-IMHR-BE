@@ -37,8 +37,7 @@ public class ActivityService {
 
         // 관리자가 활동 리스트 확인
         if (member.getIsAdmin()) {
-            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
-            Page<Activity> list = activityRepository.findAllAndMemberNotEducation(member.getCompany().getIdx(),pageable);
+            List<Activity> list = activityRepository.findByCompany(member.getCompany());
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, activity.getMember());
                 // 프론트에 출력되는 이름 변경
@@ -49,15 +48,14 @@ public class ActivityService {
             }
 
             return new BaseResponse<>(BaseResponseMessage.ADMIN_ACTIVITYLIST_FIND, ActivityDto.PageActivityListResp.builder()
-                    .total(list.getTotalPages())
                     .activityList(result)
                     .build());
 
         }
         // 개인 유저가 활동 리스트 확인
         else {
-            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "idx"));
-            Page<Activity> list = activityRepository.findAllByMembernotEducation(member, pageable);
+
+            List<Activity> list = activityRepository.findActivitiesExcludingEducation(member);
             for (Activity activity : list) {
                 ActivityDto.ActivityListResp index = ActivityDto.ActivityListResp.to(activity, member);
                 // 프론트에 출력되는 이름 변경
@@ -68,7 +66,6 @@ public class ActivityService {
             }
 
             return new BaseResponse<>(BaseResponseMessage.USER_ACTIVITYLIST_FIND, ActivityDto.PageActivityListResp.builder()
-                    .total(list.getTotalPages())
                     .activityList(result)
                     .build());
         }
