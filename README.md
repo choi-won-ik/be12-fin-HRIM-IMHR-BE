@@ -124,9 +124,13 @@
 <br>
 
 ## 🏗️ 시스템 아키텍처
-<p align="center">
-  <img src="/public/SystemArchitecture.png" width="800px" height="700px" />
+<p>
+  <img src="https://github.com/user-attachments/assets/cebe3064-c7e3-4948-babd-cc5c0607fe73" 
+       width="800px" 
+       height="700px"
+       style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" />
 </p>
+
 
 
 ## 📚 백엔드 프로젝트 목표
