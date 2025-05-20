@@ -227,6 +227,40 @@
 </details>
 
 <details>
+<summary>친환경 제품 관리</summary>
+	
+- 제품 등록
+	- 요청<br>
+ 	![image](https://github.com/user-attachments/assets/1daf98e8-cb30-49bb-9661-73f0511cc437)
+  	![image](https://github.com/user-attachments/assets/b13058fc-1f3b-4e3c-93dd-2d61c399a952)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/dffd32c7-8187-4cff-9bd8-e447bd7b9f30)
+- 제품 등록
+	- 요청<br>
+ 	![image](https://github.com/user-attachments/assets/1daf98e8-cb30-49bb-9661-73f0511cc437)
+  	![image](https://github.com/user-attachments/assets/b13058fc-1f3b-4e3c-93dd-2d61c399a952)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/dffd32c7-8187-4cff-9bd8-e447bd7b9f30)
+- 제품 업데이트
+	- 요청<br>
+ 	![image](https://github.com/user-attachments/assets/787312b0-7ed0-4102-916c-0d9085a27df3)
+	![image](https://github.com/user-attachments/assets/deb63a41-b9ae-41aa-b5b2-f368f2d32e90)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/aa003162-3f35-4c87-8136-7ff4ad866a4c)
+- 회사별 제품 리스트 조회
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/c11f44d8-2746-4808-afd4-a3b794dddc6d)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/fdc54f28-0b1f-4ad5-8170-4ce2d0dea818)
+ - 제품 상세 조회
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/dbc11157-b9db-4e34-9358-d02af0910c22)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/7e7b0107-91c1-48e4-9be1-b2de4c2786d3)
+
+</details>
+
+<details>
 <summary>검색</summary>
 
 ### 통합 검색
