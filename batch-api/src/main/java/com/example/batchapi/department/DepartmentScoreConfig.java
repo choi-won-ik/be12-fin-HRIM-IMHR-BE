@@ -67,11 +67,10 @@ public class DepartmentScoreConfig {
             ItemProcessor<Department, DepartmentScore> scoreProcessor,
             ItemWriter<DepartmentScore> scoreWriter) {
         return new StepBuilder("scoreStep", jobRepository)
-                .<Department, DepartmentScore>chunk(30, jpaTransactionManager(entityManagerFactory))
+                .<Department, DepartmentScore>chunk(30, jpaTransactionManager(entityManagerFactory)) // 트랜잭션 매니저 한 곳만 지정
                 .reader(scoreReader)
-                .processor(scoreProcessor) // @Component로 등록된 RankProcessor 자동 주입
+                .processor(scoreProcessor)
                 .writer(scoreWriter)
-                .transactionManager(jpaTransactionManager(entityManagerFactory))
-                .build();
+                .build(); // 여기서는 .transactionManager(...) 제거
     }
 }
