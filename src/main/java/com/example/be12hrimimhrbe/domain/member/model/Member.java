@@ -1,11 +1,14 @@
 package com.example.be12hrimimhrbe.domain.member.model;
 
+import com.example.be12hrimimhrbe.domain.activity.model.Activity;
 import com.example.be12hrimimhrbe.domain.department.model.Department;
 import com.example.be12hrimimhrbe.domain.company.model.Company;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -21,6 +24,9 @@ public class Member {
 
     @Column(name = "member_id", nullable = false)
     private String memberId;
+
+    @OneToMany(mappedBy = "member")
+    private List<Activity> activities=new ArrayList<>();
 
     private String email;
 
