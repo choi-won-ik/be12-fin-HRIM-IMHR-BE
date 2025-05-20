@@ -440,7 +440,71 @@
 
 </details>
 
+---
 
+<details>
+<summary>직원 ESG교육 관리 기능</summary>
+- ESG교육 등록
+ 	- 요청<br>
+	![image](https://github.com/user-attachments/assets/a377e1be-ba7b-445c-b85f-059bc50ee1c9)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/5aac1e69-5081-41fa-8e5d-d39013662f9c)
+- ESG교육 내역 검색
+ 	- 요청<br>
+	![image](https://github.com/user-attachments/assets/e18e706d-a33f-48b7-9e68-1599d70369c2)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/dfd3905b-ad4b-4835-86a2-2ed0d347eebd)
+- ESG교육 내역 조회
+ 	- 요청<br>
+	![image](https://github.com/user-attachments/assets/17a5caa7-9ce9-4451-b545-3d13086e8c81)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/96684c57-062f-4e29-b6e9-e109c373f129)
+</details>
+
+---
+
+<details>
+<summary>회사 부서 관리 기능</summary>
+- 부서 생성
+ 	- 요청<br>
+	![image](https://github.com/user-attachments/assets/378b87cd-e40b-4400-a6ae-a6a0931feff7)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/06dcb2c3-b046-4dc0-a2dc-cd11c0fac6a6)
+- 부서 수정
+ 	- 요청<br>
+	![image](https://github.com/user-attachments/assets/200de909-770e-4859-a8a1-05d8958c027f)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/bcb63e2f-3039-44a6-a300-a38c9b8884d1)
+- 각 부서 대시보드 조회
+ 	- 요청<br>
+	![image](https://github.com/user-attachments/assets/d9190924-1c3b-4686-bf1b-611269476862)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/ef2f08d3-023f-4838-80db-4fe473552c1c)
+
+</details>
+
+---
+
+<details>
+<summary>회사 관리 기능</summary>
+- 기업 목표점수 수정
+ 	- 요청<br>
+	![image](https://github.com/user-attachments/assets/36f9f018-5a2d-4233-8992-262e84227508)
+	- 응답<br>
+	![image](https://github.com/user-attachments/assets/05ad1125-2b1b-4e42-a078-e990b0464154)
+- 우리 기업 조회
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/a39cce49-b521-4177-ab10-f606ff76aa44)
+ 	- 응답<br>
+  	![image](https://github.com/user-attachments/assets/46cd84a1-4a37-4ef9-8728-c751275dbc78)
+- 전체 기업 조회
+	- 요청<br>
+ 	![image](https://github.com/user-attachments/assets/56a92212-2015-46ab-9846-d3d771ad0928)
+	- 응답<br>
+ 	![image](https://github.com/user-attachments/assets/eb84cc9d-f31f-4956-8087-60970f2c7f2c)
+
+ </details>
+<details>
 
 
 
