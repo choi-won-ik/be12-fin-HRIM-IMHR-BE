@@ -26,6 +26,7 @@ public class EsgActivityDto {
                     .memberIdx(memberIdx)
                     .userName(name)
                     .companyIdx(companyIdx)
+                    .esgActivityItem(esgActivityItem)
                     .userID(userID)
                     .subject(subject)
                     .esgScore(esgScore)
