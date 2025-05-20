@@ -142,21 +142,18 @@
 ## ⚙️ 주요 기능 시연
 <details>
 <summary>회원가입</summary>
-
-![회원가입](https://주소)
-> 이메일, 비밀번호, 닉네임, 프로필 이미지(필수 X)로 회원 가입을 한다.  
-> 이메일, 닉네임은 **중복이 불가능**하다.
+- 로그인
 </details>
 
 <details>
 <summary>로그인</summary>
+- 로그인
+	- 요청<br>
+	![image](https://github.com/user-attachments/assets/a219c713-5678-474d-8fbc-51bf50e641a4)
+ 
+	- 응답<br>
+  	![image](https://github.com/user-attachments/assets/5c82befd-587d-485e-aa9f-49ed332621ce)
 
-![로그인](https://주소)
-> 일반 로그인, 소셜(Github) 로그인
-
-<img width="1361" alt="image" src="https://source">
-
-> 소셜 로그인은 소셜로 로그인 한 후 최초 로그인시 동의를 받는다.
 </details>
 
 <details>
