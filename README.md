@@ -157,6 +157,14 @@
 
 ### [4. 프로그램 사양서(API 명세서)](https://www.imhr.p-e.kr/api/swagger-ui/index.html)
 
+### [5. ERD ](https://github.com/user-attachments/assets/8bb7b37c-5513-4db0-bd96-45424fef4f3c)
+
+![ESG_ERD](https://github.com/user-attachments/assets/8bb7b37c-5513-4db0-bd96-45424fef4f3c)
+
+
+
+
+
 <br><br>
 
 ## ⚙️ 주요 기능 시연
