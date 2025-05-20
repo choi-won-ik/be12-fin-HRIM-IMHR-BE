@@ -309,6 +309,22 @@
 </details>
 
 <details>
+<summary>캠패인 관리 기능</summary>
+
+- 캠패인 참여 사원 등록
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/d59a0314-40a1-4e4c-9cf8-3ccbb3d69635)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/14a04099-d0ee-4ed9-967b-b816781aa454)
+- 캠패인 참여 사원 조회
+    - 요청<br>
+      ![image](https://github.com/user-attachments/assets/a0688868-03e1-42b6-addc-63e40c7adfdc)
+    - 응답<br>
+      ![image](https://github.com/user-attachments/assets/2303e20b-e48e-4765-9ee4-e76b836bffb7)
+
+</details>
+
+<details>
 <summary>검색</summary>
 
 ### 통합 검색
