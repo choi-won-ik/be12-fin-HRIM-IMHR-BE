@@ -1,6 +1,7 @@
 package com.example.be12hrimimhrbe.domain.activity;
 
 import com.example.be12hrimimhrbe.domain.activity.model.Activity;
+import com.example.be12hrimimhrbe.domain.company.model.Company;
 import com.example.be12hrimimhrbe.domain.member.model.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,10 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
+    @Query("SELECT a FROM Activity a WHERE a.member = :member AND a.type <> 'EDUCATION'")
+    List<Activity> findActivitiesExcludingEducation(Member member);
+
+    List<Activity> findByCompany(Company company);
 
     List<Activity> findAllByMember(Member member);
 
