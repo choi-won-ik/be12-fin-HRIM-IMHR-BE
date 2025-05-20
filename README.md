@@ -244,7 +244,6 @@
     - 응답<br>
       ![image](https://github.com/user-attachments/assets/d581064b-a54f-425b-8804-f7edf063e538)
 
-> 소셜 로그인은 소셜로 로그인 한 후 최초 로그인시 동의를 받는다.
 </details>
 
 ---
