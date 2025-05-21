@@ -25,6 +25,7 @@ public class EsgActivity {
     private int esgScore;
     private String esgValue;
 
+
     @Setter
     private Boolean status;
 
