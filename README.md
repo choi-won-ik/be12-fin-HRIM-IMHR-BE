@@ -309,7 +309,7 @@
 ---
 
 <details>
-<summary>캠캠패인 관리 기능</summary>
+<summary>캠패인 관리 기능</summary>
 
 - 캠패인 참여 사원 등록
     - 요청<br>
