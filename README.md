@@ -514,7 +514,9 @@
 
 ## 🚀 핵심 로직 상세 설명
 
-### [📃 프로젝트 Wiki](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/wiki/%ED%95%B5%EC%8B%AC-%EB%A1%9C%EC%A7%81-%EC%83%81%EC%84%B8-%EC%84%A4%EB%AA%85) <br><br>
+### [[MongoDB - ESG 활동 list 조회]](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/wiki/%5BMongoDB-%E2%80%90-ESG%ED%99%9C%EB%8F%99-list-%EC%A1%B0%ED%9A%8C%5D)
+
+### [[batch - 사원 랭킹, 부서별 점수 조회]](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/wiki/%5Bbatch-%E2%80%90-%EA%B0%81-%EC%82%AC%EC%9B%90-%EB%9E%AD%ED%82%B9,-%EB%B6%80%EC%84%9C%EB%B3%84-%EC%A0%90%EC%88%98-%EC%A7%91%EA%B3%84%5D)
 
 ## 📂 프로젝트 폴더 바로가기
 
