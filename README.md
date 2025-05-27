@@ -443,6 +443,7 @@
 
 <details>
 <summary>직원 ESG교육 관리 기능</summary>
+
 - ESG교육 등록
  	- 요청<br>
 	![image](https://github.com/user-attachments/assets/a377e1be-ba7b-445c-b85f-059bc50ee1c9)
@@ -464,6 +465,7 @@
 
 <details>
 <summary>회사 부서 관리 기능</summary>
+
 - 부서 생성
  	- 요청<br>
 	![image](https://github.com/user-attachments/assets/378b87cd-e40b-4400-a6ae-a6a0931feff7)
@@ -486,6 +488,7 @@
 
 <details>
 <summary>회사 관리 기능</summary>
+
 - 기업 목표점수 수정
  	- 요청<br>
 	![image](https://github.com/user-attachments/assets/36f9f018-5a2d-4233-8992-262e84227508)
@@ -503,9 +506,10 @@
  	![image](https://github.com/user-attachments/assets/eb84cc9d-f31f-4956-8087-60970f2c7f2c)
 
  </details>
-<details>
 
 
+
+---
 
 
 ## 🚀 핵심 로직 상세 설명
