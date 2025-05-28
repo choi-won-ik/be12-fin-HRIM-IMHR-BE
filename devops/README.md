@@ -60,19 +60,21 @@
 #### &nbsp;　[ DB ]
 &nbsp;&nbsp;&nbsp;</a>
 <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" style="border-radius: 5px;">
-<img src="https://img.shields.io/badge/AmazonS3-e05242?style=for-the-badge&logo=AmazonS3&logoColor=white" style="border-radius: 5px;">
-![Elasticsearch](https://img.shields.io/badge/elasticsearch-%230377CC.svg?style=for-the-badge&logo=elasticsearch&logoColor=white)
+<img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" style="border-radius: 5px;">
+
 
 #### &nbsp;　[ CI/CD ]
 &nbsp;&nbsp;&nbsp;&nbsp;![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white" style="border-radius: 5px;">
 
 #### &nbsp;　[ Etc ]
 &nbsp;&nbsp;&nbsp;&nbsp;![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white)
 ![Grafana](https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white)
-<img src="https://img.shields.io/badge/kafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white">
-<img src="https://img.shields.io/badge/logstash-f3bd19?style=for-the-badge&logo=logstash&logoColor=white" style="border-radius: 5px;">
+![Istio](https://img.shields.io/badge/istio-466BB0?style=for-the-badge&logo=istio&logoColor=white)
+![Kiali](https://img.shields.io/badge/kiali-3A6DA7?style=for-the-badge&logo=kiali&logoColor=white)
+
 
 #### &nbsp;　[ Communication ]
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/discord-326CE5?style=for-the-badge&logo=discord&logoColor=white" style="border-radius: 5px;">
@@ -119,20 +121,6 @@
 > 🔧 본 프로젝트는 기능 개발뿐 아니라 **운영 자동화, 배포 신뢰성, 그리고 협업 효율성**까지 고려한  
 > **실전 DevOps 기반 ESG/인사 통합 서비스 구축 사례**입니다.
 
-
-
-#### 주요 기능
-- **`기업 ESG 대시보드`**<br>
-  인사 혹은 기업의 ESG를 관리 할 수 있도록 기업의 ESG 대시보드 및 E, S, G 상세 대시보드 서비스를 제공한다.
-- **`부서 인사 ESG 대시보드`**<br>
-  각 부서의 팀장 혹은 임원들이 부서원들의 ESG 관련 활동들을 적극 참여 할 수 있도록 관리하기 위한 부서의 ESG 대시보드 및 상세 대시보드 서비스를 제공한다.
-- **`활동 관리`**<br>
-  사원이 활동을 한뒤 승인 요청을 보내고, 관리자가 각 활동들을 승인 및 반려 처리를 통한 인사 ESG 점수를 관리 하는 서비스를 제공한다.
-- **`일정 관리`**<br>
-  속한 기업의 켐페인 및 기업 일정을 확인 할 수 있는 캘린더 서비스를 제공한다.
-- **`인사 평가 기능`**<br>
-  사원들의 활동 및 사원들간의 피드벡을 임원들이 확인하고 사원의 인사 평가를 하는 서비스를 제공한다.   
-  <br>
 
 ## 🏗️ 시스템 아키텍처
 <p>
@@ -185,22 +173,27 @@
 
 ## 📈 프로젝트 설계
 
-### [1. 기획서 바로가기](https://www.notion.so/IMHR-1c2977eeefbe805a99a9d7271fbab5e1)
+### [1. 기획서 바로가기](https://docs.google.com/document/d/1oqK98SFnzINuLUV_IuUSwMwchhdvq6cl/edit?usp=sharing&ouid=110619070574591395130&rtpof=true&sd=true)
 
 ### [2. 요구사항 정의서](https://docs.google.com/spreadsheets/d/1NbC2fMWq6Q9psj9yfC09IHeKi16ttwFMdeP_DTnfdCg/edit?gid=1870690557#gid=1870690557)
 
-### [3. WBS](https://www.notion.so/WBS-Work-Breakdown-Structure-1c2977eeefbe808e9ffde53a0ecbb5ac)
+### [3. WBS](https://docs.google.com/spreadsheets/d/1mUJV4SmMK-qfPNC3ZlLHYIeNfaQmYyKR/edit?usp=sharing&ouid=110619070574591395130&rtpof=true&sd=true)
 
 <br><br>
 
-## ⚙️ 주요 기능 시연
-<details>
-<summary>Blue/Green 배포</summary>
+[//]: # (## ⚙️ 주요 기능 시연)
 
-![블루그린](https://주소)
-> 코드 푸시 및 PR을 하면 자동으로 빌드와 배포가 블루그린 방식으로 진행된다.  
+[//]: # (<details>)
 
-</details>
+[//]: # (<summary>Blue/Green 배포</summary>)
+
+[//]: # ()
+[//]: # (![블루그린]&#40;https://주소&#41;)
+
+[//]: # (> 코드 푸시 및 PR을 하면 자동으로 빌드와 배포가 블루그린 방식으로 진행된다.  )
+
+[//]: # ()
+[//]: # (</details>)
 
 
 ## 🚀 핵심 상세 설명
@@ -208,6 +201,6 @@
 
 
 ## 📂 프로젝트 폴더 바로가기
+### [📃 Frontend](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-FE/tree/main)
 ### [📃 Backend](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/tree/main) <br>
-### [📃 Devops](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/tree/main/devops)
 <br>

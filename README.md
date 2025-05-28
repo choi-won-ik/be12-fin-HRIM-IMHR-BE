@@ -43,7 +43,6 @@
 ## 🛠 기술 스택
 
 #### &nbsp;　[ Frontend ]
-
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white" style="border-radius: 5px;"/>
 <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white" style="border-radius: 5px;"/>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white" style="border-radius: 5px;"/>
@@ -52,7 +51,6 @@
 <img src="https://img.shields.io/badge/pinia-gold?style=for-the-badge&logo=Pinia&logoColor=white" style="border-radius: 5px;"/>
 
 #### &nbsp;　[ Backend ]
-
 &nbsp;&nbsp;&nbsp;&nbsp; ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white" style="border-radius: 5px;">
@@ -60,28 +58,27 @@
 <img src="https://img.shields.io/badge/SpringBatch-6DB33F?style=for-the-badge&logo=Spring&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/SMTP-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" style="border-radius: 5px;">
 
-#### &nbsp;　[ DB ]
 
+#### &nbsp;　[ DB ]
 &nbsp;&nbsp;&nbsp;</a>
 <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" style="border-radius: 5px;">
-<img src="https://img.shields.io/badge/AmazonS3-e05242?style=for-the-badge&logo=AmazonS3&logoColor=white" style="border-radius: 5px;">
-![Elasticsearch](https://img.shields.io/badge/elasticsearch-%230377CC.svg?style=for-the-badge&logo=elasticsearch&logoColor=white)
+<img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" style="border-radius: 5px;">
+
 
 #### &nbsp;　[ CI/CD ]
-
 &nbsp;&nbsp;&nbsp;&nbsp;![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white" style="border-radius: 5px;">
 
 #### &nbsp;　[ Etc ]
-
 &nbsp;&nbsp;&nbsp;&nbsp;![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white)
 ![Grafana](https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white)
-<img src="https://img.shields.io/badge/kafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white">
-<img src="https://img.shields.io/badge/logstash-f3bd19?style=for-the-badge&logo=logstash&logoColor=white" style="border-radius: 5px;">
+![Istio](https://img.shields.io/badge/istio-466BB0?style=for-the-badge&logo=istio&logoColor=white)
+![Kiali](https://img.shields.io/badge/kiali-3A6DA7?style=for-the-badge&logo=kiali&logoColor=white)
+
 
 #### &nbsp;　[ Communication ]
-
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/discord-326CE5?style=for-the-badge&logo=discord&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white" style="border-radius: 5px;">
@@ -149,13 +146,13 @@
 
 ## 📈 프로젝트 설계
 
-### [1. 기획서 바로가기](https://www.notion.so/IMHR-1c2977eeefbe805a99a9d7271fbab5e1)
+### [1. 기획서 바로가기](https://docs.google.com/document/d/1oqK98SFnzINuLUV_IuUSwMwchhdvq6cl/edit?usp=sharing&ouid=110619070574591395130&rtpof=true&sd=true)
 
 ### [2. 요구사항 정의서](https://docs.google.com/spreadsheets/d/1NbC2fMWq6Q9psj9yfC09IHeKi16ttwFMdeP_DTnfdCg/edit?gid=1870690557#gid=1870690557)
 
-### [3. WBS](https://www.notion.so/WBS-Work-Breakdown-Structure-1c2977eeefbe808e9ffde53a0ecbb5ac)
+### [3. WBS](https://docs.google.com/spreadsheets/d/1mUJV4SmMK-qfPNC3ZlLHYIeNfaQmYyKR/edit?usp=sharing&ouid=110619070574591395130&rtpof=true&sd=true)
 
-### [4. 프로그램 사양서(API 명세서)](https://www.imhr.p-e.kr/api/swagger-ui/index.html)
+### [4. 프로그램 사양서(API 명세서)](https://www.imhr.kro.kr/api/swagger-ui/index.html)
 
 ### [5. ERD ](https://github.com/user-attachments/assets/8bb7b37c-5513-4db0-bd96-45424fef4f3c)
 
@@ -520,8 +517,8 @@
 
 ## 📂 프로젝트 폴더 바로가기
 
-### [📃 Backend](https:/주소) <br>
+### [📃 Frontend](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-FE/tree/main) <br>
 
-### [📃 Devops](https://주소)
+### [📃 Devops](https://github.com/beyond-sw-camp/be12-fin-HRIM-IMHR-BE/tree/main/devops)
 
 <br>
