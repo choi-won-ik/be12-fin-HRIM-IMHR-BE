@@ -87,7 +87,7 @@
 
 ## 📚 IMHR 데모 사이트 바로가기
 
-### [IMHR](https://www.imhr.n-e.kr/)</a>
+### [IMHR](https://www.hrim.kro.kr/)</a>
 
 <br>
 
