@@ -152,7 +152,7 @@
 
 ### [3. WBS](https://docs.google.com/spreadsheets/d/1mUJV4SmMK-qfPNC3ZlLHYIeNfaQmYyKR/edit?usp=sharing&ouid=110619070574591395130&rtpof=true&sd=true)
 
-### [4. 프로그램 사양서(API 명세서)](https://www.imhr.kro.kr/api/swagger-ui/index.html)
+### [4. 프로그램 사양서(API 명세서)](https://www.hrim.kro.kr/api/swagger-ui/index.html)
 
 ### [5. ERD ](https://github.com/user-attachments/assets/8bb7b37c-5513-4db0-bd96-45424fef4f3c)
 
